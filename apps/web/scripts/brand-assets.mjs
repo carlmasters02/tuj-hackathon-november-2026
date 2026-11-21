@@ -53,7 +53,30 @@ async function bulbIcon(size, fill, background) {
 }
 
 const transparentLogo = await (await whiteToAlpha(SRC)).toBuffer();
-await sharp(transparentLogo).trim({ threshold: 1 }).resize({ width: 1040 }).png({ compressionLevel: 9 }).toFile(out(join(web, "src/assets/logo.png")));
+
+/** Full lockup: keep the bulb size, but make the wordmark 15% larger for legibility in the nav. */
+async function fullLogo(width) {
+  const trimmed = await sharp(transparentLogo).trim({ threshold: 1 }).png().toBuffer();
+  const { width: sourceWidth, height: sourceHeight } = await sharp(trimmed).metadata();
+  const split = Math.floor(sourceWidth * 0.79); // between the wordmark and the bulb's left ray
+  const cut = async (left, width) => sharp(await sharp(trimmed).extract({ left, top: 0, width, height: sourceHeight }).png().toBuffer()).trim({ threshold: 1 }).png().toBuffer();
+  const [word, bulb] = await Promise.all([cut(0, split), cut(split, sourceWidth - split)]);
+  const scale = width / sourceWidth;
+  const bulbImage = await sharp(bulb).resize({ height: Math.round(sourceHeight * scale) }).png().toBuffer({ resolveWithObject: true });
+  const { width: sourceWordWidth } = await sharp(word).metadata();
+  const wordImage = await sharp(word).resize({ width: Math.round(sourceWordWidth * scale * 1.15) }).png().toBuffer({ resolveWithObject: true });
+  const gap = Math.round(width * 0.035);
+  const top = (image) => Math.round((bulbImage.info.height - image.info.height) / 2);
+  return sharp({ create: { width: wordImage.info.width + gap + bulbImage.info.width, height: bulbImage.info.height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([
+      { input: wordImage.data, left: 0, top: top(wordImage) },
+      { input: bulbImage.data, left: wordImage.info.width + gap, top: 0 },
+    ])
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+}
+
+await sharp(await fullLogo(1040)).toFile(out(join(web, "src/assets/logo.png")));
 
 await (await bulbIcon(256, 0.92)).toFile(out(join(web, "src/app/icon.png")));
 await (await bulbIcon(320, 1)).toFile(out(join(web, "src/assets/bulb.png"))); // in-page illustration
@@ -63,6 +86,6 @@ for (const s of [192, 512]) {
   // Android masks icons to a circle/squircle: keep the bulb inside the central 80% safe zone
   await (await bulbIcon(s, 0.6, PARCHMENT)).toFile(out(join(web, `public/icons/maskable-${s}.png`)));
 }
-await sharp(transparentLogo).trim({ threshold: 1 }).resize({ width: 520 }).png({ compressionLevel: 9 }).toFile(out(join(web, "../extension/public/logo.png")));
+await sharp(await fullLogo(520)).toFile(out(join(web, "../extension/public/logo.png")));
 for (const s of [16, 32, 48, 128]) await (await bulbIcon(s, 0.96)).toFile(out(join(web, `../extension/public/icon${s}.png`)));
 console.log("brand assets written");
