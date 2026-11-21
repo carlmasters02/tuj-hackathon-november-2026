@@ -98,3 +98,8 @@ async def analyze_upload(
         "verdict": "100% Human Verified" if is_verified_human else "Blocked: Suspected AI Content",
         "detection_breakdown": reasons
     }
+
+@app.post("/tracker/reset/{user_id}")
+def reset_tracker(user_id: str):
+    active_sessions[user_id] = {"ai_seconds": 0, "ai_apps_opened": [], "ai_detected": False}
+    return {"status": "reset", "user_id": user_id}
