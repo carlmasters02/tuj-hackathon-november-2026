@@ -57,7 +57,12 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
   - It reformatted the whole page, conflicting with every later change.
 
   Instead, migration 6 adds a `comments` table with row-level security: read where the work is visible, post as yourself on visible works, delete as author or work owner, no edits. The API and component keep the original UI and copy, and the commit credits the author as co-author.
-- **`detection_api.py` (Marquine-Silva) is on `main` but not deployed**, because Vercel builds only `apps/web`. It needs authentication, upload limits and honest wording before it could be hosted.
+- **The standalone AI detector (`detection_api.py` and its frontend helpers, Marquine-Silva) was removed from `main`.** Reasons:
+  - No authentication. Any website could call it, set any user's "AI detected" status or points, or reset their tracker.
+  - Its text check flags ordinary words ("moreover", "comprehensive", "in conclusion") as AI and treats slang as human, so it would penalise honest students and is easy to game.
+  - Its image check reads metadata and pixel smoothness, which can be removed or faked in seconds.
+  - It duplicates, without the safeguards, what the app already does: the tracker extension, the hash-chained studio and editor records, and points awarded by the server.
+  The history is in git if parts of it are reworked into the main app later.
 - **`his-feature-name`** contains nothing that isn't already on `main` (a stale branch).
 
 ## Login & sign-up diagnostics
