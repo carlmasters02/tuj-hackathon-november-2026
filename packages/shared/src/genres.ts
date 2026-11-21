@@ -54,3 +54,6 @@ export const GENRES: GenreGuide[] = [
 ];
 
 export const genreGuide = (g: string) => GENRES.find((x) => x.slug === g);
+
+/** True while a title is still the one we filled in ("Untitled", "Untitled poem", …) or empty. */
+export const isDefaultTitle = (t: string) => !t.trim() || /^untitled\b/i.test(t.trim());
