@@ -22,7 +22,7 @@ export const POST = api(async (req: NextRequest) => {
 
   const sb = await supabaseServer();
   const origin = req.headers.get("origin")!;
-  const { error } = await sb.auth.signUp({
+  const { data, error } = await sb.auth.signUp({
     email: body.email,
     password: body.password,
     options: { data: { username: body.username }, emailRedirectTo: `${origin}/auth/callback` },
@@ -40,5 +40,8 @@ export const POST = api(async (req: NextRequest) => {
     // Don't reveal whether an email is already registered.
     console.warn("[signup] rejected:", error.code ?? error.status);
   }
-  return json({ ok: true, message: "If that email can be used, a confirmation link is on its way." });
+  // With "Confirm email" turned off in Supabase, signUp returns a session straight away and the
+  // session cookie is already set: the user is signed in.
+  if (data?.session) return json({ ok: true, signedIn: true });
+  return json({ ok: true, signedIn: false, message: "If that email can be used, a confirmation link is on its way. Already have an account? Log in instead." });
 });

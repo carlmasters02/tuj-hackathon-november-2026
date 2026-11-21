@@ -11,7 +11,7 @@ export default function SignupPage() {
     <div className="mx-auto max-w-sm space-y-6 pt-8">
       <div>
         <h1 className="h-page">Create your account</h1>
-        <p className="mt-2 text-sm text-fg-dim">We&apos;ll email you a confirmation link.</p>
+        <p className="mt-2 text-sm text-fg-dim">It takes a few seconds — no AI, just you.</p>
       </div>
       {process.env.HM_DEMO_MODE === "true" && (
         <a href="/auth/demo" className="btn btn-sun w-full py-2.5">Skip login — enter the demo</a>

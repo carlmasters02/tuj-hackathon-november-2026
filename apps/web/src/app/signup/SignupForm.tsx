@@ -1,10 +1,12 @@
 "use client";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { postJson, ApiError } from "@/lib/client";
 import { passwordProblem, MIN_PASSWORD_LENGTH } from "@hm/shared/passwords";
 
 export function SignupForm() {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -16,7 +18,7 @@ export function SignupForm() {
     return (
       <div className="card space-y-2 p-5">
         <h2 className="text-xl font-extrabold">Check your inbox</h2>
-        <p className="text-sm text-fg-dim">Click the confirmation link we sent, then log in.</p>
+        <p className="text-sm text-fg-dim">Click the confirmation link we sent, then log in. Already have an account? <Link className="link" href="/login">Log in</Link></p>
       </div>
     );
 
@@ -29,7 +31,12 @@ export function SignupForm() {
         setBusy(true);
         setError(null);
         try {
-          await postJson("/api/auth/signup", { email: f.get("email"), username, password: pw });
+          const r = await postJson<{ signedIn: boolean }>("/api/auth/signup", { email: f.get("email"), username, password: pw });
+          if (r.signedIn) {
+            router.push("/dashboard");
+            router.refresh();
+            return;
+          }
           setDone(true);
         } catch (err) {
           setError(err instanceof ApiError ? err.message : "Signup failed");
