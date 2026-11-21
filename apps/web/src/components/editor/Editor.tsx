@@ -10,6 +10,12 @@ import { postJson, ApiError } from "@/lib/client";
 import { PasteHighlight, RedPenFocus, redpenFocusKey } from "./extensions";
 import { ProvenanceRecorder, type RecorderStatus } from "./recorder";
 import { RedPenPanel } from "./RedPenPanel";
+import { GenreCoach } from "./GenreCoach";
+import type { Genre } from "@hm/shared/genres";
+import { HIDDEN_RULES } from "@hm/shared/genreCoach";
+import type { RuleId } from "@hm/shared/redpen";
+
+const NONE: RuleId[] = [];
 
 interface Props {
   docId: string;
@@ -17,6 +23,7 @@ interface Props {
   content: unknown;
   lastSeq: number;
   headHash: string | null;
+  genre?: Genre;
 }
 
 const STATUS_TEXT: Record<RecorderStatus, string> = {
@@ -27,7 +34,7 @@ const STATUS_TEXT: Record<RecorderStatus, string> = {
   conflict: "Stopped",
 };
 
-export function Editor({ docId, title: initialTitle, content, lastSeq, headHash }: Props) {
+export function Editor({ docId, title: initialTitle, content, lastSeq, headHash, genre = "free" }: Props) {
   const router = useRouter();
   const recorder = useRef<ProvenanceRecorder | null>(null);
   const [status, setStatus] = useState<RecorderStatus>("idle");
@@ -136,12 +143,13 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
         </div>
         {error && <p role="alert" className="rounded-md border border-redpen/50 bg-redpen-dim p-3 text-sm">{error} {status === "conflict" && <button className="link" onClick={() => location.reload()}>Reload</button>}</p>}
         <Toolbar editor={editor} />
-        <div className="hm-editor card min-h-[60vh] px-6 py-5 sm:px-10">
+        <div className={`hm-editor card min-h-[60vh] px-6 py-5 sm:px-10 ${genre === "poetry" ? "hm-poem" : ""}`}>
           <EditorContent editor={editor} />
         </div>
       </div>
-      <div className="lg:sticky lg:top-20 lg:self-start">
-        <RedPenPanel text={text} onFocusFlag={focusFlag} />
+      <div className="space-y-5 lg:sticky lg:top-20 lg:self-start">
+        <GenreCoach genre={genre} text={text} />
+        <RedPenPanel text={text} onFocusFlag={focusFlag} hide={(HIDDEN_RULES[genre] as RuleId[] | undefined) ?? NONE} />
       </div>
     </div>
   );

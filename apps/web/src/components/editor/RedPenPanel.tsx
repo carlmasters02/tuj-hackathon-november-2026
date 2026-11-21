@@ -6,7 +6,7 @@ import { RULES, type Flag, type ReadabilityScores, type RuleId } from "@hm/share
  * RedPen side panel. Shows flags with the rule, why it matters and a generic example.
  * Deliberately has no "apply fix" button: the writer edits the text themselves.
  */
-export function RedPenPanel({ text, onFocusFlag }: { text: string; onFocusFlag: (f: Flag | null) => void }) {
+export function RedPenPanel({ text, onFocusFlag, hide = [] }: { text: string; onFocusFlag: (f: Flag | null) => void; hide?: RuleId[] }) {
   const worker = useRef<Worker | null>(null);
   const reqId = useRef(0);
   const [flags, setFlags] = useState<Flag[]>([]);
@@ -31,9 +31,9 @@ export function RedPenPanel({ text, onFocusFlag }: { text: string; onFocusFlag: 
 
   const grouped = useMemo(() => {
     const m = new Map<RuleId, Flag[]>();
-    for (const f of flags) m.set(f.rule, [...(m.get(f.rule) ?? []), f]);
+    for (const f of flags) if (!hide.includes(f.rule)) m.set(f.rule, [...(m.get(f.rule) ?? []), f]);
     return [...m.entries()].sort((a, b) => b[1].length - a[1].length);
-  }, [flags]);
+  }, [flags, hide]);
 
   return (
     <aside className="space-y-4">
@@ -41,7 +41,7 @@ export function RedPenPanel({ text, onFocusFlag }: { text: string; onFocusFlag: 
         <h2 className="text-xl font-extrabold"><span className="text-redpen">Red</span>Pen</h2>
         <span className="text-xs text-fg-faint">flags only — you do the rewriting</span>
       </div>
-      {scores && (
+      {scores && !hide.includes("readability") && (
         <div className="grid grid-cols-3 gap-2 text-center">
           <Stat label="Reading ease" value={scores.words ? scores.fleschReadingEase.toFixed(0) : "–"} hint="Flesch, 0–100, higher = easier" />
           <Stat label="Grade level" value={scores.words ? scores.fleschKincaidGrade.toFixed(1) : "–"} hint="Flesch–Kincaid" />
