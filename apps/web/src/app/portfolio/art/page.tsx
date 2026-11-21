@@ -11,7 +11,7 @@ export default async function ArtFeed() {
   const verifiedCount = items.filter((item) => item.verified).length;
 
   return (
-    <main className="pb-20">
+    <div className="pb-20">
       <header className="relative mb-10 overflow-hidden rounded-[2rem] border border-line bg-surface px-6 py-9 shadow-sm sm:px-10 sm:py-12 lg:px-14">
         <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full border-[42px] border-sun/20 sm:h-[28rem] sm:w-[28rem]" />
         <div aria-hidden="true" className="pointer-events-none absolute bottom-[-8rem] right-24 h-64 w-64 rounded-full bg-sun/10 blur-3xl" />
@@ -66,6 +66,6 @@ export default async function ArtFeed() {
           action={<Link href="/portfolio/upload" className="btn btn-primary">Share your artwork</Link>}
         />
       )}
-    </main>
+    </div>
   );
 }
