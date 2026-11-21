@@ -246,6 +246,7 @@ pnpm dev      # http://localhost:3000
 | `pnpm dev` | Start the web app |
 | `pnpm lint` | AI-free check → service-role leak check → ESLint → typecheck all packages |
 | `pnpm test` | All unit and integration tests (Vitest) |
+| `pnpm e2e:live <url>` | 34-step end-to-end test of a **deployed** site from the user's side. It signs up a throwaway account, uses every feature, then deletes the account. Needs "Confirm email" off. |
 | `pnpm test:authz` | Database permission tests against your real Supabase project |
 | `pnpm build` | Production build of every package |
 | `pnpm gen:keys` | Generate the app secrets |
