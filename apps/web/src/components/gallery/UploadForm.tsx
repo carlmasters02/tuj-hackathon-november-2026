@@ -7,7 +7,7 @@ export function UploadForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   return (
-    <form
+    <form method="post"
       className="card space-y-4 p-5"
       onSubmit={async (e) => {
         e.preventDefault();
@@ -19,7 +19,7 @@ export function UploadForm() {
           const res = await fetch("/api/gallery/upload", { method: "POST", body: fd, credentials: "same-origin" });
           const data = await res.json().catch(() => ({}));
           if (!res.ok) throw new Error(data.error ?? `Upload failed (${res.status})`);
-          router.push(`/gallery/${data.id}`);
+          router.push(`/portfolio/work/${data.id}`);
         } catch (err) {
           setError((err as Error).message);
           setBusy(false);
@@ -28,8 +28,8 @@ export function UploadForm() {
     >
       <div>
         <label className="label" htmlFor="file">File</label>
-        <input id="file" name="file" type="file" required accept="image/png,image/jpeg,image/webp,audio/mpeg,audio/ogg,audio/wav" className="block w-full text-sm text-paper-dim file:mr-3 file:rounded-md file:border file:border-line file:bg-ink-3 file:px-3 file:py-1.5 file:text-paper" />
-        <p className="mt-1 text-xs text-paper-faint">Images: PNG, JPEG, WebP up to 15 MB. Audio: MP3, OGG, WAV up to 25 MB. Checked by file contents, not extension.</p>
+        <input id="file" name="file" type="file" required accept="image/png,image/jpeg,image/webp,audio/mpeg,audio/ogg,audio/wav" className="block w-full text-sm text-fg-dim file:mr-3 file:rounded-md file:border file:border-line file:bg-muted file:px-3 file:py-1.5 file:text-fg" />
+        <p className="mt-1 text-xs text-fg-faint">Images: PNG, JPEG, WebP up to 15 MB. Audio: MP3, OGG, WAV up to 25 MB. Checked by file contents, not extension.</p>
       </div>
       <div>
         <label className="label" htmlFor="title">Title</label>

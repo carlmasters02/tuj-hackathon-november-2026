@@ -18,7 +18,7 @@ const TOOLS: [string, string][] = [
   const box = document.getElementById("tools")!;
   for (const [label, href] of tools) {
     const a = document.createElement("a");
-    a.className = "btn";
+    a.className = "btn sun";
     a.textContent = label;
     a.href = href;
     a.addEventListener("click", () => void chrome.runtime.sendMessage({ type: "redirected" }));

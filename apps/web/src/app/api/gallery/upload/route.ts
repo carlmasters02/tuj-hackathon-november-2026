@@ -20,9 +20,11 @@ const Meta = z.object({
   publish: z.enum(["true", "false"]).transform((v) => v === "true"),
 });
 
+class NoFfmpeg extends Error {}
+
 /** 64 kbps MP3 preview via ffmpeg (argument array, no shell; 60 s timeout; stdin → stdout). */
 function transcodePreview(input: Buffer): Promise<Buffer | null> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     let p: ReturnType<typeof spawn>;
     try {
       p = spawn("ffmpeg", ["-hide_banner", "-loglevel", "error", "-i", "pipe:0", "-vn", "-map_metadata", "-1", "-ac", "2", "-b:a", "64k", "-f", "mp3", "pipe:1"], { stdio: ["pipe", "pipe", "ignore"] });
@@ -31,7 +33,7 @@ function transcodePreview(input: Buffer): Promise<Buffer | null> {
     }
     const out: Buffer[] = [];
     const t = setTimeout(() => p.kill("SIGKILL"), 60_000);
-    p.on("error", () => resolve(null));
+    p.on("error", (e: NodeJS.ErrnoException) => (e.code === "ENOENT" ? reject(new NoFfmpeg()) : resolve(null)));
     p.stdout!.on("data", (d: Buffer) => out.push(d));
     p.on("close", (code) => {
       clearTimeout(t);
@@ -45,8 +47,8 @@ function transcodePreview(input: Buffer): Promise<Buffer | null> {
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("upload", user.id);
-  rateLimit("upload", `ip:${req.headers.get("x-real-ip") ?? "local"}`);
+  await rateLimit("upload", user.id);
+  await rateLimit("upload", `ip:${req.headers.get("x-real-ip") ?? "local"}`);
   if (Number(req.headers.get("content-length") ?? 0) > MAX_AUDIO_BYTES + 100_000) throw new HttpError(413, "File too large");
 
   const form = await req.formData();
@@ -100,7 +102,10 @@ export const POST = api(async (req: NextRequest) => {
     if (bytes.length > MAX_AUDIO_BYTES) throw new HttpError(413, "Audio can be at most 25 MB");
     const { data: same } = await sb.from("gallery_works").select("id, owner_id").eq("kind", "music").eq("sha256", fileSha).neq("owner_id", user.id).maybeSingle();
     if (same) throw new HttpError(409, "This exact file was already uploaded by another user, so it was blocked.");
-    const preview = await transcodePreview(bytes);
+    const preview = await transcodePreview(bytes).catch((e) => {
+      if (e instanceof NoFfmpeg) throw new HttpError(503, "Music uploads aren't available on this server yet (ffmpeg is missing).");
+      throw e;
+    });
     if (!preview) throw new HttpError(415, "That audio file couldn't be decoded");
     const originalPath = `${user.id}/${workId}.bin`;
     await upload("audio", originalPath, encryptBytes(bytes, `work:${workId}:original`));

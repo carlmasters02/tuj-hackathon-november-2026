@@ -91,6 +91,10 @@ describe.skipIf(!enabled)("RLS isolation between two users", () => {
   it("users can't change server-controlled profile columns", async () => {
     const { error } = await A.c.from("profiles").update({ username: "hijack" }).eq("id", A.id);
     expect(error).not.toBeNull();
+    const flag = await A.c.from("profiles").update({ username_chosen: false }).eq("id", A.id);
+    expect(flag.error).not.toBeNull();
+    const flagged = await A.c.from("profiles").update({ flagged_bulk: false }).eq("id", A.id);
+    expect(flagged.error).not.toBeNull();
     const ok = await A.c.from("profiles").update({ bio: "hi" }).eq("id", A.id);
     expect(ok.error).toBeNull();
   });
@@ -107,6 +111,33 @@ describe.skipIf(!enabled)("RLS isolation between two users", () => {
     expect(other.error).not.toBeNull();
     const up = await B.c.storage.from("art-previews").upload(`${B.id}/x.bin`, Buffer.from("x"));
     expect(up.error).not.toBeNull();
+  });
+
+  it("rate-limit buckets and login attempts are closed to clients", async () => {
+    for (const t of ["rate_limits", "login_attempts"]) {
+      const { data } = await A.c.from(t).select("*");
+      expect(data ?? [], t).toHaveLength(0);
+    }
+    const rpc = await A.c.rpc("hm_take_token", { p_key: "x", p_capacity: 1, p_window_seconds: 1 });
+    expect(rpc.error).not.toBeNull();
+  });
+
+  it("comments: post as yourself on visible works only; author or work owner can delete", async () => {
+    const { data: pub } = await admin.from("gallery_works").insert({ owner_id: A.id, kind: "art", title: "public piece", published: true }).select("id").single();
+    const { data: priv } = await admin.from("gallery_works").select("id").eq("owner_id", A.id).eq("published", false).limit(1).single();
+    const ok = await B.c.from("comments").insert({ work_id: pub!.id, author_id: B.id, body: "nice" }).select("id").single();
+    expect(ok.error).toBeNull();
+    const asA = await B.c.from("comments").insert({ work_id: pub!.id, author_id: A.id, body: "impersonation" });
+    expect(asA.error).not.toBeNull();
+    const onPrivate = await B.c.from("comments").insert({ work_id: priv!.id, author_id: B.id, body: "sneaky" });
+    expect(onPrivate.error).not.toBeNull();
+    const edit = await B.c.from("comments").update({ body: "edited" }).eq("id", ok.data!.id);
+    expect(edit.error).not.toBeNull(); // comments can't be edited
+    const { data: aComment } = await admin.from("comments").insert({ work_id: pub!.id, author_id: A.id, body: "owner says hi" }).select("id").single();
+    const bDeletesA = await B.c.from("comments").delete().eq("id", aComment!.id).select("id");
+    expect(bDeletesA.data ?? []).toHaveLength(0);
+    const ownerModerates = await A.c.from("comments").delete().eq("id", ok.data!.id).select("id");
+    expect(ownerModerates.data).toHaveLength(1);
   });
 
   it("anonymous visitors see only public data", async () => {

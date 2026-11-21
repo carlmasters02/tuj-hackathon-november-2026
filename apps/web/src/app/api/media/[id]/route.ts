@@ -25,7 +25,7 @@ const PROTECTED_HEADERS = {
  */
 export const GET = api(async (req: NextRequest, ctx: { params: Promise<{ id: string }> }) => {
   const user = await requireUser();
-  rateLimit("media", user.id);
+  await rateLimit("media", user.id);
   const id = UUID.parse((await ctx.params).id);
   const exp = Number(req.nextUrl.searchParams.get("exp"));
   const sig = req.nextUrl.searchParams.get("sig") ?? "";

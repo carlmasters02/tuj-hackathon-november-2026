@@ -35,10 +35,10 @@ export function ProtectedImage({ src, width, height, alt }: { src: string; width
   }, [src]);
 
   return (
-    <div className="hm-protected relative overflow-hidden rounded-lg bg-ink-3" style={{ aspectRatio: `${width} / ${height}` }} onContextMenu={(e) => e.preventDefault()} onDragStart={(e) => e.preventDefault()}>
+    <div className="hm-protected relative overflow-hidden rounded-lg bg-muted" style={{ aspectRatio: `${width} / ${height}` }} onContextMenu={(e) => e.preventDefault()} onDragStart={(e) => e.preventDefault()}>
       <canvas ref={ref} role="img" aria-label={alt} className="h-full w-full object-contain" draggable={false} />
       {state !== "ok" && (
-        <div className="absolute inset-0 grid place-items-center text-xs text-paper-faint">
+        <div className="absolute inset-0 grid place-items-center text-xs text-fg-faint">
           {state === "loading" ? "Loading…" : state === "expired" ? <button className="link" onClick={() => location.reload()}>Link expired — reload</button> : "Couldn't load image"}
         </div>
       )}

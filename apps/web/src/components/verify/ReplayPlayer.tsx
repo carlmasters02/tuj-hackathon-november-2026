@@ -60,21 +60,21 @@ export function ReplayPlayer({ batches }: { batches: StoredBatch[] }) {
   return (
     <section className="card overflow-hidden">
       <div className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-2">
-        <h2 className="mr-auto font-serif text-lg">Replay</h2>
+        <h2 className="mr-auto text-lg font-extrabold">Replay</h2>
         <button className="btn py-1" onClick={() => (playing ? setPlaying(false) : i >= events.length ? restart() : setPlaying(true))}>
           {playing ? "Pause" : i >= events.length ? "▶ Play from start" : "▶ Resume"}
         </button>
         {SPEEDS.map((s) => (
           <button key={s} className={`btn py-1 ${speed === s ? "btn-primary" : ""}`} onClick={() => setSpeed(s)}>{s}×</button>
         ))}
-        <span className="w-28 text-right font-mono text-xs text-paper-faint">{i}/{events.length}</span>
+        <span className="w-28 text-right font-mono text-xs text-fg-faint">{i}/{events.length}</span>
       </div>
-      <div className="h-1 bg-ink-3"><div className="h-1 bg-redpen transition-all" style={{ width: `${events.length ? (100 * i) / events.length : 100}%` }} /></div>
+      <div className="h-1 bg-muted"><div className="h-1 bg-sun transition-all" style={{ width: `${events.length ? (100 * i) / events.length : 100}%` }} /></div>
       <div className="max-h-[60vh] min-h-48 overflow-auto whitespace-pre-wrap px-6 py-5 font-serif text-lg leading-relaxed">
         {before}
-        {pasted && <mark className="rounded bg-warn/40 text-paper">{pasted}</mark>}
+        {pasted && <mark className="rounded bg-flame/30 text-fg">{pasted}</mark>}
         {after}
-        {playing && <span className="ml-px inline-block h-5 w-px animate-pulse bg-paper align-middle" />}
+        {playing && <span className="ml-px inline-block h-5 w-px animate-pulse bg-fg align-middle" />}
       </div>
     </section>
   );

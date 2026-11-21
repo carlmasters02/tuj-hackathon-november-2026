@@ -6,7 +6,7 @@ export function LogoutButton() {
   const router = useRouter();
   return (
     <button
-      className="btn btn-ghost text-paper-dim"
+      className="btn btn-ghost text-fg-dim"
       onClick={async () => {
         await postJson("/api/auth/logout", {});
         router.push("/");

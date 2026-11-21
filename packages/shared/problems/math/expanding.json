@@ -1,5 +1,38 @@
 [
-  { "id": "exp-1", "topic": "Expanding", "difficulty": 1, "prompt": "\\text{Expand } 3(2x - 5)", "kind": "expression", "start": "3(2x - 5)", "variable": "x", "finalForm": "expanded", "answer": "6x - 15" },
-  { "id": "exp-2", "topic": "Expanding", "difficulty": 2, "prompt": "\\text{Expand } (x + 2)(x + 3)", "kind": "expression", "start": "(x + 2)(x + 3)", "variable": "x", "finalForm": "expanded", "answer": "x^2 + 5x + 6" },
-  { "id": "exp-3", "topic": "Expanding", "difficulty": 2, "prompt": "\\text{Expand } (x - 4)^2", "kind": "expression", "start": "(x - 4)^2", "variable": "x", "finalForm": "expanded", "answer": "x^2 - 8x + 16" }
+  {
+    "id": "exp-1",
+    "topic": "Expanding",
+    "difficulty": 1,
+    "prompt": "\\text{Expand } 3(2x - 5)",
+    "kind": "expression",
+    "start": "3(2x - 5)",
+    "variable": "x",
+    "finalForm": "expanded",
+    "answer": "6x - 15",
+    "subject": "algebra"
+  },
+  {
+    "id": "exp-2",
+    "topic": "Expanding",
+    "difficulty": 2,
+    "prompt": "\\text{Expand } (x + 2)(x + 3)",
+    "kind": "expression",
+    "start": "(x + 2)(x + 3)",
+    "variable": "x",
+    "finalForm": "expanded",
+    "answer": "x^2 + 5x + 6",
+    "subject": "algebra"
+  },
+  {
+    "id": "exp-3",
+    "topic": "Expanding",
+    "difficulty": 2,
+    "prompt": "\\text{Expand } (x - 4)^2",
+    "kind": "expression",
+    "start": "(x - 4)^2",
+    "variable": "x",
+    "finalForm": "expanded",
+    "answer": "x^2 - 8x + 16",
+    "subject": "algebra"
+  }
 ]

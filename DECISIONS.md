@@ -9,6 +9,16 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 - **ESLint 9 + typescript-eslint**, in a flat config at the repo root. `pnpm lint` runs the AI check, then the service-role check, ESLint and per-package `tsc`.
 - **Tailwind v4** with CSS-first tokens and system font stacks. The CSP is `font-src 'self'`, so no Google Fonts.
 
+## Theme & brand
+- **Light theme only, derived from the logo:** parchment, navy, sun and flame. Theme tokens have semantic names (`canvas`, `surface`, `muted`, `fg`, `fg-dim`, `fg-faint`) so they still read correctly if a dark variant is added later.
+- **Nunito comes from `@fontsource-variable/nunito`** (npm), because the CSP's `font-src 'self'` rules out Google Fonts. Long-form writing keeps a system book serif.
+- **Logo transparency:** the source logo has an opaque white background. `scripts/brand-assets.mjs` converts white to alpha with colour unmixing, so anti-aliased edges don't leave a white halo on parchment.
+- **App icons:**
+  - iPhone needs an opaque icon, so the bulb sits on parchment.
+  - Android maskable icons keep the bulb inside the central 80 % safe zone.
+  - Favicon and extension icons are transparent.
+- **Chart colours:** human minutes are navy and AI minutes are flame orange. Red is reserved for errors and RedPen, so AI use isn't shown as an error.
+
 ## Security
 - **Login and signup go through route handlers**, not the browser Supabase client. That way rate limits, lockout and the common-password check are enforced on the server. The app has **no browser Supabase client at all**: every data access goes through route handlers or server components, which shrinks the attack surface.
 - **Lockout** state lives in `login_attempts`, keyed by `sha256(email)`, so the table never stores emails. After 10 failures the account is locked for 15 minutes and the counter resets.
@@ -21,6 +31,50 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 - **Signed media URLs are bound to the viewer's id** (as well as the work and expiry), so a leaked URL is useless to anyone else even before its 5 minutes run out.
 - **Storage** has no `storage.objects` policies at all, so only the service role can read or write. The RLS test asserts that even owners can't download originals directly.
 - **Extension tokens:** `hm_ext_` + 32 random bytes (base64url), stored as `SHA-256(pepper ‖ token)`. At most 5 active tokens per user. The token hash column isn't readable by the `authenticated` role.
+
+## Backend & deployment
+- **Supabase region:** `ap-southeast-1` (Singapore). Vercel functions are pinned to `sin1` to keep database round-trips short.
+- **Explicit grants instead of automatic API access** (migration 4): the API roles start with nothing, and every table/column privilege is listed in one file. Row Level Security then decides which rows. Default privileges for future tables are revoked too.
+- **`rls_auto_enable()`**, installed by Supabase's "auto-enable RLS" option, had EXECUTE for API roles. Migration 5 revokes it, which resolved the security advisor warning.
+- **Remaining advisor notes are intended:** `login_attempts` and `rate_limits` have RLS with no policies because they're server-only. "Unused index" notes are expected on a new database.
+- **Rate limits live in Postgres** (`hm_take_token`, a row-locked token bucket) because serverless instances don't share memory. If the database is unreachable, the app falls back to a per-instance bucket. Keys are SHA-256 hashes.
+- **Secrets never pass through chat or CI:** `scripts/setup-env.mjs` generates them straight into `.env.local` (mode 600), and Vercel receives them through "Import .env".
+
+## Demo mode
+- **What it is:** `HM_DEMO_MODE=true` replaces the login step with an automatic sign-in to a shared `demo` account. It exists so the app can be tested before email delivery or Google sign-in are configured.
+- **How it signs in:** `/auth/demo` mints a magic-link token with the service role and redeems it on the server. No password exists and no email is sent.
+- **What stays the same:** the result is a normal Supabase session, so row-level security, grants and rate limits behave exactly as in production.
+- **Safety:**
+  - Off by default, and `/auth/demo` returns 404 unless it's on.
+  - A banner is shown on every page while it's on.
+  - The demo account can't be deleted.
+  - The `next` parameter only accepts same-site paths.
+
+## Team contributions
+- **`feature/art-gallery` (dasbristy997-ux, "Add artwork comments UI"):** the idea is adopted, but the commit isn't merged as-is.
+  - Its comments lived only in React state: never saved, invisible to others, author always "You".
+  - It was based on the pre-rebrand commit and used theme tokens that no longer exist.
+  - It reformatted the whole page, conflicting with every later change.
+
+  Instead, migration 6 adds a `comments` table with row-level security: read where the work is visible, post as yourself on visible works, delete as author or work owner, no edits. The API and component keep the original UI and copy, and the commit credits the author as co-author.
+- **`detection_api.py` (Marquine-Silva) is on `main` but not deployed**, because Vercel builds only `apps/web`. It needs authentication, upload limits and honest wording before it could be hosted.
+- **`his-feature-name`** contains nothing that isn't already on `main` (a stale branch).
+
+## Login & sign-up diagnostics
+- **Reason codes:** every auth failure has one (e.g. `login.no_account`, `login.wrong_password`, `rate_limit.loginIp`, `signup.password_breached`). It's logged on the server as `[auth] <reason> net=<hashed IP>`, never with the email or password.
+- **`HM_DETAILED_AUTH_ERRORS=true`** shows users the precise explanation and the reason code, including whether an email has an account (via the service-role-only `hm_auth_status`, migration 7). That makes account enumeration possible, so switch it off for a public launch; users then get generic messages. Password-rule messages are always specific, because they reveal nothing about other people.
+- **Rate limits suited to shared Wi-Fi:** a whole venue often shares one public IP. Login allows 30/min per network plus 5/min per email; signup allows 10/min per network plus 3/min per username.
+- **Missing server configuration** (no `.env.local` when a teammate runs the app locally) now names the missing variables in development or detailed mode, instead of "Something went wrong".
+
+## Forms
+- **Every `<form>` uses `method="post"`.** Login, signup and username submit buttons are disabled until React has hydrated. Without this, pressing Enter before the JavaScript loaded made the browser do a native GET, putting the email and password in the URL (and so in history and server logs).
+- **StepCheck inputs are disabled until hydration** (placeholder "Loading…"), so lines typed early aren't silently discarded.
+
+## Google sign-in
+- **Server-initiated PKCE flow:** `/api/auth/oauth` calls `signInWithOAuth({ skipBrowserRedirect: true })`. The verifier lives in an httpOnly cookie, and the route refuses to return any URL whose host isn't our Supabase project.
+- **Same-site redirects only:** `/auth/callback` and `/welcome` accept `next` only as a same-site relative path (`safeNext`), which blocks open redirects.
+- **Username for Google sign-ups:** the signup trigger generates a temporary username from the email (`username_chosen = false`). Signed-in pages redirect to `/welcome` until the user picks a real one, which they can do **once**. Clients can't change `username` or `username_chosen` (column grants).
+- **Shared rate limit:** the Google start route is rate-limited with the login bucket.
 
 ## Provenance editor
 - **Event positions use a plain-text projection**: `doc.textBetween(0, size, "\n", hardBreak → "\n")`, the same call in browser and server. The server can then replay and verify without ProseMirror steps. Formatting-only changes (bold, etc.) don't alter the text and aren't logged as events.

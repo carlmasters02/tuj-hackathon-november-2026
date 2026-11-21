@@ -38,8 +38,8 @@ export function RedPenPanel({ text, onFocusFlag }: { text: string; onFocusFlag: 
   return (
     <aside className="space-y-4">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-serif text-xl"><span className="text-redpen">Red</span>Pen</h2>
-        <span className="text-xs text-paper-faint">flags only — you do the rewriting</span>
+        <h2 className="text-xl font-extrabold"><span className="text-redpen">Red</span>Pen</h2>
+        <span className="text-xs text-fg-faint">flags only — you do the rewriting</span>
       </div>
       {scores && (
         <div className="grid grid-cols-3 gap-2 text-center">
@@ -48,23 +48,23 @@ export function RedPenPanel({ text, onFocusFlag }: { text: string; onFocusFlag: 
           <Stat label="Words" value={String(scores.words)} hint={`${scores.sentences} sentences`} />
         </div>
       )}
-      {grouped.length === 0 && <p className="text-sm text-paper-faint">No flags yet. Start writing.</p>}
+      {grouped.length === 0 && <p className="text-sm text-fg-faint">No flags yet. Start writing.</p>}
       <ul className="space-y-2">
         {grouped.map(([rule, list]) => (
-          <li key={rule} className="rounded-lg border border-line">
+          <li key={rule} className="rounded-xl border border-line bg-surface">
             <button className="flex w-full items-center justify-between px-3 py-2 text-left text-sm" onClick={() => setOpen(open === rule ? null : rule)}>
               <span>{RULES[rule].label}</span>
               <span className="chip">{list.length}</span>
             </button>
             {open === rule && (
               <div className="space-y-3 border-t border-line px-3 py-3 text-sm">
-                <p className="text-paper-dim"><strong className="text-paper">Why it matters:</strong> {RULES[rule].why}</p>
-                <p className="text-paper-dim"><strong className="text-paper">Example:</strong> {RULES[rule].example}</p>
+                <p className="text-fg-dim"><strong className="text-fg">Why it matters:</strong> {RULES[rule].why}</p>
+                <p className="text-fg-dim"><strong className="text-fg">Example:</strong> {RULES[rule].example}</p>
                 <ul className="space-y-1">
                   {list.slice(0, 50).map((f, i) => (
                     <li key={i}>
                       <button
-                        className="w-full truncate rounded px-2 py-1 text-left font-serif text-paper-dim hover:bg-ink-3 hover:text-paper"
+                        className="w-full truncate rounded px-2 py-1 text-left font-serif text-fg-dim hover:bg-muted hover:text-fg"
                         onMouseEnter={() => onFocusFlag(f)}
                         onMouseLeave={() => onFocusFlag(null)}
                         onClick={() => onFocusFlag(f)}
@@ -86,9 +86,9 @@ export function RedPenPanel({ text, onFocusFlag }: { text: string; onFocusFlag: 
 
 function Stat({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
-    <div className="rounded-lg border border-line p-2" title={hint}>
+    <div className="rounded-xl border border-line bg-surface p-2" title={hint}>
       <div className="text-lg">{value}</div>
-      <div className="text-[11px] uppercase tracking-wide text-paper-faint">{label}</div>
+      <div className="text-[11px] uppercase tracking-wide text-fg-faint">{label}</div>
     </div>
   );
 }

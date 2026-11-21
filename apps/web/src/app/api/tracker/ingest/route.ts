@@ -17,7 +17,7 @@ export const POST = api(async (req: NextRequest) => {
   const m = /^Bearer (hm_ext_[A-Za-z0-9_-]{20,100})$/.exec(auth);
   if (!m) throw new HttpError(401, "Missing or malformed token");
   const tokenHash = hashExtensionToken(m[1]);
-  rateLimit("ingest", tokenHash);
+  await rateLimit("ingest", tokenHash);
 
   const sb = supabaseAdmin();
   const { data: tok } = await sb.from("extension_tokens").select("id, user_id, revoked_at").eq("token_hash", tokenHash).maybeSingle();

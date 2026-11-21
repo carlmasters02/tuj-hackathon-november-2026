@@ -21,7 +21,7 @@ const Body = z.object({ label: z.string().trim().min(1).max(40).default("Chrome 
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const { label } = await parseJson(req, Body, 2_000);
   const admin = supabaseAdmin();
   const { count } = await admin.from("extension_tokens").select("id", { count: "exact", head: true }).eq("user_id", user.id).is("revoked_at", null);

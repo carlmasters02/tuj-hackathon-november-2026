@@ -18,7 +18,7 @@ const Patch = z.object({ published: z.boolean().optional(), title: z.string().tr
 export const PATCH = api(async (req: NextRequest, ctx: Ctx) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const id = UUID.parse((await ctx.params).id);
   await ownWork(id, user.id);
   const b = await parseJson(req, Patch, 5_000);

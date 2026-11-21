@@ -15,7 +15,7 @@ export const runtime = "nodejs";
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("upload", user.id);
+  await rateLimit("upload", user.id);
   const form = await req.formData();
   const file = form.get("file");
   if (!(file instanceof File)) throw new HttpError(400, "Attach a file");

@@ -20,7 +20,7 @@ import { addHumanTime, awardPoints } from "@/lib/server/points";
 export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: string }> }) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const id = UUID.parse((await ctx.params).id);
   const doc = await ownedDoc(id, user.id);
   const profile = await profileOf(user.id);

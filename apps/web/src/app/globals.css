@@ -1,57 +1,141 @@
 @import "tailwindcss";
+@import "@fontsource-variable/bricolage-grotesque";
 
+/*
+ * Humagination theme — taken from the logo:
+ *   navy  #1B2B5E (wordmark)      plum  #2B2142 (bulb outline)
+ *   sun   #FBCB3D (fingerprint)   flame #FF9F1C (light rays)
+ * on soft parchment. Text colours are ≥ 4.5:1 against both canvas and surface.
+ * Signature motif: the fingerprint inside the bulb — contour lines behind section headers and the
+ * "Human-made" seal on authentic work. Nowhere else.
+ */
 @theme {
-  --color-ink: #0e0e0d;
-  --color-ink-2: #161614;
-  --color-ink-3: #1f1f1c;
-  --color-line: #2c2b27;
-  --color-paper: #ece8df;
-  --color-paper-dim: #a8a397;
-  --color-paper-faint: #6f6b62;
-  --color-redpen: #e5533d;
-  --color-redpen-dim: #e5533d33;
-  --color-graphite: #8fa3b8;
-  --color-ok: #6fbf73;
-  --color-ok-dim: #6fbf7326;
-  --color-warn: #e0b04a;
-  --color-warn-dim: #e0b04a26;
+  /* surfaces */
+  --color-canvas: #f7f0e1; /* parchment page */
+  --color-surface: #fffbf2; /* cards, inputs */
+  --color-muted: #f1e7d2; /* hover / raised */
+  --color-line: #e5d8bc; /* borders */
+
+  /* text & brand */
+  --color-fg: #1b2b5e; /* navy: body text, headings, primary buttons */
+  --color-fg-dim: #48537a; /* secondary text (6.6:1) */
+  --color-fg-faint: #646985; /* captions (4.7:1) */
+  --color-navy-2: #26397a; /* primary hover */
+  --color-plum: #2b2142;
+  --color-sun: #fbcb3d;
+  --color-sun-soft: #fdf1c7;
+  --color-sun-dim: #fbcb3d4d;
+  --color-flame: #ff9f1c;
+
+  /* status */
+  --color-redpen: #c0392b; /* errors & the RedPen coach */
+  --color-redpen-dim: #c0392b1a;
+  --color-ok: #2a7247;
+  --color-ok-dim: #2a72471a;
+  --color-warn: #9a5a00;
+  --color-warn-dim: #ff9f1c26;
+
+  --font-sans: "Bricolage Grotesque Variable", ui-rounded, ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  /* long-form writing keeps a book serif: it reads like ink on paper */
   --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, ui-serif, serif;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --shadow-soft: 0 1px 2px rgb(27 43 94 / 0.05), 0 6px 20px -8px rgb(27 43 94 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(27 43 94 / 0.06), 0 14px 32px -12px rgb(27 43 94 / 0.22);
 }
 
-html { color-scheme: dark; }
-body { background: var(--color-ink); color: var(--color-paper); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
-::selection { background: var(--color-redpen-dim); }
+html {
+  color-scheme: light;
+}
+body {
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-canvas);
+  /* soft parchment: two warm glows plus a very faint paper grain */
+  background-image:
+    radial-gradient(1100px 520px at 8% -8%, #fffaf0 0%, transparent 60%),
+    radial-gradient(900px 480px at 105% 0%, rgb(253 241 199 / 0.7) 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .33 0 0 0 0 .18 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+::selection {
+  background: var(--color-sun-dim);
+}
+:focus-visible {
+  outline: 3px solid var(--color-sun);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 
 @layer components {
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-md border border-line bg-ink-3 px-3.5 py-2 text-sm font-medium text-paper transition hover:border-paper-faint disabled:cursor-not-allowed disabled:opacity-50; }
-  .btn-primary { @apply border-paper bg-paper text-ink hover:bg-white; }
-  .btn-danger { @apply border-redpen/60 bg-transparent text-redpen hover:bg-redpen-dim; }
-  .btn-ghost { @apply border-transparent bg-transparent hover:bg-ink-3; }
-  .input { @apply w-full rounded-md border border-line bg-ink-2 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-paper-dim focus:outline-none; }
-  .label { @apply mb-1.5 block text-xs font-medium tracking-wide text-paper-dim uppercase; }
-  .card { @apply rounded-xl border border-line bg-ink-2; }
-  .h-display { @apply font-serif text-4xl leading-tight tracking-tight sm:text-5xl; }
-  .h-page { @apply font-serif text-3xl tracking-tight; }
-  .muted { @apply text-paper-dim; }
-  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-0.5 text-xs text-paper-dim; }
-  .link { @apply underline decoration-paper-faint underline-offset-4 hover:decoration-paper; }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-surface px-4 py-2 text-sm font-semibold text-fg shadow-[var(--shadow-soft)] transition hover:-translate-y-px hover:border-fg-faint/60 active:translate-y-0 disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply border-fg bg-fg text-surface hover:border-navy-2 hover:bg-navy-2;
+  }
+  .btn-sun {
+    @apply border-sun bg-sun text-fg hover:border-flame hover:bg-[#fcc22a];
+  }
+  .btn-danger {
+    @apply border-redpen/40 bg-surface text-redpen shadow-none hover:bg-redpen-dim;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent shadow-none hover:bg-muted;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm text-fg placeholder:text-fg-faint focus:border-fg/40 focus:ring-4 focus:ring-sun/40 focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-bold tracking-wide text-fg-dim uppercase;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-[var(--shadow-soft)];
+  }
+  .card-hover {
+    @apply transition hover:-translate-y-0.5 hover:border-sun hover:shadow-[var(--shadow-lift)];
+  }
+  .h-display {
+    @apply text-4xl leading-[1.1] font-extrabold tracking-tight text-fg sm:text-5xl;
+  }
+  .h-page {
+    @apply text-3xl font-extrabold tracking-tight text-fg;
+  }
+  .muted {
+    @apply text-fg-dim;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-0.5 text-xs font-semibold text-fg-dim;
+  }
+  .chip-sun {
+    @apply border-sun bg-sun-soft text-fg;
+  }
+  .link {
+    @apply font-semibold underline decoration-sun decoration-2 underline-offset-4 hover:decoration-flame;
+  }
+  /* highlighter-pen accent used for a few happy words */
+  .hl {
+    background: linear-gradient(transparent 58%, var(--color-sun) 58%, var(--color-sun) 92%, transparent 92%);
+    padding: 0 0.1em;
+    box-decoration-break: clone;
+  }
 }
 
-/* TipTap editor */
-.hm-editor .ProseMirror { min-height: 60vh; outline: none; font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.75; }
+/* TipTap editor — prose sits on a cream sheet in a book serif */
+.hm-editor .ProseMirror { min-height: 60vh; outline: none; font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.8; color: var(--color-fg); }
 .hm-editor .ProseMirror p { margin: 0 0 0.9em; }
+.hm-editor .ProseMirror h1, .hm-editor .ProseMirror h2, .hm-editor .ProseMirror h3 { font-family: var(--font-sans); font-weight: 800; }
 .hm-editor .ProseMirror h1 { font-size: 1.9rem; margin: 0.6em 0 0.4em; }
 .hm-editor .ProseMirror h2 { font-size: 1.45rem; margin: 0.6em 0 0.4em; }
 .hm-editor .ProseMirror h3 { font-size: 1.2rem; margin: 0.6em 0 0.4em; }
 .hm-editor .ProseMirror ul { list-style: disc; padding-left: 1.4em; }
 .hm-editor .ProseMirror ol { list-style: decimal; padding-left: 1.4em; }
-.hm-editor .ProseMirror blockquote { border-left: 3px solid var(--color-line); padding-left: 1em; color: var(--color-paper-dim); }
-.hm-editor .ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--color-paper-faint); float: left; height: 0; pointer-events: none; }
-.hm-paste-external { background: var(--color-warn-dim); box-shadow: inset 0 -2px 0 var(--color-warn); }
+.hm-editor .ProseMirror blockquote { border-left: 4px solid var(--color-sun); padding-left: 1em; color: var(--color-fg-dim); }
+.hm-editor .ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--color-fg-faint); float: left; height: 0; pointer-events: none; }
+.hm-paste-external { background: var(--color-warn-dim); box-shadow: inset 0 -2px 0 var(--color-flame); }
 .hm-redpen-mark { text-decoration: underline wavy var(--color-redpen); text-underline-offset: 4px; }
-.hm-redpen-focus { background: var(--color-redpen-dim); }
+.hm-redpen-focus { background: var(--color-redpen-dim); box-shadow: inset 0 -2px 0 var(--color-redpen); }
 
 /* Protected media: deterrents only (documented as such) */
 .hm-protected { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
@@ -59,3 +143,21 @@ body { background: var(--color-ink); color: var(--color-paper); font-family: var
 
 .cm-editor { font-size: 14px; }
 .katex { font-size: 1.1em; }
+
+/* page header with faint fingerprint contours */
+.hm-hero { position: relative; isolation: isolate; }
+.hm-hero > .hm-whorl { position: absolute; z-index: -1; right: -2rem; top: -3rem; width: min(26rem, 70vw); color: var(--color-fg); opacity: 0.07; pointer-events: none; }
+
+/* index rows used by hub pages */
+.hm-index-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.5rem 2rem; align-items: center; padding: 1.5rem 0.25rem; border-top: 1px solid var(--color-line); text-decoration: none; transition: background-color .2s ease, padding .2s ease; }
+.hm-index-row:last-child { border-bottom: 1px solid var(--color-line); }
+.hm-index-row:hover, .hm-index-row:focus-visible { background: linear-gradient(90deg, var(--color-sun-soft), transparent 70%); padding-left: 1rem; }
+.hm-index-row .hm-index-title { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 750; letter-spacing: -0.03em; line-height: 1; font-stretch: 85%; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* menus answer the click/hover that opened them */
+@keyframes hm-pop { from { opacity: 0; transform: translateY(-4px) scale(0.985); } to { opacity: 1; transform: none; } }
+.hm-pop { animation: hm-pop 140ms cubic-bezier(.2,.8,.2,1); transform-origin: top center; }

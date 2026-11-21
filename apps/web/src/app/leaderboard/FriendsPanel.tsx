@@ -19,19 +19,19 @@ export function FriendsPanel({ links }: { me: string; links: { other: string; in
   };
   return (
     <section className="card space-y-3 p-5">
-      <h2 className="font-serif text-lg">Friends</h2>
-      <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (name) void act(name.toLowerCase(), "invite"); }}>
+      <h2 className="text-lg font-extrabold">Friends</h2>
+      <form method="post" className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (name) void act(name.toLowerCase(), "invite"); }}>
         <input className="input" placeholder="username" value={name} onChange={(e) => setName(e.target.value)} maxLength={20} />
         <button className="btn">Invite</button>
       </form>
-      {msg && <p className="text-xs text-paper-dim">{msg}</p>}
+      {msg && <p className="text-xs text-fg-dim">{msg}</p>}
       <ul className="divide-y divide-line text-sm">
         {links.map((l) => (
           <li key={l.other + l.incoming} className="flex items-center justify-between py-2">
-            <span>@{l.other} <span className="text-xs text-paper-faint">{l.status === "accepted" ? "friend" : l.incoming ? "invited you" : "invite pending"}</span></span>
+            <span>@{l.other} <span className="text-xs text-fg-faint">{l.status === "accepted" ? "friend" : l.incoming ? "invited you" : "invite pending"}</span></span>
             <span className="flex gap-2">
               {l.status === "pending" && l.incoming && <button className="btn py-1" onClick={() => act(l.other, "accept")}>Accept</button>}
-              <button className="btn btn-ghost py-1 text-paper-faint" onClick={() => act(l.other, "remove")}>Remove</button>
+              <button className="btn btn-ghost py-1 text-fg-faint" onClick={() => act(l.other, "remove")}>Remove</button>
             </span>
           </li>
         ))}

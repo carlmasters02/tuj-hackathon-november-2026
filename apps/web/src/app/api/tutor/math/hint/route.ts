@@ -12,7 +12,7 @@ const Body = z.object({ problemId: z.string().regex(/^[a-z0-9-]{1,40}$/), lines:
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const body = await parseJson(req, Body, 20_000);
   const problem = getMathProblem(body.problemId);
   if (!problem) throw new HttpError(404, "Unknown problem");

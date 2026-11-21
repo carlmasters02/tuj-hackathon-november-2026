@@ -6,7 +6,7 @@ import { HttpError, rateLimit } from "../http";
 const inflight = new ConcurrencyLimiter(5);
 
 export async function withRunSlot<T>(userId: string, cost: number, fn: () => Promise<T>): Promise<T> {
-  for (let i = 0; i < cost; i++) rateLimit("codeRun", userId);
+  for (let i = 0; i < cost; i++) await rateLimit("codeRun", userId);
   if (!inflight.acquire(userId)) throw new HttpError(429, "You already have 5 runs in progress — wait for them to finish.");
   try {
     return await fn();
