@@ -11,6 +11,8 @@ import ArtworkComments, { type CommentView } from "@/components/gallery/ArtworkC
 import { HumanSeal } from "@/components/HumanSeal";
 import { ScorePlayer } from "@/components/studio/ScorePlayer";
 import { MIN_EFFORT } from "@hm/shared/creation";
+import { publishedDocForDisplay } from "@/lib/server/publishedDoc";
+import { WritingDocument } from "@/components/portfolio/WritingDocument";
 
 /** Plain-language reason a recorded piece didn't earn the seal. */
 function whyNotSealed(kind: string, s: Record<string, unknown> | undefined): string {
@@ -48,7 +50,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
     sb.from("likes").select("user_id", { count: "exact", head: true }).eq("work_id", id),
     sb.from("likes").select("user_id").eq("work_id", id).eq("user_id", user.id).maybeSingle(),
     sb.from("comments").select("id, author_id, body, created_at").eq("work_id", id).order("created_at", { ascending: true }).limit(200),
-    w.cert_id ? sb.from("certificates").select("id, kind, verdict, payload, events_json").eq("id", w.cert_id).maybeSingle() : Promise.resolve({ data: null }),
+    w.cert_id ? sb.from("certificates").select("id, kind, verdict, payload, events_json, doc_json").eq("id", w.cert_id).maybeSingle() : Promise.resolve({ data: null }),
   ]);
   const authorIds = [...new Set((commentRows.data ?? []).map((c) => c.author_id))];
   const { data: authors } = authorIds.length ? await sb.from("profiles").select("id, username").in("id", authorIds) : { data: [] };
@@ -62,6 +64,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
 
   let writing: string | null = null;
   if (w.kind === "writing" && c) writing = replay((c.events_json as StoredBatch[]).flatMap((b) => b.events));
+  const publishedWriting = writing !== null && c ? publishedDocForDisplay(c.doc_json, writing) : null;
   const stamp = `@${viewer?.username ?? "viewer"} ${new Date().toISOString().slice(0, 10)}`;
 
   return (
@@ -85,7 +88,11 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               <div aria-hidden className="pointer-events-none absolute inset-0 flex flex-wrap content-start gap-x-16 gap-y-12 p-4 text-xs opacity-[0.05]" style={{ transform: "rotate(-20deg) scale(1.4)" }}>
                 {Array.from({ length: 120 }, (_, i) => <span key={i}>{stamp}</span>)}
               </div>
-              <div className="relative mx-auto max-w-[66ch] whitespace-pre-wrap font-serif text-[1.2rem] leading-[1.85]">{writing}</div>
+              {publishedWriting ? (
+                <WritingDocument doc={publishedWriting} />
+              ) : (
+                <div className="relative mx-auto max-w-[66ch] whitespace-pre-wrap font-serif text-[1.2rem] leading-[1.85]">{writing}</div>
+              )}
             </article>
           )}
         </div>

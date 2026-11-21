@@ -2,6 +2,8 @@
 
 You are picking up an in-progress project from another coding agent. This file is everything you need: what the app is, the owner's standing rules, exactly where the work stopped, and what to build next with the decisions already made. Read it fully before changing anything. `README.md` (features, security model) and `DECISIONS.md` (why things are the way they are) have the long-form detail.
 
+> **Writer completion update (local, 2026-11-21):** `main` was merged into `feature/writer-v2` before this continuation. All Writer items below are now implemented: formatting-only saves without fake events, ordered metadata saves, explicit-break print/screen pagination, multi-page references, sanitized/frozen `doc_json` finalization, rich work-page publishing with legacy fallback, DOCX/archive coverage, settings/history/rich-publication live E2E coverage, and docs. Browser QA passed at 1440px and 390px, plus real six-page A4 PDF and LibreOffice DOCX checks. The full local E2E journey passed 69/69, including stale-formatting conflict rejection; lint/typecheck, 232 unit/integration tests and the final production build pass; production smoke checks passed. Only the requested git commit/merge/push and final live-site verification remain. The rest of this file is the original handoff, preserved for design context. Start Phase 2 (Art) only after release verification; do not repeat the completed Writer work.
+
 ---
 
 ## 1. Where things stand right now

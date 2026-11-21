@@ -152,6 +152,7 @@ function LinkPop({ editor, active }: { editor: Editor; active: boolean }) {
             setErr("");
             close();
           }}
+          method="post"
           className="space-y-2"
         >
           <label className="block text-xs font-semibold text-fg-dim" htmlFor="hm-link">Link address</label>

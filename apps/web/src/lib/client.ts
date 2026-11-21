@@ -11,8 +11,8 @@ async function handle<T>(res: Response): Promise<T> {
   return data as T;
 }
 
-export async function postJson<T = any>(url: string, body: unknown, method = "POST"): Promise<T> {
-  return handle<T>(await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), credentials: "same-origin" }));
+export async function postJson<T = any>(url: string, body: unknown, method = "POST", keepalive = false): Promise<T> {
+  return handle<T>(await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), credentials: "same-origin", keepalive }));
 }
 
 export async function getJson<T = any>(url: string): Promise<T> {

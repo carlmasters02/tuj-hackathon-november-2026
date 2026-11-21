@@ -7,8 +7,8 @@ import { api, assertSameOrigin, HttpError, json, rateLimit, UUID } from "@/lib/h
 import { profileOf, requireUser } from "@/lib/auth";
 import { keyBytes } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { dec, ownedDoc } from "@/lib/server/docs";
-import { contentToText } from "@/lib/server/pm";
+import { dec, docMeta, ownedDoc } from "@/lib/server/docs";
+import { preparePublishedDoc } from "@/lib/server/publishedDoc";
 import { loadBatches } from "@/lib/server/certs";
 import { addHumanTime, awardPoints } from "@/lib/server/points";
 
@@ -38,9 +38,13 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
     throw e;
   }
   const storedText = dec(id, "text", doc.text_enc);
-  const contentText = contentToText(JSON.parse(dec(id, "content", doc.content_enc)));
+  const content = JSON.parse(dec(id, "content", doc.content_enc));
+  const prepared = preparePublishedDoc(content, docMeta(doc));
+  // Rich publication must describe exactly the same text as the signed replay. Refuse a
+  // snapshot mismatch rather than issuing a certificate whose two representations disagree.
+  if (prepared.text !== replayed.text) throw new HttpError(409, "Formatted content and the event log disagree. Reload the document before finalizing.");
   const hash = contentHash(replayed.text);
-  const integrityOk = chain.ok && chain.head === doc.head_hash && hash === contentHash(storedText) && hash === contentHash(contentText);
+  const integrityOk = chain.ok && chain.head === doc.head_hash && hash === contentHash(storedText) && hash === contentHash(prepared.text);
   if (!integrityOk) replayed.stats.flags.unshift("Integrity check failed: the log does not reproduce the saved document");
   if (replayed.stats.finalWords < 1) throw new HttpError(400, "The document is empty.");
 
@@ -71,6 +75,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
     signature: signed.signature,
     public_key: signed.publicKey,
     events_json: batches,
+    doc_json: prepared.snapshot,
   });
   if (error) throw error;
 

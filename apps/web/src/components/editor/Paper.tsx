@@ -1,5 +1,5 @@
 "use client";
-import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { FONTS, MARGINS, PAGE_SIZES, type Setup } from "@hm/shared/docMeta";
 import { listHeading, reference, sortedSources, type CitationStyle, type Source } from "@hm/shared/citations";
 import type { PageGeometry } from "./clientExtensions";
@@ -22,16 +22,18 @@ const surname = (author: string) => author.trim().split(/\s+/).pop() ?? "";
  * title page, and a References / Works Cited page generated from the document's sources.
  */
 export function Paper({
-  setup, title, pages, sources, style, zoom, children, onFirstOffset,
+  setup, title, pages, sources, style, zoom, children, onFirstOffset, onReferencePages,
 }: {
-  setup: Setup; title: string; pages: number; sources: Source[]; style: CitationStyle; zoom: number; children: ReactNode; onFirstOffset: (px: number) => void;
+  setup: Setup; title: string; pages: number; sources: Source[]; style: CitationStyle; zoom: number; children: ReactNode; onFirstOffset: (px: number) => void; onReferencePages: (pages: number) => void;
 }) {
-  const { w, h, m } = geometry(setup);
   const apaTitle = setup.template === "apa";
   const lead = apaTitle ? 1 : 0; // the APA title page comes first
   const refs = sources.length > 0;
-  const total = lead + pages + (refs ? 1 : 0);
   const head = useRef<HTMLDivElement>(null);
+  const refsElement = useRef<HTMLDivElement>(null);
+  const [referencePages, setReferencePages] = useState(1);
+  const total = lead + pages + (refs ? referencePages : 0);
+  const { w, h, m } = geometry(setup);
   const fontPx = (setup.fontSize * 4) / 3;
 
   useLayoutEffect(() => {
@@ -42,6 +44,26 @@ export function Paper({
     onFirstOffset(el.offsetHeight);
     return () => ro.disconnect();
   }, [setup.template, setup.author, setup.instructor, setup.course, setup.date, title, onFirstOffset]);
+
+  useLayoutEffect(() => {
+    if (!refs) {
+      setReferencePages(1);
+      onReferencePages(1);
+      return;
+    }
+    const el = refsElement.current;
+    if (!el) return;
+    const measure = () => {
+      // Long bibliographies need real sheets too; their content is outside the body plugin.
+      const next = Math.max(1, Math.ceil((el.offsetHeight - 1) / h));
+      setReferencePages(next);
+      onReferencePages(next);
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    measure();
+    return () => ro.disconnect();
+  }, [refs, h, sources, style, onReferencePages]);
 
   const runningHead = (n: number) => {
     if (!setup.pageNumbers) return null;
@@ -105,7 +127,7 @@ export function Paper({
         </div>
 
         {refs && (
-          <div className="hm-refs-sheet hm-doc" style={{ top: sheetTop(lead + pages), minHeight: h, padding: m }}>
+          <div ref={refsElement} className="hm-refs-sheet hm-doc" style={{ top: sheetTop(lead + pages), minHeight: h, padding: m }}>
             <p className={`hm-refs-title ${style === "apa" ? "font-bold" : ""}`}>{listHeading(style)}</p>
             {sortedSources(sources).map((src) => (
               <p key={src.id} className="hm-ref">

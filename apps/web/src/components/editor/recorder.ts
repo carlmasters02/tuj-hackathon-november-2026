@@ -2,6 +2,7 @@ import type { Transaction } from "@tiptap/pm/state";
 import type { Node as PMNode } from "@tiptap/pm/model";
 import { chainHead, diffRange, genesisHash, pmDocToText, type DocEvent } from "@hm/shared/provenance/index";
 import { APP_EDIT_MAX_CHARS } from "@hm/shared/provenance/types";
+import { contentFingerprint } from "@hm/shared/contentFingerprint";
 
 /** Transaction meta for edits the app makes on the writer's behalf (Find & Replace). */
 export const APP_EDIT = "hmAppEdit";
@@ -18,7 +19,11 @@ export class ProvenanceRecorder {
   private queue: DocEvent[] = [];
   private nextSeq: number;
   private confirmedHead: string;
+  private confirmedContentHash: string;
   private inflight = false;
+  private flushKeepalive = false;
+  private contentDirty = false;
+  private contentVersion = 0;
   private timer: ReturnType<typeof setInterval> | null = null;
   /** the text as of the last recorded event; every new event is diffed against this */
   private lastText: string;
@@ -36,6 +41,7 @@ export class ProvenanceRecorder {
     this.lastText = initialText;
     this.nextSeq = lastSeq + 1;
     this.confirmedHead = headHash ?? genesisHash(docId, this.sessionId);
+    this.confirmedContentHash = contentFingerprint(this.getContent());
   }
 
   private now() {
@@ -57,6 +63,13 @@ export class ProvenanceRecorder {
    * missed and the log can't drift from the content.
    */
   record(tr: Transaction, docAfter: PMNode = tr.doc): { externalPaste: boolean; text: string } {
+    // Formatting and atom-only changes still need a content save, but they must not create
+    // pretend typing events. Versions distinguish edits made while a request is in flight.
+    if (tr.docChanged) {
+      this.contentDirty = true;
+      this.contentVersion++;
+      if (this.status === "saved") this.setStatus("idle");
+    }
     const before = this.lastText;
     const after = pmDocToText(docAfter);
     if (after === before) return { externalPaste: false, text: after };
@@ -96,11 +109,26 @@ export class ProvenanceRecorder {
     return this.queue.length;
   }
 
+  private get needsFlush() {
+    return this.queue.length > 0 || this.contentDirty;
+  }
+
   async flush(keepalive = false): Promise<boolean> {
-    if (this.inflight || this.status === "conflict" || this.queue.length === 0) return this.queue.length === 0;
+    if (this.status === "conflict") return false;
+    if (!this.needsFlush) return true;
+    if (this.inflight) {
+      // A page can unload while an earlier save is running. Queue one final keepalive save
+      // rather than silently dropping edits that arrived after that request's snapshot.
+      if (keepalive) this.flushKeepalive = true;
+      return false;
+    }
     this.inflight = true;
-    // the whole queue: the content we send describes the state after its last event
+    // The whole queue: this content snapshot describes the state after its last event. An
+    // empty event list is a formatting-only save and leaves the provenance chain unchanged.
     const events = this.queue.slice();
+    const content = this.getContent();
+    const contentVersion = this.contentVersion;
+    const baseContentHash = this.confirmedContentHash;
     const headHash = chainHead(this.confirmedHead, events);
     this.setStatus("saving");
     try {
@@ -109,7 +137,7 @@ export class ProvenanceRecorder {
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
         keepalive,
-        body: JSON.stringify({ sessionId: this.sessionId, events, headHash, content: this.getContent() }),
+        body: JSON.stringify({ sessionId: this.sessionId, events, headHash, content, baseContentHash }),
       });
       if (res.status === 409 || res.status === 400 || res.status === 404) {
         const data = await res.json().catch(() => ({}));
@@ -118,24 +146,30 @@ export class ProvenanceRecorder {
       }
       if (!res.ok) throw new Error(String(res.status));
       this.confirmedHead = headHash;
+      this.confirmedContentHash = contentFingerprint(content);
       this.queue = this.queue.slice(events.length);
-      this.setStatus(this.queue.length ? "saving" : "saved");
+      if (this.contentVersion === contentVersion) this.contentDirty = false;
+      this.setStatus(this.needsFlush ? "saving" : "saved");
       return true;
     } catch {
       this.setStatus("offline");
       return false;
     } finally {
       this.inflight = false;
+      if (this.flushKeepalive) {
+        this.flushKeepalive = false;
+        if (this.needsFlush) void this.flush(true);
+      }
     }
   }
 
-  /** Flushes everything (used before Finalize). */
+  /** Flushes all text events and content-only changes (used before Finalize). */
   async drain(): Promise<boolean> {
-    for (let i = 0; i < 50 && this.queue.length; i++) {
+    for (let i = 0; i < 50 && this.needsFlush; i++) {
       if (this.inflight) await new Promise((r) => setTimeout(r, 100));
       else if (!(await this.flush())) return false;
     }
-    return this.queue.length === 0;
+    return !this.needsFlush;
   }
 
   private setStatus(s: RecorderStatus, err: string | null = null) {

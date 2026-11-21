@@ -59,6 +59,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
   const [tab, setTab] = useState<Tab>("coach");
   const [find, setFind] = useState<null | { replace: boolean }>(null);
   const [pages, setPages] = useState(1);
+  const [referencePages, setReferencePages] = useState(1);
   const [zoom, setZoom] = useState<"fit" | number>("fit");
   const [fitZoom, setFitZoom] = useState(1);
   const [focusComment, setFocusComment] = useState<string | null>(null);
@@ -112,16 +113,6 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
     onBlur: () => recorder.current?.focus("blur"),
   });
 
-  useEffect(() => {
-    const onHide = () => void recorder.current?.flush(true);
-    window.addEventListener("pagehide", onHide);
-    return () => {
-      window.removeEventListener("pagehide", onHide);
-      recorder.current?.stop();
-      void recorder.current?.flush(true);
-    };
-  }, []);
-
   // fit the page to the desk width
   useEffect(() => {
     const el = deskRef.current;
@@ -132,26 +123,69 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
   }, [geo.w]);
   const z = zoom === "fit" ? fitZoom : zoom;
 
-  // settings: keep citations live, re-measure pages, and save (debounced)
+  // Settings are versioned so responses can never arrive out of order and overwrite newer
+  // choices. One shared promise also lets Finalize await a PATCH that is already in flight.
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const metaRef = useRef(initialMeta);
+  const metaVersion = useRef(0);
+  const metaSavedVersion = useRef(0);
+  const metaSavePromise = useRef<Promise<boolean> | null>(null);
+  const metaKeepalive = useRef(false);
+  const flushMeta = useCallback((keepalive = false): Promise<boolean> => {
+    if (keepalive) metaKeepalive.current = true;
+    if (metaSavePromise.current) return metaSavePromise.current;
+    if (metaSavedVersion.current >= metaVersion.current) return Promise.resolve(true);
+    const run = (async () => {
+      try {
+        while (metaSavedVersion.current < metaVersion.current) {
+          const version = metaVersion.current;
+          const snapshot = metaRef.current;
+          setMetaSave("saving");
+          await postJson(`/api/docs/${docId}`, { meta: snapshot }, "PATCH", keepalive || metaKeepalive.current);
+          metaSavedVersion.current = version;
+        }
+        setMetaSave("saved");
+        return true;
+      } catch {
+        setMetaSave("error");
+        return false;
+      } finally {
+        metaSavePromise.current = null;
+      }
+    })();
+    metaSavePromise.current = run;
+    return run;
+  }, [docId]);
   const setMeta = useCallback(
     (m: DocMeta) => {
       setMetaState(m);
+      metaRef.current = m;
+      metaVersion.current++;
       if (editor) setLiveMeta(editor as any, { sources: m.sources, style: m.citationStyle });
       setMetaSave("saving");
       if (saveTimer.current) clearTimeout(saveTimer.current);
-      saveTimer.current = setTimeout(async () => {
+      saveTimer.current = setTimeout(() => {
         saveTimer.current = null;
-        try {
-          await postJson(`/api/docs/${docId}`, { meta: m }, "PATCH");
-          setMetaSave("saved");
-        } catch {
-          setMetaSave("error");
-        }
+        void flushMeta();
       }, 700);
     },
-    [docId, editor],
+    [editor, flushMeta],
   );
+
+  useEffect(() => {
+    const onHide = () => {
+      void recorder.current?.flush(true);
+      void flushMeta(true);
+    };
+    window.addEventListener("pagehide", onHide);
+    return () => {
+      window.removeEventListener("pagehide", onHide);
+      recorder.current?.stop();
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      void recorder.current?.flush(true);
+      void flushMeta(true);
+    };
+  }, [flushMeta]);
   const setupKey = JSON.stringify(meta.setup);
   useEffect(() => {
     if (editor) requestAnimationFrame(() => relayout(editor as any));
@@ -189,8 +223,8 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
       if (saveTimer.current) {
         clearTimeout(saveTimer.current);
         saveTimer.current = null;
-        await postJson(`/api/docs/${docId}`, { meta }, "PATCH");
       }
+      if (!(await flushMeta())) throw new Error("Couldn't save the latest settings — check your connection.");
       const drained = await recorder.current.drain();
       if (!drained) throw new Error(recorder.current.error ?? "Couldn't save the latest edits — check your connection.");
       const r = await postJson<{ certId: string }>(`/api/docs/${docId}/finalize`, {});
@@ -232,7 +266,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
 
   const words = countWords(text);
   const openComments = meta.comments.filter((c) => !c.resolved).length;
-  const totalPages = pages + (meta.setup.template === "apa" ? 1 : 0) + (meta.sources.length ? 1 : 0);
+  const totalPages = pages + (meta.setup.template === "apa" ? 1 : 0) + (meta.sources.length ? referencePages : 0);
   const TABS: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
     { id: "coach", label: genre === "free" ? "RedPen" : "Coach", icon: <Sparkles className="h-4 w-4" /> },
     { id: "page", label: "Page", icon: <Settings2 className="h-4 w-4" /> },
@@ -245,7 +279,9 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
   return (
     <div className="hm-writer space-y-3">
       <div className="flex flex-wrap items-end gap-3 print:hidden">
-        <TitleField value={title} onChange={setTitle} onBlur={saveTitle} maxLength={200} inputRef={titleRef} />
+        <div className="w-full min-w-0 sm:w-auto sm:flex-1">
+          <TitleField value={title} onChange={setTitle} onBlur={saveTitle} maxLength={200} inputRef={titleRef} />
+        </div>
         <div className="flex items-center gap-2">
           <button type="button" className="btn h-[3.4rem] px-3" onClick={download} title="Download as a Word document"><Download className="h-4 w-4" />Word</button>
           <button type="button" className="btn h-[3.4rem] px-3" onClick={() => window.print()} title="Print, or save as PDF"><Printer className="h-4 w-4" />PDF</button>
@@ -269,7 +305,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
             />
           )}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="mr-auto text-sm text-fg-dim">This publishes the text and its replay at a public link. Comments stay private.</span>
+            <span className="mr-auto text-sm text-fg-dim">This publishes the formatted text, citation sources, page setup and replay at a public link. Comments stay private.</span>
             <button className="btn btn-ghost" onClick={() => setConfirmFinalize(false)} disabled={finalizing}>Cancel</button>
             <button className="btn btn-primary" disabled={finalizing} onClick={finalize}>{finalizing ? "Verifying…" : isDefaultTitle(title) ? "Publish anyway" : "Confirm"}</button>
           </div>
@@ -293,7 +329,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="min-w-0">
           <div ref={deskRef} className="hm-desk-wrap rounded-3xl border border-line">
-            <Paper setup={meta.setup} title={title} pages={pages} sources={meta.sources} style={meta.citationStyle} zoom={z} onFirstOffset={onFirstOffset}>
+            <Paper setup={meta.setup} title={title} pages={pages} sources={meta.sources} style={meta.citationStyle} zoom={z} onFirstOffset={onFirstOffset} onReferencePages={setReferencePages}>
               <EditorContent editor={editor} />
             </Paper>
           </div>

@@ -11,7 +11,7 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 
 ## Theme & brand
 - **Light theme only, derived from the logo:** parchment, navy, sun and flame. Theme tokens have semantic names (`canvas`, `surface`, `muted`, `fg`, `fg-dim`, `fg-faint`) so they still read correctly if a dark variant is added later.
-- **Nunito comes from `@fontsource-variable/nunito`** (npm), because the CSP's `font-src 'self'` rules out Google Fonts. Long-form writing keeps a system book serif.
+- **Bricolage Grotesque comes from `@fontsource-variable/bricolage-grotesque`** (npm), because the CSP's `font-src 'self'` rules out Google Fonts. Long-form writing keeps a system book serif or the document's chosen font.
 - **Logo transparency:** the source logo has an opaque white background. `scripts/brand-assets.mjs` converts white to alpha with colour unmixing, so anti-aliased edges don't leave a white halo on parchment.
 - **App icons:**
   - iPhone needs an opaque icon, so the bulb sits on parchment.
@@ -93,7 +93,13 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
   - Typing over 120 wpm is measured over the best **60-second window**, at 5 characters per word.
   - "Possible transcription" means ≥ 150 words with a revision ratio < 0.02.
   - Timing is inconsistent if the client claims more than 15 s beyond the server's elapsed time, if one batch spans more than 90 s, or if more than 10 % of characters arrive in batches delayed over 120 s.
-- **Finalizing publishes** the text and its log, which the replay needs. The UI says so before you confirm. Documents stay editable after finalizing, and each finalize creates a new certificate.
+- **Finalizing publishes** the formatted text, frozen citation sources and page setup, plus the text log the replay needs. The UI says so before you confirm. Documents stay editable after finalizing, and each finalize creates a new certificate; metadata is then frozen so a certificate's settings can't drift.
+- **Formatting-only saves are not provenance events.** Bold, citations, page breaks and empty structures can change TipTap JSON without changing projected text. The same events endpoint accepts an empty batch for these saves, requires the current chain head and exact server-text projection, and updates content without appending an event or changing `last_seq`. A canonical-content fingerprint and ciphertext compare-and-swap reject stale text or formatting edits from another tab; a batch inserted before a losing CAS is rolled back. Finalization drains both pending events and content snapshots.
+- **Find & Replace uses `src: "app"`.** Each replacement is capped at 200 characters, cannot be marked as typed or as a paste, and contributes to authenticity as app-inserted rather than hand-typed text.
+- **Metadata saves are serialized by revision.** A slower response can't overwrite newer page settings or sources, and finalization awaits the latest revision before making its snapshot.
+- **`certificates.doc_json` is a public publication snapshot, not a new signed-payload version.** It contains canonical schema-valid content, setup, style and sources only. Comment marks/metadata and the draft word goal are excluded; citation labels are frozen. Its plain-text projection must exactly equal the signed replay both at issuance and when selected for rich display. The v1 signature and plain-text content hash remain compatible, and old or invalid snapshots fall back to replayed text. Formatting and metadata are issuance-time state, not reconstructed keystroke evidence.
+- **Rich publishing is scoped to the work page.** The writing feed has no body excerpt, so it stays as compact metadata rather than rendering and watermarking whole documents per row. Rich HTML is generated on the server with the shared safe schema inside the existing viewer watermark.
+- **Writer pagination is presentation only.** Spacer decorations never enter content or provenance. Explicit breaks account for their own DOM height and print via the actual break node; multi-page References are measured separately. On-screen pagination is approximate; print and DOCX use their real page engines.
 - **Writing time** is credited once per second written (`documents.credited_seconds`), and only for verdicts other than Unverified.
 
 ## StepCheck

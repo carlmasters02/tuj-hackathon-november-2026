@@ -206,7 +206,10 @@ body {
 .hm-page-break { height: 0; border-top: 1px dashed #c9c2b0; margin: 0.4em 0; }
 .hm-citation { color: #1b2b5e; background: #eef2fb; border-radius: 3px; padding: 0 2px; cursor: default; }
 .hm-citation-missing { color: var(--color-redpen); background: var(--color-redpen-dim); }
-.hm-doc .ProseMirror { counter-reset: fnref; }
+.hm-doc .ProseMirror, .hm-published-body { counter-reset: fnref; }
+.hm-published[data-template="mla"] .hm-published-body p,
+.hm-published[data-template="apa"] .hm-published-body p { margin: 0; text-indent: 0.5in; }
+.hm-published input[type="checkbox"] { pointer-events: none; }
 .hm-fn-ref { counter-increment: fnref; font-size: 0.7em; vertical-align: super; line-height: 0; color: #1f4e9a; }
 .hm-fn-ref::after { content: counter(fnref); }
 .hm-footnotes { counter-reset: fn; border-top: 1px solid #c9c2b0; margin-top: 1.2em; padding-top: 0.6em; font-size: 0.9em; }
@@ -220,14 +223,16 @@ body {
 
 @media print {
   body { background: #fff !important; }
+  .hm-app-main:has(.hm-writer) { max-width: none !important; padding: 0 !important; }
+  .hm-writer-route { width: auto !important; margin-left: 0 !important; }
   .hm-desk-wrap { background: none; border: 0; overflow: visible; }
   .hm-desk { padding: 0; display: block; height: auto !important; }
   .hm-paper { transform: none !important; width: auto !important; height: auto !important; }
-  .hm-sheet, .hm-page-gap, .hm-page-break { display: none !important; }
+  .hm-sheet, .hm-page-gap { display: none !important; }
   .hm-page-content { padding: 0 !important; }
   .hm-title-sheet { position: static; height: auto !important; padding: 0 !important; break-after: page; }
   .hm-refs-sheet { position: static; min-height: 0 !important; padding: 0 !important; break-before: page; }
-  [data-type="page-break"] + * { break-before: page; }
+  .hm-page-break { display: block !important; height: 0 !important; margin: 0 !important; border: 0 !important; break-after: page; }
   .hm-comment { background: none; border: 0; }
   .hm-citation { background: none; color: inherit; }
 }

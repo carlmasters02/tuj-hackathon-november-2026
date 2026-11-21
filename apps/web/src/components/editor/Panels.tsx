@@ -212,7 +212,7 @@ export function CommentsPanel({ editor, meta, setMeta, focusId }: { editor: Edit
 // ── Outline ───────────────────────────────────────────────────────────────
 export function OutlinePanel({ editor }: { editor: Editor }) {
   const heads: { level: number; text: string; pos: number }[] = [];
-  editor.state.doc.forEach((n, pos) => {
+  editor.state.doc.descendants((n, pos) => {
     if (n.type.name === "heading" && n.textContent.trim()) heads.push({ level: n.attrs.level, text: n.textContent, pos });
   });
   if (!heads.length) return <p className="text-sm text-fg-dim">Headings you add (Title, Heading 1–3 in the style menu) appear here so you can jump between sections.</p>;

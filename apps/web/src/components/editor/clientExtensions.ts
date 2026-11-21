@@ -79,20 +79,22 @@ export const Pagination = Extension.create<{ geometry: () => PageGeometry; first
       const g = opts.geometry();
       const gaps: { pos: number; h: number }[] = [];
       let used = opts.firstPageOffset();
-      let force = false;
       view.state.doc.forEach((node, offset) => {
-        if (node.type.name === "pageBreak") {
-          force = true;
-          return;
-        }
         const dom = view.nodeDOM(offset) as HTMLElement | null;
         if (!dom || !(dom instanceof HTMLElement)) return;
         const cs = getComputedStyle(dom);
         const h = dom.offsetHeight + parseFloat(cs.marginTop || "0") + parseFloat(cs.marginBottom || "0");
-        if (force || (used > 0 && used + h > g.contentH)) {
+        if (node.type.name === "pageBreak") {
+          // Put the spacer after the break node itself. Its border/margins therefore cannot
+          // push the next page down, and consecutive explicit breaks create consecutive pages.
+          used += h;
+          gaps.push({ pos: offset + node.nodeSize, h: Math.max(0, g.contentH - used) + g.marginBottom + g.gap + g.marginTop });
+          used = 0;
+          return;
+        }
+        if (used > 0 && used + h > g.contentH) {
           gaps.push({ pos: offset, h: Math.max(0, g.contentH - used) + g.marginBottom + g.gap + g.marginTop });
           used = 0;
-          force = false;
         }
         used += h;
         while (used > g.contentH) used -= g.contentH; // a block taller than a page runs on

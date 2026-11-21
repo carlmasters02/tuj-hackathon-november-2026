@@ -85,6 +85,10 @@ Flags passive voice, filler and weasel words, hedges and intensifiers, sentences
 5. The server signs a certificate with **Ed25519**. Its public page shows the verdict and statistics, re-checks the signature, chain and replay on every load, and includes a **replay player** (1×, 5×, 20×) that re-types the document. Pastes flash amber.
 6. `/verify` lets anyone check pasted certificate JSON plus text **entirely in their browser**.
 
+**Word-style writer.** The editor has page sheets with zoom, Letter/A4 sizes, margins, page numbers, MLA 9 and APA 7 templates, font/size/spacing controls, tables, checklists, links, headers, block quotes, find & replace, an outline and a version-history slider. Citation sources produce APA or MLA in-text labels and a sorted References / Works Cited section. Comments are private, while footnotes appear in an on-screen Notes section. Word export includes real footnotes, tables, references, headers/footers and page numbers; Print / Save as PDF uses the chosen page setup.
+
+Formatting-only changes are saved without inventing typing events: their content must still project to the exact replayed server text. Finalization also preserves a sanitized rich-document snapshot with frozen citation labels, page setup and sources. Comment marks and private metadata are removed, and the snapshot's plain-text projection must equal the signed replay. Published writing renders that snapshot inside the viewer watermark; older certificates retain their plain-text replay.
+
 ### 5. Reliance Tracker — Chrome extension (`apps/extension`) + dashboard (`/dashboard`)
 - Counts **active** time only: an AI site's tab is focused, its window is focused, and the user isn't idle. The extension tracks 13 sites (ChatGPT, Claude, Gemini, Copilot, Perplexity…) plus any custom domains you add.
 - **Privacy:** it stores and sends only `{date, domain, seconds}`. It never sees URLs, page content, prompts or keystrokes. The popup shows the exact JSON it will send.
@@ -135,7 +139,7 @@ The whole UI takes its colors from the logo: soft **parchment** backgrounds, **n
 All text colors meet WCAG AA contrast (≥ 4.5:1) on both parchment and cream. Tokens live in `apps/web/src/app/globals.css`, and the extension mirrors them in `apps/extension/src/ui.css`.
 
 **Type:**
-- **Nunito** (self-hosted from npm, because the CSP allows same-origin fonts only) for the friendly, rounded UI.
+- **Bricolage Grotesque** (self-hosted from npm, because the CSP allows same-origin fonts only) for the friendly UI.
 - A book serif for long-form writing: the editor, the replay player and published pieces.
 
 **Logo and app icons** are generated from one source file, `apps/web/brand/humagination-logo.png`, by `pnpm --filter web brand`. The script turns the white background into transparency without white halos.
@@ -232,7 +236,7 @@ node scripts/setup-env.mjs --url https://<ref>.supabase.co --anon <publishable-k
 ```
 
 **Database.**
-1. Apply the five files in `supabase/migrations/`, in order, either with `supabase db push` or by pasting them into the SQL editor. When creating the project, turn **"Grant API access to new tables automatically" off** and **"Enable RLS on new tables automatically" on**. Migration 4 then grants each role exactly the access it needs.
+1. Apply the ordered files in `supabase/migrations/`, either with `supabase db push` or by pasting them into the SQL editor. When creating the project, turn **"Grant API access to new tables automatically" off** and **"Enable RLS on new tables automatically" on**. Migration 4 then grants each role exactly the access it needs.
 2. In the Supabase dashboard (these settings can't be set from SQL):
    - Authentication → Email: turn **Confirm email** on, set minimum password length to **12**, and turn **Leaked password protection** on.
    - Authentication → URL configuration: set the Site URL to your production URL, and add `http://localhost:3000/auth/callback` plus `https://<your-domain>/auth/callback` to the redirect URLs.
@@ -267,7 +271,7 @@ pnpm dev      # http://localhost:3000
 | `pnpm dev` | Start the web app |
 | `pnpm lint` | AI-free check → service-role leak check → ESLint → typecheck all packages |
 | `pnpm test` | All unit and integration tests (Vitest) |
-| `pnpm e2e:live <url>` | 34-step end-to-end test of a **deployed** site from the user's side. It signs up a throwaway account, uses every feature, then deletes the account. Needs "Confirm email" off. |
+| `pnpm e2e:live <url>` | Full end-to-end test of a **deployed** site from the user's side. It signs up a throwaway account, uses every feature, then deletes the account. Needs "Confirm email" off. |
 | `pnpm test:authz` | Database permission tests against your real Supabase project |
 | `pnpm build` | Production build of every package |
 | `pnpm gen:keys` | Generate the app secrets |
@@ -320,8 +324,8 @@ $ pnpm lint
   eslint ✓   typecheck: shared ✓  extension ✓  web ✓
 
 $ pnpm test
- Test Files  9 passed | 1 skipped (10)
-      Tests  141 passed | 8 skipped (149)
+ Test Files  18 passed (18)
+      Tests  232 passed (232)
 ```
 
 | What | How it's proven | Where |
@@ -363,6 +367,7 @@ $ pnpm test
 - **Tracker numbers are self-reported** by the user's own extension: good for motivation, not proof.
 - **A certificate can't prove someone didn't copy by hand** from another screen. The revision and typing-rhythm stats help readers judge. Japanese and Chinese input methods insert whole phrases at once, so instant insertions are only flagged after 3 occurrences.
 - **The code sandbox must stay on a private network.** Judge0 needs cgroup v1. Piston works on cgroup v2 but can't do the C memory check.
+- **Writer pagination:** on-screen pages are approximate and a single block taller than one page runs past its sheet; print and DOCX paginate with the real page engine. Footnotes appear as endnotes under **Notes** on screen, while DOCX contains true Word footnotes.
 - Rate limits are shared across instances through Postgres. The "5 concurrent code runs" cap is still per instance.
 - **On Vercel:** music uploads need ffmpeg, which Vercel doesn't provide; the app returns a clear "not available" message. Code Dojo **Submit** needs a Piston or Judge0 sandbox reachable from Vercel. Without one, Submit says the runner is unavailable, while Python **Run** still works in the browser.
 - Three Supabase Auth settings must be switched on by hand (see [Getting started](#getting-started)).

@@ -11,6 +11,7 @@ import { randomBytes, randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { chainHead, genesisHash, type DocEvent } from "@hm/shared/provenance/index";
 import { creationGenesis, creationHead, type CreationEvent } from "@hm/shared/creation";
+import { contentFingerprint } from "@hm/shared/contentFingerprint";
 
 const BASE = (process.argv[2] ?? "https://humagination.vercel.app").replace(/\/$/, "");
 const jar = new Map<string, string>();
@@ -133,22 +134,70 @@ async function publicPage(path: string) {
   r = await req("/api/docs", { method: "POST", json: { title: "E2E essay" } });
   const docId = (await jsonOf(r)).id as string;
   check("create document", !!docId);
-  const text = "I wrote this sentence myself, one key at a time, to test the certificate.";
+  const privateComment = "E2E_PRIVATE_COMMENT_NEVER_PUBLISH";
+  const citationSource = {
+    id: "e2esource", type: "book", authors: [{ given: "Matthew", family: "Walker" }], title: "Why We Sleep",
+    container: "", publisher: "Scribner", year: "2017", volume: "", issue: "", pages: "", url: "", accessed: "",
+  };
+  const docSettings = {
+    setup: {
+      page: "a4", margins: "normal", template: "none", font: "times", fontSize: 12, lineSpacing: 2,
+      pageNumbers: true, author: "E2E Writer", instructor: "", course: "", affiliation: "", date: "",
+    },
+    citationStyle: "apa", sources: [citationSource],
+    comments: [{ id: "e2ecmt", body: privateComment, createdAt: new Date().toISOString(), resolved: false }],
+    wordGoal: 500,
+  };
+  r = await req(`/api/docs/${docId}`, { method: "PATCH", json: { meta: docSettings } });
+  check("document settings PATCH", r.status === 200, JSON.stringify(await jsonOf(r)));
+  r = await req(`/api/docs/${docId}`);
+  const settingsRoundTrip = await jsonOf(r);
+  check("document settings round-trip", r.status === 200 && settingsRoundTrip.meta?.setup?.page === "a4" && settingsRoundTrip.meta?.sources?.[0]?.id === citationSource.id && settingsRoundTrip.meta?.wordGoal === 500);
+
+  const text = "I wrote <b>this sentence myself</b>, one key at a time, to test the certificate.";
   const sessionId = crypto.randomUUID();
   const events: DocEvent[] = [...text].map((ch, i) => ({ seq: i, t: i * 140, type: "insert", from: i, to: i, text: ch, len: 1 }));
   const content = { type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text }] }] };
   const headHash = chainHead(genesisHash(docId, sessionId), events);
-  r = await req(`/api/docs/${docId}/events`, { method: "POST", json: { sessionId, events, headHash, content } });
+  r = await req(`/api/docs/${docId}/events`, { method: "POST", json: { sessionId, events, headHash, content, baseContentHash: contentFingerprint(settingsRoundTrip.content) } });
   check("provenance batch accepted (hash chain + server replay)", r.status === 200, JSON.stringify(await jsonOf(r)));
+
+  const richContent = {
+    type: "doc",
+    content: [{ type: "paragraph", content: [
+      { type: "text", text, marks: [{ type: "bold" }, { type: "comment", attrs: { id: "e2ecmt" } }] },
+      { type: "citation", attrs: { sourceId: citationSource.id, locator: "", label: "" } },
+    ] }],
+  };
+  r = await req(`/api/docs/${docId}/events`, { method: "POST", json: { sessionId, events: [], headHash, content: richContent, baseContentHash: contentFingerprint(content) } });
+  check("formatting-only content save preserves the chain", r.status === 200, JSON.stringify(await jsonOf(r)));
+  r = await req(`/api/docs/${docId}/events`, { method: "POST", json: { sessionId, events: [], headHash, content: richContent, baseContentHash: contentFingerprint(content) } });
+  check("stale formatting-only content save rejected", r.status === 409);
+  r = await req(`/api/docs/${docId}/history`);
+  const history = await jsonOf(r);
+  const savedBatch = history.batches?.[0];
+  check("owner history returns the one real provenance batch", r.status === 200 && history.batches?.length === 1 && savedBatch?.sessionId === sessionId && savedBatch?.seqStart === 0 && savedBatch?.seqEnd === events.length - 1 && savedBatch?.events?.length === events.length && savedBatch?.headHash === headHash && !!savedBatch?.receivedAt);
+
   const forged = [{ ...events[0], seq: events.length, from: text.length, to: text.length, text: "X" }];
-  r = await req(`/api/docs/${docId}/events`, { method: "POST", json: { sessionId, events: forged, headHash: "0".repeat(64), content } });
+  r = await req(`/api/docs/${docId}/events`, { method: "POST", json: { sessionId, events: forged, headHash: "0".repeat(64), content: richContent, baseContentHash: contentFingerprint(richContent) } });
   check("forged batch rejected", r.status === 409);
   r = await req(`/api/docs/${docId}/finalize`, { method: "POST", json: {} });
   const fin = await jsonOf(r);
   check("finalize issues a signed certificate", r.status === 200 && !!fin.certId, `${fin.label}`);
+  r = await req(`/api/docs/${docId}`, { method: "PATCH", json: { meta: docSettings } });
+  check("finalized document settings are frozen", r.status === 409);
   r = await publicPage(`/verify/${fin.certId}`);
   const vp = await r.text();
   check("public certificate page verifies signature, chain and replay", r.status === 200 && vp.includes("matches Humagination") && vp.includes("chain re-computed") && vp.includes("reproduces the certified text"));
+  r = await req("/api/gallery/writing", { method: "POST", json: { certId: fin.certId } });
+  const publishedWriting = await jsonOf(r);
+  check("publish certified writing", r.status === 200 && !!publishedWriting.id, publishedWriting.error ?? "");
+  if (publishedWriting.id) {
+    r = await req(`/portfolio/work/${publishedWriting.id}`);
+    const writingPage = await r.text();
+    check("work page renders certified formatting and frozen references", r.status === 200 && writingPage.includes("<strong>") && writingPage.includes("(Walker, 2017)") && writingPage.includes("Why We Sleep") && writingPage.includes("References"));
+    check("published writing escapes typed HTML and keeps comments private", writingPage.includes("&lt;b&gt;") && !writingPage.includes(privateComment) && !writingPage.includes("data-comment"));
+  }
 
   // ── Gallery ──────────────────────────────────────────────────────────────
   const png = await sharp({ create: { width: 320, height: 240, channels: 3, background: { r: 27, g: 43, b: 94 } } })
