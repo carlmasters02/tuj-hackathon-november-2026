@@ -197,7 +197,13 @@ async function publicPage(path: string) {
     const writingPage = await r.text();
     check("work page renders certified formatting and frozen references", r.status === 200 && writingPage.includes("<strong>") && writingPage.includes("(Walker, 2017)") && writingPage.includes("Why We Sleep") && writingPage.includes("References"));
     check("published writing escapes typed HTML and keeps comments private", writingPage.includes("&lt;b&gt;") && !writingPage.includes(privateComment) && !writingPage.includes("data-comment"));
+    check("published work links back to Words", writingPage.includes("/portfolio/words"));
   }
+  r = await req("/portfolio/writing");
+  check("legacy portfolio Writing route redirects to Words", r.status === 307 && r.headers.get("location") === "/portfolio/words");
+  r = await req("/portfolio/words");
+  const wordsPage = await r.text();
+  check("Words gallery is publishing-only, not a Tutor coach", r.status === 200 && wordsPage.includes("Start a draft in Tutor") && !wordsPage.includes("Research paper coach"));
 
   // ── Gallery ──────────────────────────────────────────────────────────────
   const png = await sharp({ create: { width: 320, height: 240, channels: 3, background: { r: 27, g: 43, b: 94 } } })

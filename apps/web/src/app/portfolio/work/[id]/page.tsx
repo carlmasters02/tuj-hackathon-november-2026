@@ -34,7 +34,8 @@ function whyNotSealed(kind: string, s: Record<string, unknown> | undefined): str
 
 export const metadata = { title: "Work", other: { robots: "noai, noimageai" } };
 
-const KIND_LABEL = { art: "Art", writing: "Writing", music: "Music" } as const;
+const KIND_LABEL = { art: "Art", writing: "Words", music: "Music" } as const;
+const KIND_PATH = { art: "art", writing: "words", music: "music" } as const;
 
 export default async function WorkPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -69,7 +70,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="space-y-12">
-      <Link href={`/portfolio/${w.kind}`} className="inline-flex items-center gap-1 text-sm font-semibold text-fg-dim hover:text-fg">
+      <Link href={`/portfolio/${KIND_PATH[w.kind as keyof typeof KIND_PATH]}`} className="inline-flex items-center gap-1 text-sm font-semibold text-fg-dim hover:text-fg">
         <span aria-hidden>←</span> {KIND_LABEL[w.kind as keyof typeof KIND_LABEL]}
       </Link>
 

@@ -13,7 +13,7 @@ export default async function UploadPage() {
         <li>• Images are re-encoded (stripping EXIF/GPS and anything hidden in the file), hashed, and checked against existing work for re-uploads.</li>
         <li>• Your original is watermarked invisibly, encrypted with AES-256-GCM and never served to anyone.</li>
         <li>• Viewers see a ≤1200 px preview with your handle tiled faintly, plus their own username stamped near-invisibly.</li>
-        <li>• Writing is published from a Human-Verified certificate, not uploaded — <a className="link" href="/write">write it here</a>.</li>
+        <li>• Words are published from a Human-Verified certificate, not uploaded — <a className="link" href="/tutor/writing">start a draft in Tutor</a>.</li>
       </ul>
       <UploadForm />
       <OwnershipChecker />

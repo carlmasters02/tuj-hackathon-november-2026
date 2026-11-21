@@ -36,6 +36,6 @@ export const TUTOR: Section[] = [
 
 export const PORTFOLIO: Section[] = [
   { key: "art", label: "Art", href: "/portfolio/art", blurb: "Draw in the studio and every stroke becomes your proof.", items: [{ label: "Browse art", href: "/portfolio/art" }, { label: "Open the studio", href: "/portfolio/art/studio" }] },
-  { key: "writing", label: "Writing", href: "/portfolio/writing", blurb: "Pieces written here, with a replay anyone can watch.", items: [{ label: "Browse writing", href: "/portfolio/writing" }, { label: "Write something", href: "/tutor/writing" }] },
+  { key: "writing", label: "Words", href: "/portfolio/words", blurb: "Finished prose and poetry, shared by their authors with a replay to watch.", items: [{ label: "Browse words", href: "/portfolio/words" }, { label: "Start a draft in Tutor", href: "/tutor/writing" }] },
   { key: "music", label: "Music", href: "/portfolio/music", blurb: "Compose note by note; the composer keeps the receipts.", items: [{ label: "Browse music", href: "/portfolio/music" }, { label: "Open the composer", href: "/portfolio/music/composer" }] },
 ];

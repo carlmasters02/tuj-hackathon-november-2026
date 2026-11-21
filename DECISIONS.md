@@ -136,7 +136,7 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 ## Gallery
 - **Duplicate detection:** an exact SHA-256 match, or dHash Hamming ≤ 6, against *other users'* art. Re-uploading your own work is allowed. A blocked upload returns the duplicate's owner and is logged.
 - **Music previews** are a 64 kbps MP3 transcoded with **ffmpeg** (no shell, argument array, 60 s timeout). An upload that ffmpeg can't decode is rejected. The 64 kbps preview streams through a viewer-bound signed route; the original is never served.
-- **The writing gallery** publishes from a Human-Verified certificate the user owns. The text is replayed from the certificate's log and rendered over a per-viewer watermark layer.
+- **The Words gallery** publishes from a Human-Verified certificate the user owns. The text is replayed from the certificate's log and rendered over a per-viewer watermark layer.
 - **Bulk downloads:** more than 300 media fetches in 10 minutes sets `profiles.flagged_bulk` (in-memory counter).
 
 ## Data model notes
@@ -150,6 +150,7 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 
 ## Layout v2: Dashboard, Tutor, Portfolio (2026-11-21)
 - **Navigation** is three tabs. Tutor and Portfolio open a menu on hover (with a chevron button for keyboard and touch), and clicking the tab opens its hub page. `/gallery/*` redirects permanently to `/portfolio/*`.
+- **Tutor Writing and Portfolio Words are deliberately different products:** Tutor holds drafts, RedPen and genre coaches; Portfolio Words holds finished prose and poetry with reading, likes, comments and certificate inspection only. The public route is `/portfolio/words`, with `/portfolio/writing` redirected for compatibility, while database/API `kind: "writing"` stays unchanged.
 - **"Authentic" means "made here with a passing record".** We can't detect AI in an uploaded file without AI (and detectors are unreliable anyway), so the Human-made seal is earned only by work created in the app's own recorded tools: the editor (writing), the drawing studio (art) and the composer (music). Uploads are allowed in Art and Music but are never sealed, and the work page says why.
 - **Studio art is rendered on the server from the stroke log** (SVG → sharp → the normal art pipeline), so the published image can't differ from what the log describes. The client never uploads pixels for a studio piece.
 - **Seal thresholds** for studio and composer: at least 12 strokes or note edits, 45 seconds of active time, no flags, and an intact chain. Flags: long strokes in under 40 ms, more than 4 strokes per second, more than 8 note edits per second, or a client clock running more than 15 s ahead of server receipt times. The thresholds are deliberately modest: the record and its replay are the real evidence, and the certificate page shows both.

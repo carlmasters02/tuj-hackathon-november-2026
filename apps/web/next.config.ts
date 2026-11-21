@@ -8,6 +8,7 @@ const config: NextConfig = {
   experimental: { serverActions: { bodySizeLimit: "1mb" } },
   async redirects() {
     return [
+      { source: "/portfolio/writing", destination: "/portfolio/words", permanent: false },
       { source: "/gallery", destination: "/portfolio", permanent: false },
       { source: "/gallery/upload", destination: "/portfolio/upload", permanent: false },
       { source: "/gallery/:id", destination: "/portfolio/work/:id", permanent: false },

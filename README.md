@@ -12,7 +12,7 @@ The app has three tabs, plus a browser extension:
 |---|---|
 | **Dashboard** | Your share of the thinking this week (your own minutes vs time on AI sites), Human Points and levels, streak, progress, and where you left off. |
 | **Tutor** — Math, Code, Writing | Math (Algebra, Precalculus, Calculus 1–3, Probability & Statistics), Code (Python, C, Java) and Writing (research papers, argumentative essays, poetry). It checks your work and says *where* and *what kind* of mistake you made. It never gives the answer. |
-| **Portfolio** — Art, Writing, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and only pieces whose record passes the checks get the **Human-made seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
+| **Portfolio** — Art, Words, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and only pieces whose record passes the checks get the **Human-made seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
 | **Reliance Tracker** — Chrome extension | Measures your active time on AI sites so the dashboard can compare it with time you spent thinking for yourself. |
 
 ---
@@ -96,12 +96,14 @@ Formatting-only changes are saved without inventing typing events: their content
 - **The dashboard** leads with your **share of the thinking** this week (your minutes vs minutes on AI sites), then the **Reliance Score** (`100 × AI ÷ (AI + human + 1)`, lower is better), a streak, **Human Points** (capped daily, with levels: Spark, Glow, Lamp, Lantern, Beacon, Lighthouse, and a breakdown of where they came from), a day-by-day chart, a per-site breakdown, Tutor and Portfolio progress, and "pick up where you left off".
 - **Weekly leaderboard:** opt-in only, with friends by username invite, and labelled *"Self-reported via extension — for motivation, not proof."*
 
-### 6. Portfolio (`/portfolio`): Art, Writing, Music
+### 6. Portfolio (`/portfolio`): Art, Words, Music
+Tutor → **Writing** is for drafting and coaching; Portfolio → **Words** is only for finished prose and poetry, with authors, likes, comments and certificates. Coaching controls never appear in the portfolio.
+
 Every work has **likes and comments**. **Only authentic work gets the Human-made seal**, and "authentic" means the app holds a record of how the piece was made that passes every check:
 
 | Section | Sealed when… | Uploads |
 |---|---|---|
-| **Writing** | made in the editor and certified **Human-Verified** (see section 4) | — |
+| **Words** | made in the editor and certified **Human-Verified** (see section 4) | — |
 | **Art** | drawn in the **drawing studio** (`/portfolio/art/studio`) | allowed, never sealed |
 | **Music** | composed in the **composer** (`/portfolio/music/composer`) | allowed (MP3/OGG/WAV), never sealed |
 
