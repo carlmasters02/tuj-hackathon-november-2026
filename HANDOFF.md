@@ -8,12 +8,14 @@ You are picking up an in-progress project from another coding agent. This file i
 
 | | Commit | State |
 |---|---|---|
-| `main` (pushed, live) | `5b2f0b9` | Live at **https://humagination.vercel.app** (Vercel auto-deploys `main`). Lint, 210 tests and a production build pass. |
+| `main` (pushed, live) | `5900239` | Live at **https://humagination.vercel.app** (Vercel auto-deploys `main`). Lint, 210 tests and a production build pass. Includes teammates' latest merges (Rishika's Math and Code hub progress, Bristy's Art page). |
 | `feature/writer-v2` (**local only, not pushed**) | the commit that adds this file | The Word-style writer rebuild, part done. Lint, typecheck, 223 tests and a production build pass. **Not yet tested in a browser.** |
 
 Run `git log --oneline main..feature/writer-v2` to see the branch's commits. Push the branch (`git push -u origin feature/writer-v2`) if you're working from another machine. **Don't merge it into `main` until the browser checks in §5 pass.**
 
 There is **no stash** and nothing uncommitted.
+
+**First step:** `main` has moved on since this branch was created (teammate merges). Run `git merge main` on `feature/writer-v2` before continuing. It should merge cleanly, because the branch only touches the editor, the writer page, `Nav.tsx`, `layout.tsx`, `globals.css` (an appended block) and the docs API.
 
 ---
 
