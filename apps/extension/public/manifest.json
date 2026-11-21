@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Humagination — AI Reliance Tracker",
+  "version": "0.1.0",
+  "description": "Counts active minutes on AI chat sites (no URLs, no content) and optionally asks you to try first.",
+  "permissions": ["alarms", "idle", "storage", "tabs"],
+  "optional_host_permissions": ["https://*/*", "http://localhost/*", "http://127.0.0.1/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_popup": "popup.html", "default_title": "Humagination" },
+  "options_page": "options.html",
+  "icons": { "128": "icon128.png" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'" }
+}

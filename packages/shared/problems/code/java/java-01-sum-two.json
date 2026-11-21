@@ -1,0 +1,37 @@
+{
+  "id": "java-01-sum-two",
+  "lang": "java",
+  "concept": "io-variables",
+  "difficulty": 1,
+  "title": "Sum of two numbers",
+  "promptMd": "Read two integers from one line (separated by a space) and print their sum.\n\n**Input:** `3 4`  \n**Output:** `7`",
+  "starterCode": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n    }\n}\n",
+  "tests": [
+    {
+      "stdin": "3 4",
+      "expectedStdout": "7",
+      "hidden": false
+    },
+    {
+      "stdin": "-5 10",
+      "expectedStdout": "5",
+      "hidden": false
+    },
+    {
+      "stdin": "1000000 2000000",
+      "expectedStdout": "3000000",
+      "hidden": true
+    },
+    {
+      "stdin": "0 0",
+      "expectedStdout": "0",
+      "hidden": true
+    }
+  ],
+  "hints": [
+    "First get the whole line, then split it into two pieces.",
+    "Each piece is text until you convert it to a number.",
+    "Print only the number — no extra words, no prompt text."
+  ],
+  "conceptNoteMd": "`Scanner` reads input; `nextInt()` reads the next whole number.\n\n```java\nScanner in = new Scanner(System.in);\nint age = in.nextInt();\nSystem.out.println(age + 1);\n```"
+}

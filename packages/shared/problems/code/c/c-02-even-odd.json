@@ -1,0 +1,43 @@
+{
+  "id": "c-02-even-odd",
+  "lang": "c",
+  "concept": "conditionals",
+  "difficulty": 1,
+  "title": "Even or odd",
+  "promptMd": "Read one integer and print `even` if it is even, otherwise `odd`. Negative numbers and zero count too.",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "4",
+      "expectedStdout": "even",
+      "hidden": false
+    },
+    {
+      "stdin": "7",
+      "expectedStdout": "odd",
+      "hidden": false
+    },
+    {
+      "stdin": "-3",
+      "expectedStdout": "odd",
+      "hidden": true
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "even",
+      "hidden": true
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "The remainder after dividing by 2 tells you the answer.",
+    "Zero is even.",
+    "Careful with negative numbers: in some languages the remainder of a negative number is negative. Compare with 0 rather than with 1."
+  ],
+  "conceptNoteMd": "```c\nif (temp > 30) {\n    printf(\"hot\\n\");\n} else if (temp > 15) {\n    printf(\"mild\\n\");\n} else {\n    printf(\"cold\\n\");\n}\n```"
+}

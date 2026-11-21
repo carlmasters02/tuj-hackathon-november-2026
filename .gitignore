@@ -1,0 +1,29 @@
+# dependencies & build output
+node_modules
+.next
+dist
+coverage
+.turbo
+*.tsbuildinfo
+next-env.d.ts
+
+# copied from node_modules at install time (scripts/copy-pyodide.mjs)
+apps/web/public/pyodide
+
+# secrets — only .env.example is committed
+.env
+.env.local
+.env.*.local
+infra/judge0/judge0.conf
+
+# logs & OS/editor files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# local tooling, not part of the project
+.komainu/
+.claude/
+HUMAN_MODE_PROMPT.md

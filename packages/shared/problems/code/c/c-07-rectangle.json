@@ -1,0 +1,49 @@
+{
+  "id": "c-07-rectangle",
+  "lang": "c",
+  "concept": "structs-classes",
+  "difficulty": 2,
+  "title": "Rectangle",
+  "promptMd": "Read width and height (integers). Store them in a **struct/class** that can compute area and perimeter, then print:\n\n```\narea 12\nperimeter 14\n```",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "3 4",
+      "expectedStdout": "area 12\nperimeter 14",
+      "hidden": false
+    },
+    {
+      "stdin": "5 5",
+      "expectedStdout": "area 25\nperimeter 20",
+      "hidden": false
+    },
+    {
+      "stdin": "1 10",
+      "expectedStdout": "area 10\nperimeter 22",
+      "hidden": true
+    },
+    {
+      "stdin": "7 2",
+      "expectedStdout": "area 14\nperimeter 18",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "struct\\s+\\w+\\s*\\{",
+      "message": "Define a struct to hold the rectangle."
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "The struct/class needs two fields: width and height.",
+    "Perimeter is the distance all the way around: two widths plus two heights.",
+    "Output format matters: a lowercase word, one space, the number."
+  ],
+  "conceptNoteMd": "A struct groups related fields.\n\n```c\nstruct point { int x; int y; };\nstruct point p = { 3, 4 };\nprintf(\"%d\\n\", p.x);\n```"
+}

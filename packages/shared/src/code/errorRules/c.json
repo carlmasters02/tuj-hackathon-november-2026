@@ -1,0 +1,212 @@
+[
+  {
+    "id": "c-missing-semicolon",
+    "pattern": "error: expected (',' or )?';'( or [^ ]+)? (before|after|at end)",
+    "title": "Missing semicolon",
+    "explanation": "In C every statement ends with ;. The compiler often reports it on the line after the one that's missing it.",
+    "where": "The end of the reported line and the line before it."
+  },
+  {
+    "id": "c-implicit-decl",
+    "pattern": "(implicit declaration of function '([^']+)'|call to undeclared function '([^']+)')",
+    "title": "Function used before it's declared",
+    "explanation": "C must see a function's declaration before you call it. Include the right header (printf → <stdio.h>, strlen → <string.h>, malloc → <stdlib.h>) or declare your own function above main.",
+    "where": "The #include lines at the top and the order of your functions."
+  },
+  {
+    "id": "c-format-mismatch",
+    "pattern": "format '%([a-z]+)' expects argument of type '([^']+)', but argument \\d+ has type '([^']+)'",
+    "title": "printf/scanf format doesn't match the value",
+    "explanation": "Each % code must match its argument's type: %d for int, %ld for long, %f for double in printf (%lf in scanf), %c for char, %s for strings.",
+    "where": "The format string and the matching argument."
+  },
+  {
+    "id": "c-scanf-ampersand",
+    "pattern": "format '%[dfc]' expects argument of type '(int|float|double|char) \\*', but argument \\d+ has type '(int|float|double|char)'",
+    "title": "scanf needs an address (&)",
+    "explanation": "scanf stores into variables, so it needs their addresses: scanf(\"%d\", &x) — not scanf(\"%d\", x).",
+    "where": "The scanf arguments."
+  },
+  {
+    "id": "c-undeclared",
+    "pattern": "error: '([^']+)' undeclared",
+    "title": "Unknown variable",
+    "explanation": "This name hasn't been declared in this scope. Check spelling, and that it's declared before use and inside the right braces.",
+    "where": "The first use of the name; where you meant to declare it."
+  },
+  {
+    "id": "c-uninitialized",
+    "pattern": "is used uninitialized|may be used uninitialized",
+    "title": "Variable used before it has a value",
+    "explanation": "Local variables in C start with garbage values. Give it a value before reading it (for example int sum = 0;).",
+    "where": "The declaration of the variable named in the warning."
+  },
+  {
+    "id": "c-assign-in-condition",
+    "pattern": "suggest parentheses around assignment used as truth value",
+    "title": "= in a condition (did you mean ==?)",
+    "explanation": "if (x = 5) assigns 5 to x and is always true. To compare, use ==.",
+    "where": "The condition on the reported line."
+  },
+  {
+    "id": "c-gets",
+    "pattern": "('gets' is deprecated|implicit declaration of function 'gets')",
+    "title": "gets() is unsafe",
+    "explanation": "gets() can't limit how much it reads and overflows buffers; it was removed from C. Use fgets(buf, sizeof buf, stdin) or scanf with a width.",
+    "where": "The gets call."
+  },
+  {
+    "id": "c-expected-expression",
+    "pattern": "error: expected expression",
+    "title": "Something's missing in an expression",
+    "explanation": "The compiler expected a value here — a missing operand, an extra operator, or a stray symbol.",
+    "where": "The reported column on that line."
+  },
+  {
+    "id": "c-expected-brace",
+    "pattern": "error: expected (declaration or statement|'}') at end of input",
+    "title": "Missing closing brace",
+    "explanation": "A { was opened but never closed with }.",
+    "where": "Match braces from the top of the function down."
+  },
+  {
+    "id": "c-conflicting-types",
+    "pattern": "conflicting types for '([^']+)'",
+    "title": "Function declared two different ways",
+    "explanation": "The function's prototype and its definition don't match (different return or parameter types), or it was used before being declared.",
+    "where": "The prototype and the definition of that function."
+  },
+  {
+    "id": "c-too-few-args",
+    "pattern": "too (few|many) arguments to function",
+    "title": "Wrong number of arguments",
+    "explanation": "The call passes a different number of arguments than the function takes.",
+    "where": "Compare the call with the function's definition."
+  },
+  {
+    "id": "c-incompatible-pointer",
+    "pattern": "(incompatible pointer type|makes pointer from integer without a cast|makes integer from pointer without a cast)",
+    "title": "Pointer/integer type mix-up",
+    "explanation": "You're mixing a pointer with an integer, or two different pointer types. Check where you need & (address of) or * (value at).",
+    "where": "Both sides of the assignment or the argument named in the message."
+  },
+  {
+    "id": "c-return-type",
+    "pattern": "control reaches end of non-void function",
+    "title": "Function can end without returning",
+    "explanation": "A function that returns a value must return on every path, including after loops and in every branch of an if/else.",
+    "where": "The end of the function and each branch."
+  },
+  {
+    "id": "c-unused-variable",
+    "pattern": "unused variable '([^']+)'",
+    "title": "Unused variable (warning)",
+    "explanation": "You declared a variable but never used it. Not an error, but often a sign of a typo elsewhere.",
+    "where": "The declaration of that variable."
+  },
+  {
+    "id": "c-comparison-signed",
+    "pattern": "comparison of integer expressions of different signedness",
+    "title": "Comparing signed and unsigned (warning)",
+    "explanation": "Comparing an int with an unsigned value (like strlen's result) can behave surprisingly with negative numbers.",
+    "where": "The comparison on the reported line."
+  },
+  {
+    "id": "c-array-subscript",
+    "pattern": "array subscript .* is (above|outside) array bounds",
+    "title": "Index past the end of an array",
+    "explanation": "An array of size N has valid indices 0 to N-1.",
+    "where": "The index and the array's declared size; loop conditions should use < not <=."
+  },
+  {
+    "id": "c-segfault",
+    "pattern": "(Segmentation fault|SIGSEGV|signal 11)",
+    "title": "Segmentation fault",
+    "explanation": "The program touched memory it doesn't own: an array index out of range, a NULL or uninitialized pointer, or forgetting & in scanf.",
+    "where": "Array indices, pointers and scanf calls. Try \"Check memory\" for the exact line."
+  },
+  {
+    "id": "c-fpe",
+    "pattern": "(Floating point exception|SIGFPE|signal 8)",
+    "title": "Division by zero (integer)",
+    "explanation": "Integer division or % by zero crashes the program.",
+    "where": "Every / and % — check the divisor can't be 0."
+  },
+  {
+    "id": "c-abort",
+    "pattern": "(Aborted|SIGABRT|signal 6|stack smashing detected)",
+    "title": "Program aborted",
+    "explanation": "Often a buffer overflow detected at runtime (writing past the end of an array or string) or a failed check in free().",
+    "where": "Writes into arrays and strings; string lengths include the '\\0' terminator."
+  },
+  {
+    "id": "c-asan-heap-overflow",
+    "pattern": "AddressSanitizer: heap-buffer-overflow",
+    "title": "Read/write past the end of malloc'd memory",
+    "explanation": "You accessed memory just outside a block from malloc/calloc. Remember the block holds exactly the bytes you asked for, and strings need one extra byte for '\\0'.",
+    "where": "The first line under 'READ/WRITE of size' in the report that's in your file."
+  },
+  {
+    "id": "c-asan-stack-overflow",
+    "pattern": "AddressSanitizer: stack-buffer-overflow",
+    "title": "Out-of-bounds on a local array",
+    "explanation": "An index went past the end (or before the start) of a local array.",
+    "where": "The array access on the line shown in the report."
+  },
+  {
+    "id": "c-asan-uaf",
+    "pattern": "AddressSanitizer: heap-use-after-free",
+    "title": "Use after free",
+    "explanation": "You used memory after calling free() on it. After freeing, don't touch that pointer again (setting it to NULL helps).",
+    "where": "The 'freed by' and 'previously allocated' stacks show where; then find the later use."
+  },
+  {
+    "id": "c-asan-double-free",
+    "pattern": "AddressSanitizer: attempting double-free",
+    "title": "Freed twice",
+    "explanation": "free() was called twice on the same pointer.",
+    "where": "Every free() call for that allocation."
+  },
+  {
+    "id": "c-asan-leak",
+    "pattern": "LeakSanitizer: detected memory leaks",
+    "title": "Memory leak",
+    "explanation": "Memory from malloc was never freed. Every malloc needs a matching free when you're done.",
+    "where": "The allocation site listed under 'Direct leak'."
+  },
+  {
+    "id": "c-ubsan-overflow",
+    "pattern": "runtime error: signed integer overflow",
+    "title": "Signed integer overflow",
+    "explanation": "The result didn't fit in the type (int holds about ±2.1 billion). In C this is undefined behavior. Use a wider type like long long.",
+    "where": "The arithmetic on the reported line."
+  },
+  {
+    "id": "c-ubsan-null",
+    "pattern": "(runtime error: .*null pointer|SEGV on unknown address 0x0+ )",
+    "title": "NULL pointer dereference",
+    "explanation": "You used * or -> on a pointer that is NULL — often malloc failed, or a pointer was never set.",
+    "where": "The pointer used on the reported line; where it should have been assigned."
+  },
+  {
+    "id": "c-ubsan-shift",
+    "pattern": "runtime error: shift exponent",
+    "title": "Invalid bit shift",
+    "explanation": "Shifting by a negative amount or by at least the type's width is undefined.",
+    "where": "The << or >> on the reported line."
+  },
+  {
+    "id": "c-undefined-reference",
+    "pattern": "undefined reference to `([^']+)'",
+    "title": "Function declared but never defined",
+    "explanation": "The linker can't find the function's body. Check the spelling matches the definition, and that main is spelled main.",
+    "where": "The function's name in the call and in its definition."
+  },
+  {
+    "id": "c-timeout",
+    "pattern": "__TIMEOUT__",
+    "title": "Time limit exceeded",
+    "explanation": "The program ran too long — usually an infinite loop, or a scanf waiting for input that never arrives.",
+    "where": "Loop conditions and the loop variable's update."
+  }
+]

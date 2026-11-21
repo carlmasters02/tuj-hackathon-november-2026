@@ -1,0 +1,43 @@
+{
+  "id": "python-08-factorial",
+  "lang": "python",
+  "concept": "recursion",
+  "difficulty": 2,
+  "title": "Recursive factorial",
+  "promptMd": "Read `n` (0 ≤ n ≤ 12) and print `n!`. Solve it **recursively** — loops are not allowed.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "5",
+      "expectedStdout": "120",
+      "hidden": false
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "1",
+      "hidden": false
+    },
+    {
+      "stdin": "10",
+      "expectedStdout": "3628800",
+      "hidden": true
+    },
+    {
+      "stdin": "12",
+      "expectedStdout": "479001600",
+      "hidden": true
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\b(for|while)\\b",
+      "message": "No loops here — the function should call itself instead."
+    }
+  ],
+  "hints": [
+    "Every recursive function needs a base case that returns without calling itself.",
+    "What is 0! ? That's your base case.",
+    "n! can be written using (n-1)!."
+  ],
+  "conceptNoteMd": "A recursive function calls itself on a smaller problem and stops at a base case.\n\n```python\ndef countdown(n):\n    if n == 0:\n        return\n    print(n)\n    countdown(n - 1)\n```"
+}

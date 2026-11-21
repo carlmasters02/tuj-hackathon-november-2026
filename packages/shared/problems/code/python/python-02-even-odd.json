@@ -1,0 +1,37 @@
+{
+  "id": "python-02-even-odd",
+  "lang": "python",
+  "concept": "conditionals",
+  "difficulty": 1,
+  "title": "Even or odd",
+  "promptMd": "Read one integer and print `even` if it is even, otherwise `odd`. Negative numbers and zero count too.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "4",
+      "expectedStdout": "even",
+      "hidden": false
+    },
+    {
+      "stdin": "7",
+      "expectedStdout": "odd",
+      "hidden": false
+    },
+    {
+      "stdin": "-3",
+      "expectedStdout": "odd",
+      "hidden": true
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "even",
+      "hidden": true
+    }
+  ],
+  "hints": [
+    "The remainder after dividing by 2 tells you the answer.",
+    "Zero is even.",
+    "Careful with negative numbers: in some languages the remainder of a negative number is negative. Compare with 0 rather than with 1."
+  ],
+  "conceptNoteMd": "`if` / `elif` / `else` choose which block runs.\n\n```python\nif temp > 30:\n    print(\"hot\")\nelif temp > 15:\n    print(\"mild\")\nelse:\n    print(\"cold\")\n```"
+}

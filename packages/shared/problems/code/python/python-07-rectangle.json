@@ -1,0 +1,43 @@
+{
+  "id": "python-07-rectangle",
+  "lang": "python",
+  "concept": "structs-classes",
+  "difficulty": 2,
+  "title": "Rectangle",
+  "promptMd": "Read width and height (integers). Store them in a **struct/class** that can compute area and perimeter, then print:\n\n```\narea 12\nperimeter 14\n```",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "3 4",
+      "expectedStdout": "area 12\nperimeter 14",
+      "hidden": false
+    },
+    {
+      "stdin": "5 5",
+      "expectedStdout": "area 25\nperimeter 20",
+      "hidden": false
+    },
+    {
+      "stdin": "1 10",
+      "expectedStdout": "area 10\nperimeter 22",
+      "hidden": true
+    },
+    {
+      "stdin": "7 2",
+      "expectedStdout": "area 14\nperimeter 18",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "class\\s+\\w+",
+      "message": "Define a class to hold the rectangle."
+    }
+  ],
+  "hints": [
+    "The struct/class needs two fields: width and height.",
+    "Perimeter is the distance all the way around: two widths plus two heights.",
+    "Output format matters: a lowercase word, one space, the number."
+  ],
+  "conceptNoteMd": "A class groups data with the functions that use it.\n\n```python\nclass Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    def dist_from_origin(self):\n        return (self.x ** 2 + self.y ** 2) ** 0.5\n```"
+}

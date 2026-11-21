@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0e0e0d;
+  --color-ink-2: #161614;
+  --color-ink-3: #1f1f1c;
+  --color-line: #2c2b27;
+  --color-paper: #ece8df;
+  --color-paper-dim: #a8a397;
+  --color-paper-faint: #6f6b62;
+  --color-redpen: #e5533d;
+  --color-redpen-dim: #e5533d33;
+  --color-graphite: #8fa3b8;
+  --color-ok: #6fbf73;
+  --color-ok-dim: #6fbf7326;
+  --color-warn: #e0b04a;
+  --color-warn-dim: #e0b04a26;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, ui-serif, serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+html { color-scheme: dark; }
+body { background: var(--color-ink); color: var(--color-paper); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+::selection { background: var(--color-redpen-dim); }
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-md border border-line bg-ink-3 px-3.5 py-2 text-sm font-medium text-paper transition hover:border-paper-faint disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply border-paper bg-paper text-ink hover:bg-white; }
+  .btn-danger { @apply border-redpen/60 bg-transparent text-redpen hover:bg-redpen-dim; }
+  .btn-ghost { @apply border-transparent bg-transparent hover:bg-ink-3; }
+  .input { @apply w-full rounded-md border border-line bg-ink-2 px-3 py-2 text-sm text-paper placeholder:text-paper-faint focus:border-paper-dim focus:outline-none; }
+  .label { @apply mb-1.5 block text-xs font-medium tracking-wide text-paper-dim uppercase; }
+  .card { @apply rounded-xl border border-line bg-ink-2; }
+  .h-display { @apply font-serif text-4xl leading-tight tracking-tight sm:text-5xl; }
+  .h-page { @apply font-serif text-3xl tracking-tight; }
+  .muted { @apply text-paper-dim; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-0.5 text-xs text-paper-dim; }
+  .link { @apply underline decoration-paper-faint underline-offset-4 hover:decoration-paper; }
+}
+
+/* TipTap editor */
+.hm-editor .ProseMirror { min-height: 60vh; outline: none; font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.75; }
+.hm-editor .ProseMirror p { margin: 0 0 0.9em; }
+.hm-editor .ProseMirror h1 { font-size: 1.9rem; margin: 0.6em 0 0.4em; }
+.hm-editor .ProseMirror h2 { font-size: 1.45rem; margin: 0.6em 0 0.4em; }
+.hm-editor .ProseMirror h3 { font-size: 1.2rem; margin: 0.6em 0 0.4em; }
+.hm-editor .ProseMirror ul { list-style: disc; padding-left: 1.4em; }
+.hm-editor .ProseMirror ol { list-style: decimal; padding-left: 1.4em; }
+.hm-editor .ProseMirror blockquote { border-left: 3px solid var(--color-line); padding-left: 1em; color: var(--color-paper-dim); }
+.hm-editor .ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--color-paper-faint); float: left; height: 0; pointer-events: none; }
+.hm-paste-external { background: var(--color-warn-dim); box-shadow: inset 0 -2px 0 var(--color-warn); }
+.hm-redpen-mark { text-decoration: underline wavy var(--color-redpen); text-underline-offset: 4px; }
+.hm-redpen-focus { background: var(--color-redpen-dim); }
+
+/* Protected media: deterrents only (documented as such) */
+.hm-protected { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.hm-protected canvas { -webkit-user-drag: none; }
+
+.cm-editor { font-size: 14px; }
+.katex { font-size: 1.1em; }

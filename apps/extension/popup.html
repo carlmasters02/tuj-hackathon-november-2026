@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Humagination</title><link rel="stylesheet" href="./src/ui.css" /></head>
+  <body style="width: 340px">
+    <div class="wrap">
+      <h1><span class="dot"></span>Humagination</h1>
+      <div class="card"><div class="big" id="today">0 min</div><div class="faint">AI time today (active, focused tab only)</div></div>
+      <div class="card row"><div><div class="big" id="streak">–</div><div class="faint">streak (from last sync)</div></div><div><div class="big" id="score">–</div><div class="faint">reliance score</div></div></div>
+      <div class="card row">
+        <div><strong>Think First</strong><div class="faint">Ask for your own attempt before AI sites open.</div></div>
+        <input type="checkbox" id="tf" aria-label="Think First" />
+      </div>
+      <div class="card">
+        <div class="row"><strong>Exactly what gets sent</strong><button id="sync">Sync now</button></div>
+        <pre id="payload"></pre>
+        <div class="faint" id="last"></div>
+      </div>
+      <a class="faint" href="options.html" target="_blank">Options</a>
+    </div>
+    <script type="module" src="./src/popup.ts"></script>
+  </body>
+</html>

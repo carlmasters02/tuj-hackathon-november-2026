@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Humagination — Options</title><link rel="stylesheet" href="./src/ui.css" /></head>
+  <body>
+    <div class="wrap" style="max-width: 560px">
+      <h1>Options</h1>
+      <div class="card">
+        <label for="server">Humagination server</label>
+        <input type="url" id="server" placeholder="http://localhost:3000" />
+        <label for="token">Extension token (from Settings → Extension tokens)</label>
+        <input type="password" id="token" placeholder="hm_ext_…" autocomplete="off" />
+        <label for="domains">Extra AI sites to track (one hostname per line)</label>
+        <textarea id="domains" rows="4" placeholder="example-ai.com"></textarea>
+        <p><button class="primary" id="save">Save</button> <span class="faint" id="msg"></span></p>
+      </div>
+      <div class="card faint">
+        Stored on this device: per-day, per-site active seconds and Think First counts. Never stored or sent: URLs, page titles,
+        page content, prompts, keystrokes. The token can only post daily totals and can be revoked from the website.
+      </div>
+    </div>
+    <script type="module" src="./src/options.ts"></script>
+  </body>
+</html>

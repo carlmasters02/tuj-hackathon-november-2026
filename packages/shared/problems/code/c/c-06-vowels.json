@@ -1,0 +1,43 @@
+{
+  "id": "c-06-vowels",
+  "lang": "c",
+  "concept": "strings",
+  "difficulty": 1,
+  "title": "Count the vowels",
+  "promptMd": "Read one line of text and print how many vowels (`a e i o u`, upper or lower case) it contains.",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "Hello World",
+      "expectedStdout": "3",
+      "hidden": false
+    },
+    {
+      "stdin": "AEIOU aeiou",
+      "expectedStdout": "10",
+      "hidden": false
+    },
+    {
+      "stdin": "rhythm",
+      "expectedStdout": "0",
+      "hidden": true
+    },
+    {
+      "stdin": "Programming in C is fun",
+      "expectedStdout": "6",
+      "hidden": true
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "Read the whole line, including spaces.",
+    "Look at one character at a time.",
+    "Upper-case vowels count too — convert each character to lower case before checking, or check both."
+  ],
+  "conceptNoteMd": "A string is a `char` array ending in `'\\0'`. Read a line with `fgets` (never `gets`).\n\n```c\nchar line[256];\nfgets(line, sizeof line, stdin);\nfor (int i = 0; line[i] != '\\0'; i++) { /* line[i] */ }\n```"
+}

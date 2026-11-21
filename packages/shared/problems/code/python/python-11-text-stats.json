@@ -1,0 +1,37 @@
+{
+  "id": "python-11-text-stats",
+  "lang": "python",
+  "concept": "mini-project",
+  "difficulty": 3,
+  "title": "Mini project: text statistics",
+  "promptMd": "Read all lines until the end of input. Print the number of lines, words (separated by whitespace), characters (not counting newlines) and the longest word (the first one if there's a tie):\n\n```\nlines 2\nwords 6\nchars 25\nlongest hello\n```\nA final newline at the end of the input does not start a new line. Empty lines count as lines.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "hello world\nthis is a test",
+      "expectedStdout": "lines 2\nwords 6\nchars 25\nlongest hello",
+      "hidden": false
+    },
+    {
+      "stdin": "one",
+      "expectedStdout": "lines 1\nwords 1\nchars 3\nlongest one",
+      "hidden": false
+    },
+    {
+      "stdin": "a bb ccc\n\ndddd e",
+      "expectedStdout": "lines 3\nwords 5\nchars 14\nlongest dddd",
+      "hidden": true
+    },
+    {
+      "stdin": "  spaced   out  ",
+      "expectedStdout": "lines 1\nwords 2\nchars 16\nlongest spaced",
+      "hidden": true
+    }
+  ],
+  "hints": [
+    "Read line by line until there's no more input.",
+    "Splitting on whitespace handles several spaces in a row; splitting on a single space doesn't.",
+    "Only replace the longest word when a new word is strictly longer."
+  ],
+  "conceptNoteMd": "Mini projects combine earlier concepts. Plan first: what do you read, what do you store, what do you print?\n\n```python\nimport sys\nfor line in sys.stdin:\n    line = line.rstrip(\"\\n\")\n```"
+}

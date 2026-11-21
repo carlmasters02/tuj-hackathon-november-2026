@@ -1,0 +1,43 @@
+{
+  "id": "python-12-bank-account",
+  "lang": "python",
+  "concept": "mini-project",
+  "difficulty": 3,
+  "title": "Mini project: bank account",
+  "promptMd": "The first line is the starting balance. Each following line is a command until the end of input:\n\n- `deposit X` — add X\n- `withdraw X` — subtract X, but if X is more than the balance print `insufficient funds` and change nothing\n- `balance` — print `balance B`\n\nIf X ≤ 0 for deposit or withdraw, print `invalid amount` and change nothing. Model the account as a **class/struct**.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "100\ndeposit 50\nwithdraw 30\nbalance",
+      "expectedStdout": "balance 120",
+      "hidden": false
+    },
+    {
+      "stdin": "10\nwithdraw 20\nbalance\ndeposit -5\nbalance",
+      "expectedStdout": "insufficient funds\nbalance 10\ninvalid amount\nbalance 10",
+      "hidden": false
+    },
+    {
+      "stdin": "0\ndeposit 1000\nwithdraw 1000\nbalance\nwithdraw 1\nbalance",
+      "expectedStdout": "balance 0\ninsufficient funds\nbalance 0",
+      "hidden": true
+    },
+    {
+      "stdin": "500\nbalance",
+      "expectedStdout": "balance 500",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "class\\s+\\w+",
+      "message": "Model the account as a class."
+    }
+  ],
+  "hints": [
+    "Read the first line separately, then loop over the remaining lines.",
+    "Split each command line into the command word and (maybe) an amount.",
+    "Check for invalid amounts before checking for insufficient funds."
+  ],
+  "conceptNoteMd": "Mini projects combine earlier concepts. Plan first: what do you read, what do you store, what do you print?\n\n```python\nimport sys\nfor line in sys.stdin:\n    line = line.rstrip(\"\\n\")\n```"
+}

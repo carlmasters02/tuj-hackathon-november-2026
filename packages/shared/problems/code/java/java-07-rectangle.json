@@ -1,0 +1,43 @@
+{
+  "id": "java-07-rectangle",
+  "lang": "java",
+  "concept": "structs-classes",
+  "difficulty": 2,
+  "title": "Rectangle",
+  "promptMd": "Read width and height (integers). Store them in a **struct/class** that can compute area and perimeter, then print:\n\n```\narea 12\nperimeter 14\n```",
+  "starterCode": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n    }\n}\n",
+  "tests": [
+    {
+      "stdin": "3 4",
+      "expectedStdout": "area 12\nperimeter 14",
+      "hidden": false
+    },
+    {
+      "stdin": "5 5",
+      "expectedStdout": "area 25\nperimeter 20",
+      "hidden": false
+    },
+    {
+      "stdin": "1 10",
+      "expectedStdout": "area 10\nperimeter 22",
+      "hidden": true
+    },
+    {
+      "stdin": "7 2",
+      "expectedStdout": "area 14\nperimeter 18",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "class\\s+(?!Main\\b)\\w+",
+      "message": "Define a separate class (not Main) for the rectangle."
+    }
+  ],
+  "hints": [
+    "The struct/class needs two fields: width and height.",
+    "Perimeter is the distance all the way around: two widths plus two heights.",
+    "Output format matters: a lowercase word, one space, the number."
+  ],
+  "conceptNoteMd": "Extra classes can live in Main.java as long as they aren't `public`.\n\n```java\nclass Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    int sum() { return x + y; }\n}\n```"
+}

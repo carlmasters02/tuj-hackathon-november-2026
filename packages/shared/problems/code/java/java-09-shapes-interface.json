@@ -1,0 +1,47 @@
+{
+  "id": "java-09-shapes-interface",
+  "lang": "java",
+  "concept": "oop-interfaces",
+  "difficulty": 3,
+  "title": "Shapes with an interface",
+  "promptMd": "Define an interface `Shape` with a method `double area()`, and classes `Circle` and `Square` that implement it. Input: `n`, then n lines like `circle 1` or `square 2`. Print each area with two decimals, one per line.",
+  "starterCode": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n    }\n}\n",
+  "tests": [
+    {
+      "stdin": "2\nsquare 2\ncircle 1",
+      "expectedStdout": "4.00\n3.14",
+      "hidden": false
+    },
+    {
+      "stdin": "1\nsquare 3",
+      "expectedStdout": "9.00",
+      "hidden": false
+    },
+    {
+      "stdin": "1\ncircle 2.5",
+      "expectedStdout": "19.63",
+      "hidden": true
+    },
+    {
+      "stdin": "3\nsquare 1.5\nsquare 0\ncircle 0",
+      "expectedStdout": "2.25\n0.00\n0.00",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "interface\\s+Shape\\b",
+      "message": "Declare interface Shape."
+    },
+    {
+      "regex": "implements\\s+Shape",
+      "message": "Your shape classes should implement Shape."
+    }
+  ],
+  "hints": [
+    "An interface only declares the method; each class provides its own area().",
+    "Store each shape in a variable of type Shape, then call area() on it.",
+    "Use Math.PI for π and format with two decimal places."
+  ],
+  "conceptNoteMd": "An interface is a contract: any class that `implements` it must provide its methods.\n\n```java\ninterface Greeter { String greet(); }\nclass English implements Greeter {\n    public String greet() { return \"hello\"; }\n}\nGreeter g = new English();\n```"
+}

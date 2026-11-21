@@ -1,0 +1,6 @@
+[
+  { "id": "two-1", "topic": "Two-step equations", "difficulty": 1, "prompt": "2x + 3 = 11", "kind": "equation", "start": "2x + 3 = 11", "variable": "x", "finalForm": "isolated", "answer": "x = 4" },
+  { "id": "two-2", "topic": "Two-step equations", "difficulty": 1, "prompt": "\\frac{x}{3} - 2 = 4", "kind": "equation", "start": "x/3 - 2 = 4", "variable": "x", "finalForm": "isolated", "answer": "x = 18" },
+  { "id": "two-3", "topic": "Two-step equations", "difficulty": 2, "prompt": "-4x + 6 = 22", "kind": "equation", "start": "-4x + 6 = 22", "variable": "x", "finalForm": "isolated", "answer": "x = -4" },
+  { "id": "two-4", "topic": "Two-step equations", "difficulty": 2, "prompt": "\\frac{2x - 5}{3} = 7", "kind": "equation", "start": "(2x - 5)/3 = 7", "variable": "x", "finalForm": "isolated", "answer": "x = 13" }
+]

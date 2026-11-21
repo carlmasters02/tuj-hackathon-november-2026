@@ -1,0 +1,43 @@
+{
+  "id": "java-12-bank-account",
+  "lang": "java",
+  "concept": "mini-project",
+  "difficulty": 3,
+  "title": "Mini project: bank account",
+  "promptMd": "The first line is the starting balance. Each following line is a command until the end of input:\n\n- `deposit X` — add X\n- `withdraw X` — subtract X, but if X is more than the balance print `insufficient funds` and change nothing\n- `balance` — print `balance B`\n\nIf X ≤ 0 for deposit or withdraw, print `invalid amount` and change nothing. Model the account as a **class/struct**.",
+  "starterCode": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n    }\n}\n",
+  "tests": [
+    {
+      "stdin": "100\ndeposit 50\nwithdraw 30\nbalance",
+      "expectedStdout": "balance 120",
+      "hidden": false
+    },
+    {
+      "stdin": "10\nwithdraw 20\nbalance\ndeposit -5\nbalance",
+      "expectedStdout": "insufficient funds\nbalance 10\ninvalid amount\nbalance 10",
+      "hidden": false
+    },
+    {
+      "stdin": "0\ndeposit 1000\nwithdraw 1000\nbalance\nwithdraw 1\nbalance",
+      "expectedStdout": "balance 0\ninsufficient funds\nbalance 0",
+      "hidden": true
+    },
+    {
+      "stdin": "500\nbalance",
+      "expectedStdout": "balance 500",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "class\\s+(?!Main\\b)\\w+",
+      "message": "Model the account as its own class."
+    }
+  ],
+  "hints": [
+    "Read the first line separately, then loop over the remaining lines.",
+    "Split each command line into the command word and (maybe) an amount.",
+    "Check for invalid amounts before checking for insufficient funds."
+  ],
+  "conceptNoteMd": "```java\nScanner in = new Scanner(System.in);\nwhile (in.hasNextLine()) {\n    String line = in.nextLine();\n}\n```"
+}

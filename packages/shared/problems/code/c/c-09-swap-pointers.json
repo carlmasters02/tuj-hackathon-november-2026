@@ -1,0 +1,53 @@
+{
+  "id": "c-09-swap-pointers",
+  "lang": "c",
+  "concept": "pointers-memory",
+  "difficulty": 2,
+  "title": "Swap with pointers",
+  "promptMd": "Write `void swap(int *a, int *b)` that swaps two integers through pointers. Read two integers, call `swap(&x, &y)`, then print them (now swapped) separated by a space.",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "1 2",
+      "expectedStdout": "2 1",
+      "hidden": false
+    },
+    {
+      "stdin": "-7 7",
+      "expectedStdout": "7 -7",
+      "hidden": false
+    },
+    {
+      "stdin": "5 5",
+      "expectedStdout": "5 5",
+      "hidden": true
+    },
+    {
+      "stdin": "0 100",
+      "expectedStdout": "100 0",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "void\\s+swap\\s*\\(\\s*int\\s*\\*\\s*\\w+\\s*,\\s*int\\s*\\*\\s*\\w+\\s*\\)",
+      "message": "Define void swap(int *a, int *b)."
+    },
+    {
+      "regex": "swap\\s*\\(\\s*&\\s*\\w+\\s*,\\s*&\\s*\\w+\\s*\\)",
+      "message": "Call swap with the addresses of your variables: swap(&x, &y)."
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "Inside swap, *a means 'the int that a points to'.",
+    "You need a temporary variable to hold one value while you overwrite it.",
+    "If the numbers don't swap, check that you assign through *a and *b, not to a and b themselves."
+  ],
+  "conceptNoteMd": "A pointer stores an address. `&x` is x's address; `*p` is the value at p.\n\n```c\nvoid add_one(int *p) { *p = *p + 1; }\nint x = 5;\nadd_one(&x);   // x is now 6\n```"
+}

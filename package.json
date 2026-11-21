@@ -1,0 +1,30 @@
+{
+  "name": "humagination",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm -r build",
+    "lint": "node scripts/no-ai-check.mjs && node scripts/no-service-role-in-client.mjs && eslint . && pnpm -r typecheck",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "gen:keys": "node scripts/gen-keys.mjs",
+    "seed": "pnpm --filter web seed",
+    "check:ai": "node scripts/no-ai-check.mjs",
+    "gen:exercises": "node scripts/gen-exercises.mjs",
+    "gen:types": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_REF\" > packages/shared/src/db.types.ts",
+    "test:authz": "vitest run apps/web/test/authz.test.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "eslint": "9.39.5",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.73.0",
+    "vitest": "3.2.7",
+    "@types/node": "22.20.5",
+    "tsx": "4.23.15"
+  }
+}

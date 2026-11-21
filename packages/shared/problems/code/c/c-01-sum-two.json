@@ -1,0 +1,43 @@
+{
+  "id": "c-01-sum-two",
+  "lang": "c",
+  "concept": "io-variables",
+  "difficulty": 1,
+  "title": "Sum of two numbers",
+  "promptMd": "Read two integers from one line (separated by a space) and print their sum.\n\n**Input:** `3 4`  \n**Output:** `7`",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "3 4",
+      "expectedStdout": "7",
+      "hidden": false
+    },
+    {
+      "stdin": "-5 10",
+      "expectedStdout": "5",
+      "hidden": false
+    },
+    {
+      "stdin": "1000000 2000000",
+      "expectedStdout": "3000000",
+      "hidden": true
+    },
+    {
+      "stdin": "0 0",
+      "expectedStdout": "0",
+      "hidden": true
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "First get the whole line, then split it into two pieces.",
+    "Each piece is text until you convert it to a number.",
+    "Print only the number — no extra words, no prompt text."
+  ],
+  "conceptNoteMd": "Declare a variable with its type. `scanf` reads into a variable's address.\n\n```c\nint age;\nscanf(\"%d\", &age);\nprintf(\"%d\\n\", age + 1);\n```"
+}

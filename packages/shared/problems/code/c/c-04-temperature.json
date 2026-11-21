@@ -1,0 +1,49 @@
+{
+  "id": "c-04-temperature",
+  "lang": "c",
+  "concept": "functions",
+  "difficulty": 1,
+  "title": "Celsius to Fahrenheit",
+  "promptMd": "Write a **function** that converts Celsius to Fahrenheit (`F = C × 9/5 + 32`). Read a Celsius value (may have decimals), call your function, and print the result with exactly one decimal place.\n\n**Input:** `100`  \n**Output:** `212.0`",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "100",
+      "expectedStdout": "212.0",
+      "hidden": false
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "32.0",
+      "hidden": false
+    },
+    {
+      "stdin": "-40",
+      "expectedStdout": "-40.0",
+      "hidden": true
+    },
+    {
+      "stdin": "36.6",
+      "expectedStdout": "97.9",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "\\b(double|float)\\s+(?!main\\b)\\w+\\s*\\([^)]*\\)\\s*\\{",
+      "message": "Write a function (other than main) that returns a double."
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "Read the input as a decimal number, not an integer.",
+    "Watch out for integer division: 9/5 is 1 in C and Java. Make at least one side a decimal.",
+    "Format the output to one decimal place instead of printing the raw value."
+  ],
+  "conceptNoteMd": "Declare the return type and parameter types. Define it above `main`.\n\n```c\nint area_of_square(int side) {\n    return side * side;\n}\n```"
+}

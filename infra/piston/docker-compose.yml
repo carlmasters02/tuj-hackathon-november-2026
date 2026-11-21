@@ -1,0 +1,26 @@
+# Piston code runner — Humagination's default CodeRunner (CODE_RUNNER=piston).
+# Bound to 127.0.0.1 only: the browser never talks to it, only Next.js route handlers do.
+# Piston needs privileged mode for its own isolation (namespaces + cgroups); keep it on a
+# private host/network. After `docker compose up -d`, install runtimes: ./install-runtimes.sh
+services:
+  piston:
+    image: ghcr.io/engineer-man/piston:latest
+    container_name: hm-piston
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "127.0.0.1:2000:2000"
+    environment:
+      - PISTON_RUN_TIMEOUT=5000
+      - PISTON_COMPILE_TIMEOUT=10000
+      - PISTON_OUTPUT_MAX_SIZE=65536
+      - PISTON_MAX_PROCESS_COUNT=64
+      - PISTON_DISABLE_NETWORKING=true
+      - PISTON_RUN_MEMORY_LIMIT=268435456
+    volumes:
+      - piston-packages:/piston/packages
+    tmpfs:
+      - /piston/jobs:exec,uid=1000,gid=1000,mode=711
+      - /tmp:exec
+volumes:
+  piston-packages:

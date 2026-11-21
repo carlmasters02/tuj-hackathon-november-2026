@@ -1,0 +1,43 @@
+{
+  "id": "python-03-sum-to-n",
+  "lang": "python",
+  "concept": "loops",
+  "difficulty": 1,
+  "title": "Add up 1 to n",
+  "promptMd": "Read a non-negative integer `n` and print `1 + 2 + … + n` (print `0` when `n` is 0). Use a loop — that's the point of this exercise.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "5",
+      "expectedStdout": "15",
+      "hidden": false
+    },
+    {
+      "stdin": "1",
+      "expectedStdout": "1",
+      "hidden": false
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "0",
+      "hidden": true
+    },
+    {
+      "stdin": "100",
+      "expectedStdout": "5050",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "\\b(for|while)\\b",
+      "message": "Use a loop to add the numbers one at a time."
+    }
+  ],
+  "hints": [
+    "You need a running total that starts at 0.",
+    "The loop variable should take every value from 1 up to and including n.",
+    "If n is 0 the loop should not run at all — check your loop condition."
+  ],
+  "conceptNoteMd": "`for` repeats over a range; `while` repeats while a condition holds.\n\n```python\nfor i in range(3):      # 0, 1, 2\n    print(i)\n\ncount = 3\nwhile count > 0:\n    count -= 1\n```"
+}

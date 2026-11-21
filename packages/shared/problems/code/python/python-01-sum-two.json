@@ -1,0 +1,37 @@
+{
+  "id": "python-01-sum-two",
+  "lang": "python",
+  "concept": "io-variables",
+  "difficulty": 1,
+  "title": "Sum of two numbers",
+  "promptMd": "Read two integers from one line (separated by a space) and print their sum.\n\n**Input:** `3 4`  \n**Output:** `7`",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "3 4",
+      "expectedStdout": "7",
+      "hidden": false
+    },
+    {
+      "stdin": "-5 10",
+      "expectedStdout": "5",
+      "hidden": false
+    },
+    {
+      "stdin": "1000000 2000000",
+      "expectedStdout": "3000000",
+      "hidden": true
+    },
+    {
+      "stdin": "0 0",
+      "expectedStdout": "0",
+      "hidden": true
+    }
+  ],
+  "hints": [
+    "First get the whole line, then split it into two pieces.",
+    "Each piece is text until you convert it to a number.",
+    "Print only the number — no extra words, no prompt text."
+  ],
+  "conceptNoteMd": "Variables hold values. `input()` returns a line of **text**; convert with `int()` or `float()`.\n\n```python\nname = input()\nage = int(input())\nprint(name, age + 1)\n```"
+}

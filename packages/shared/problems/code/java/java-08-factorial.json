@@ -1,0 +1,43 @@
+{
+  "id": "java-08-factorial",
+  "lang": "java",
+  "concept": "recursion",
+  "difficulty": 2,
+  "title": "Recursive factorial",
+  "promptMd": "Read `n` (0 ≤ n ≤ 12) and print `n!`. Solve it **recursively** — loops are not allowed.",
+  "starterCode": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n    }\n}\n",
+  "tests": [
+    {
+      "stdin": "5",
+      "expectedStdout": "120",
+      "hidden": false
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "1",
+      "hidden": false
+    },
+    {
+      "stdin": "10",
+      "expectedStdout": "3628800",
+      "hidden": true
+    },
+    {
+      "stdin": "12",
+      "expectedStdout": "479001600",
+      "hidden": true
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\b(for|while|do)\\b",
+      "message": "No loops here — the function should call itself instead."
+    }
+  ],
+  "hints": [
+    "Every recursive function needs a base case that returns without calling itself.",
+    "What is 0! ? That's your base case.",
+    "n! can be written using (n-1)!."
+  ],
+  "conceptNoteMd": "```java\nstatic void countdown(int n) {\n    if (n == 0) return;      // base case\n    System.out.println(n);\n    countdown(n - 1);       // smaller problem\n}\n```"
+}

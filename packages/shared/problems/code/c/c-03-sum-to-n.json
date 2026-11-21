@@ -1,0 +1,49 @@
+{
+  "id": "c-03-sum-to-n",
+  "lang": "c",
+  "concept": "loops",
+  "difficulty": 1,
+  "title": "Add up 1 to n",
+  "promptMd": "Read a non-negative integer `n` and print `1 + 2 + … + n` (print `0` when `n` is 0). Use a loop — that's the point of this exercise.",
+  "starterCode": "#include <stdio.h>\n\nint main(void) {\n    \n    return 0;\n}\n",
+  "tests": [
+    {
+      "stdin": "5",
+      "expectedStdout": "15",
+      "hidden": false
+    },
+    {
+      "stdin": "1",
+      "expectedStdout": "1",
+      "hidden": false
+    },
+    {
+      "stdin": "0",
+      "expectedStdout": "0",
+      "hidden": true
+    },
+    {
+      "stdin": "100",
+      "expectedStdout": "5050",
+      "hidden": true
+    }
+  ],
+  "requiredPatterns": [
+    {
+      "regex": "\\b(for|while|do)\\b",
+      "message": "Use a loop to add the numbers one at a time."
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "regex": "\\bgets\\s*\\(",
+      "message": "gets() is unsafe and removed from C — use fgets() instead."
+    }
+  ],
+  "hints": [
+    "You need a running total that starts at 0.",
+    "The loop variable should take every value from 1 up to and including n.",
+    "If n is 0 the loop should not run at all — check your loop condition."
+  ],
+  "conceptNoteMd": "```c\nfor (int i = 0; i < 3; i++) {   // 0, 1, 2\n    printf(\"%d\\n\", i);\n}\nint count = 3;\nwhile (count > 0) count--;\n```"
+}

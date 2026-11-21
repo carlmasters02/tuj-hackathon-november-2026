@@ -1,0 +1,4 @@
+[
+  { "id": "der-1", "topic": "Derivatives of polynomials", "difficulty": 2, "prompt": "\\frac{d}{dx}\\left(3x^2 + 2x\\right)", "kind": "derivative", "start": "3x^2 + 2x", "variable": "x", "finalForm": "polynomial", "answer": "6x + 2" },
+  { "id": "der-2", "topic": "Derivatives of polynomials", "difficulty": 3, "prompt": "\\frac{d}{dx}\\left(x^3 - 4x^2 + 7\\right)", "kind": "derivative", "start": "x^3 - 4x^2 + 7", "variable": "x", "finalForm": "polynomial", "answer": "3x^2 - 8x" }
+]

@@ -1,0 +1,4 @@
+[
+  { "id": "frac-1", "topic": "Simplifying fractions", "difficulty": 1, "prompt": "\\text{Simplify } \\frac{12}{18}", "kind": "expression", "start": "12/18", "variable": "x", "finalForm": "fraction_lowest", "answer": "2/3" },
+  { "id": "frac-2", "topic": "Simplifying fractions", "difficulty": 2, "prompt": "\\text{Simplify } \\frac{2x + 4}{2}", "kind": "expression", "start": "(2x + 4)/2", "variable": "x", "finalForm": "no_division", "answer": "x + 2" }
+]

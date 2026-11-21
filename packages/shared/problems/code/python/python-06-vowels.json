@@ -1,0 +1,37 @@
+{
+  "id": "python-06-vowels",
+  "lang": "python",
+  "concept": "strings",
+  "difficulty": 1,
+  "title": "Count the vowels",
+  "promptMd": "Read one line of text and print how many vowels (`a e i o u`, upper or lower case) it contains.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "Hello World",
+      "expectedStdout": "3",
+      "hidden": false
+    },
+    {
+      "stdin": "AEIOU aeiou",
+      "expectedStdout": "10",
+      "hidden": false
+    },
+    {
+      "stdin": "rhythm",
+      "expectedStdout": "0",
+      "hidden": true
+    },
+    {
+      "stdin": "Programming in C is fun",
+      "expectedStdout": "6",
+      "hidden": true
+    }
+  ],
+  "hints": [
+    "Read the whole line, including spaces.",
+    "Look at one character at a time.",
+    "Upper-case vowels count too — convert each character to lower case before checking, or check both."
+  ],
+  "conceptNoteMd": "Strings are sequences of characters.\n\n```python\ns = input()\nfor ch in s:\n    if ch.isdigit():\n        print(\"digit\", ch)\nprint(s.upper())\n```"
+}

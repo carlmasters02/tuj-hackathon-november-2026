@@ -1,0 +1,37 @@
+{
+  "id": "python-09-fizzbuzz",
+  "lang": "python",
+  "concept": "loops",
+  "difficulty": 2,
+  "title": "FizzBuzz",
+  "promptMd": "Read `n` and print the numbers 1 to n, one per line — but print `Fizz` for multiples of 3, `Buzz` for multiples of 5, and `FizzBuzz` for multiples of both.",
+  "starterCode": "# Read input with input(), print output with print().\n\n",
+  "tests": [
+    {
+      "stdin": "5",
+      "expectedStdout": "1\n2\nFizz\n4\nBuzz",
+      "hidden": false
+    },
+    {
+      "stdin": "15",
+      "expectedStdout": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
+      "hidden": false
+    },
+    {
+      "stdin": "1",
+      "expectedStdout": "1",
+      "hidden": true
+    },
+    {
+      "stdin": "16",
+      "expectedStdout": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16",
+      "hidden": true
+    }
+  ],
+  "hints": [
+    "Loop over every number from 1 to n inclusive.",
+    "The order of your checks matters.",
+    "Check 'multiple of both' before checking 3 or 5 on their own."
+  ],
+  "conceptNoteMd": "`for` repeats over a range; `while` repeats while a condition holds.\n\n```python\nfor i in range(3):      # 0, 1, 2\n    print(i)\n\ncount = 3\nwhile count > 0:\n    count -= 1\n```"
+}
