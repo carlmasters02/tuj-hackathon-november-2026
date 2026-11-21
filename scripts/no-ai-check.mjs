@@ -5,11 +5,11 @@
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import { BANNED_HOSTS, isBannedPackage } from "./banned-ai.mjs";
+import { BANNED_HOSTS, isBannedPackage, isBannedPyPackage } from "./banned-ai.mjs";
 
 const root = join(fileURLToPath(import.meta.url), "..", "..");
 const SKIP_DIRS = new Set(["node_modules", ".next", "dist", ".git", "coverage", "pyodide", ".turbo"]);
-const SRC_EXT = /\.(m?[jt]sx?|cjs|json|html|css|sql|ya?ml)$/;
+const SRC_EXT = /\.(m?[jt]sx?|cjs|json|html|css|sql|ya?ml|py)$/;
 // These files legitimately contain the banned strings (they define the rules).
 const SELF = new Set([join("scripts", "banned-ai.mjs"), join("scripts", "no-ai-check.mjs")]);
 
@@ -53,13 +53,35 @@ if (existsSync(lock)) {
   }
 }
 
+// 2b. Python dependency manifests anywhere in the repo
+for (const f of files) {
+  const rel = relative(root, f);
+  const base = rel.split(/[\\/]/).pop();
+  if (/^requirements.*\.txt$/i.test(base) || base === "Pipfile") {
+    for (const line of readFileSync(f, "utf8").split(/\r?\n/)) {
+      const name = line.replace(/#.*/, "").trim().split(/[\s=<>!~[;@]/)[0];
+      if (name && isBannedPyPackage(name)) problems.push(`${rel}: Python dependency "${name}" is banned`);
+    }
+  } else if (base === "pyproject.toml") {
+    for (const m of readFileSync(f, "utf8").matchAll(/["']([A-Za-z0-9_.-]+)\s*(?:[<>=!~[;].*?)?["']/g))
+      if (isBannedPyPackage(m[1])) problems.push(`${rel}: Python dependency "${m[1]}" is banned`);
+  }
+}
+
 // 3. source files: imports of banned packages + banned hostnames
 const IMPORT_RE = /(?:from\s+|import\s*\(\s*|require\s*\(\s*|import\s+)["']([^"'./][^"']*)["']/g;
 for (const f of files) {
   const rel = relative(root, f);
   if (SELF.has(rel) || !SRC_EXT.test(f) || rel === "pnpm-lock.yaml") continue;
-  if (!/^(apps|packages|scripts|supabase|infra)[\\/]/.test(rel)) continue;
+  const isPy = rel.endsWith(".py");
+  if (!isPy && !/^(apps|packages|scripts|supabase|infra)[\\/]/.test(rel)) continue;
   const text = readFileSync(f, "utf8");
+  if (isPy) {
+    for (const m of text.matchAll(/^\s*(?:from\s+([\w.]+)\s+import|import\s+([\w.]+))/gm)) {
+      const mod = (m[1] ?? m[2]).split(".")[0];
+      if (isBannedPyPackage(mod)) problems.push(`${rel}: imports banned Python module "${mod}"`);
+    }
+  }
   for (const m of text.matchAll(IMPORT_RE)) {
     const spec = m[1];
     const name = spec.startsWith("@") ? spec.split("/").slice(0, 2).join("/") : spec.split("/")[0];

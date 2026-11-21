@@ -9,9 +9,9 @@ const Body = z.object({ email: z.string().trim().toLowerCase().email().max(254),
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const ip = clientIp(req);
-  rateLimit("login", `ip:${ip}`);
+  await rateLimit("login", `ip:${ip}`);
   const { email, password } = await parseJson(req, Body, 10_000);
-  rateLimit("login", `email:${email}`);
+  await rateLimit("login", `email:${email}`);
 
   const until = await lockedUntil(email);
   if (until) throw new HttpError(429, `Too many failed attempts. Try again after ${until.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}.`, { retryAfter: Math.ceil((until.getTime() - Date.now()) / 1000) });

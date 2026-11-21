@@ -12,7 +12,7 @@ const Body = z.object({ username: UsernameSchema, action: z.enum(["invite", "acc
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const { username, action } = await parseJson(req, Body, 1_000);
   const { data: other } = await supabaseAdmin().from("profiles").select("id").eq("username", username).maybeSingle();
   if (!other || other.id === user.id) throw new HttpError(404, "User not found");

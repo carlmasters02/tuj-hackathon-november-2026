@@ -30,8 +30,8 @@ export default async function Home() {
             gallery that keeps your art out of AI training sets. Everything runs on plain, honest code — no AI anywhere.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href={user ? "/dashboard" : "/signup"} className="btn btn-primary px-6 py-3 text-base">
-              {user ? "Go to your dashboard" : "Start creating"}
+            <Link href={user || process.env.HM_DEMO_MODE === "true" ? "/dashboard" : "/signup"} className="btn btn-primary px-6 py-3 text-base">
+              {user ? "Go to your dashboard" : process.env.HM_DEMO_MODE === "true" ? "Try the demo" : "Start creating"}
             </Link>
             <Link href="/verify" className="btn px-6 py-3 text-base">Verify a certificate</Link>
           </div>

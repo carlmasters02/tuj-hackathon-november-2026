@@ -32,6 +32,30 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 - **Storage** has no `storage.objects` policies at all, so only the service role can read or write. The RLS test asserts that even owners can't download originals directly.
 - **Extension tokens:** `hm_ext_` + 32 random bytes (base64url), stored as `SHA-256(pepper ‖ token)`. At most 5 active tokens per user. The token hash column isn't readable by the `authenticated` role.
 
+## Backend & deployment
+- **Supabase region:** `ap-southeast-1` (Singapore). Vercel functions are pinned to `sin1` to keep database round-trips short.
+- **Explicit grants instead of automatic API access** (migration 4): the API roles start with nothing, and every table/column privilege is listed in one file. Row Level Security then decides which rows. Default privileges for future tables are revoked too.
+- **`rls_auto_enable()`**, installed by Supabase's "auto-enable RLS" option, had EXECUTE for API roles. Migration 5 revokes it, which resolved the security advisor warning.
+- **Remaining advisor notes are intended:** `login_attempts` and `rate_limits` have RLS with no policies because they're server-only. "Unused index" notes are expected on a new database.
+- **Rate limits live in Postgres** (`hm_take_token`, a row-locked token bucket) because serverless instances don't share memory. If the database is unreachable, the app falls back to a per-instance bucket. Keys are SHA-256 hashes.
+- **Secrets never pass through chat or CI:** `scripts/setup-env.mjs` generates them straight into `.env.local` (mode 600), and Vercel receives them through "Import .env".
+
+## Demo mode
+- **What it is:** `HM_DEMO_MODE=true` replaces the login step with an automatic sign-in to a shared `demo` account. It exists so the app can be tested before email delivery or Google sign-in are configured.
+- **How it signs in:** `/auth/demo` mints a magic-link token with the service role and redeems it on the server. No password exists and no email is sent.
+- **What stays the same:** the result is a normal Supabase session, so row-level security, grants and rate limits behave exactly as in production.
+- **Safety:**
+  - Off by default, and `/auth/demo` returns 404 unless it's on.
+  - A banner is shown on every page while it's on.
+  - The demo account can't be deleted.
+  - The `next` parameter only accepts same-site paths.
+
+## Google sign-in
+- **Server-initiated PKCE flow:** `/api/auth/oauth` calls `signInWithOAuth({ skipBrowserRedirect: true })`. The verifier lives in an httpOnly cookie, and the route refuses to return any URL whose host isn't our Supabase project.
+- **Same-site redirects only:** `/auth/callback` and `/welcome` accept `next` only as a same-site relative path (`safeNext`), which blocks open redirects.
+- **Username for Google sign-ups:** the signup trigger generates a temporary username from the email (`username_chosen = false`). Signed-in pages redirect to `/welcome` until the user picks a real one, which they can do **once**. Clients can't change `username` or `username_chosen` (column grants).
+- **Shared rate limit:** the Google start route is rate-limited with the login bucket.
+
 ## Provenance editor
 - **Event positions use a plain-text projection**: `doc.textBetween(0, size, "\n", hardBreak → "\n")`, the same call in browser and server. The server can then replay and verify without ProseMirror steps. Formatting-only changes (bold, etc.) don't alter the text and aren't logged as events.
 - **Each transaction becomes one event** via a minimal prefix/suffix diff. `from`/`to` mark the replaced range in the *old* text, `text` is the inserted text, and `len = text.length`.

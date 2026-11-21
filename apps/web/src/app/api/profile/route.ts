@@ -16,7 +16,7 @@ const Body = z
 export const PATCH = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const b = await parseJson(req, Body, 5_000);
   // user-scoped client: RLS + column grants restrict this to the caller's own allowed columns
   const sb = await supabaseServer();

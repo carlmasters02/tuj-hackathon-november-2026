@@ -1,7 +1,9 @@
 import "server-only";
 import { NextResponse, type NextRequest } from "next/server";
 import { z, ZodError } from "zod";
+import { createHash } from "node:crypto";
 import { RATE_RULES, TokenBucketLimiter } from "@hm/shared/ratelimit";
+import { supabaseAdmin } from "./supabase/admin";
 
 export class HttpError extends Error {
   constructor(public status: number, message: string, public extra?: Record<string, unknown>) {
@@ -26,15 +28,32 @@ export function api<A extends unknown[]>(fn: (...args: A) => Promise<Response>) 
   };
 }
 
-const limiters = new Map<string, TokenBucketLimiter>();
+const memLimiters = new Map<string, TokenBucketLimiter>();
 export type RateRule = keyof typeof RATE_RULES;
 
-/** Throws 429 when the bucket for (rule, key) is empty. */
-export function rateLimit(rule: RateRule, key: string) {
-  let l = limiters.get(rule);
-  if (!l) limiters.set(rule, (l = new TokenBucketLimiter(RATE_RULES[rule])));
-  const r = l.take(key);
-  if (!r.ok) throw new HttpError(429, "Too many requests — slow down a little.", { retryAfter: Math.ceil(r.retryAfterMs / 1000) });
+/**
+ * Throws 429 when the bucket for (rule, key) is empty. Buckets live in Postgres
+ * (`hm_take_token`) so every serverless instance shares them; keys are hashed so no raw IPs or
+ * emails are stored. If the database can't be reached we fall back to a per-instance bucket.
+ */
+export async function rateLimit(rule: RateRule, key: string): Promise<void> {
+  const r = RATE_RULES[rule];
+  let retryMs: number;
+  try {
+    const { data, error } = await supabaseAdmin().rpc("hm_take_token", {
+      p_key: createHash("sha256").update(`${rule}|${key}`).digest("hex"),
+      p_capacity: r.capacity,
+      p_window_seconds: r.windowMs / 1000,
+    });
+    if (error || typeof data !== "number") throw error ?? new Error("bad rate-limit response");
+    retryMs = data;
+  } catch {
+    let l = memLimiters.get(rule);
+    if (!l) memLimiters.set(rule, (l = new TokenBucketLimiter(r)));
+    const t = l.take(key);
+    retryMs = t.ok ? 0 : t.retryAfterMs;
+  }
+  if (retryMs > 0) throw new HttpError(429, "Too many requests — slow down a little.", { retryAfter: Math.ceil(retryMs / 1000) });
 }
 
 export function clientIp(req: NextRequest | Request): string {
