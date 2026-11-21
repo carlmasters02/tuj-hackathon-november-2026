@@ -13,7 +13,7 @@ export async function lockedUntil(email: string): Promise<Date | null> {
   return t && t > new Date() ? t : null;
 }
 
-export async function recordFailure(email: string): Promise<void> {
+export async function recordFailure(email: string): Promise<{ failures: number; lockedUntil: Date | null }> {
   const key = keyFor(email);
   const sb = supabaseAdmin();
   const { data } = await sb.from("login_attempts").select("failures, locked_until").eq("key", key).maybeSingle();
@@ -22,6 +22,7 @@ export async function recordFailure(email: string): Promise<void> {
   const failures = (expired ? 0 : (data?.failures ?? 0)) + 1;
   const locked_until = failures >= MAX_FAILURES ? new Date(Date.now() + LOCK_MINUTES * 60_000).toISOString() : null;
   await sb.from("login_attempts").upsert({ key, failures: locked_until ? 0 : failures, locked_until, updated_at: new Date().toISOString() });
+  return { failures, lockedUntil: locked_until ? new Date(locked_until) : null };
 }
 
 export async function clearFailures(email: string): Promise<void> {

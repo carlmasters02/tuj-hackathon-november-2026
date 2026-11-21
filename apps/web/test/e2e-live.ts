@@ -78,7 +78,11 @@ const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
   r = await req("/api/docs");
   check("logged out → API refuses", r.status === 401);
   r = await req("/api/auth/login", { method: "POST", json: { email, password: password + "x" } });
-  check("wrong password rejected", r.status === 401);
+  const wrong = await jsonOf(r);
+  check("wrong password rejected", r.status === 401, wrong.reason ? `${wrong.reason}: ${wrong.error}` : wrong.error);
+  r = await req("/api/auth/login", { method: "POST", json: { email: `nobody.${tag}@gmail.com`, password } });
+  const none = await jsonOf(r);
+  check("unknown email gets a clear reason (detailed mode) or the generic message", r.status === 401, none.reason ? `${none.reason}: ${none.error}` : none.error);
   r = await req("/api/auth/login", { method: "POST", json: { email, password } });
   check("login with email + password", r.status === 200);
 

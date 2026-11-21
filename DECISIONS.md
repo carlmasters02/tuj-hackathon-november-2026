@@ -60,6 +60,12 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 - **`detection_api.py` (Marquine-Silva) is on `main` but not deployed**, because Vercel builds only `apps/web`. It needs authentication, upload limits and honest wording before it could be hosted.
 - **`his-feature-name`** contains nothing that isn't already on `main` (a stale branch).
 
+## Login & sign-up diagnostics
+- **Reason codes:** every auth failure has one (e.g. `login.no_account`, `login.wrong_password`, `rate_limit.loginIp`, `signup.password_breached`). It's logged on the server as `[auth] <reason> net=<hashed IP>`, never with the email or password.
+- **`HM_DETAILED_AUTH_ERRORS=true`** shows users the precise explanation and the reason code, including whether an email has an account (via the service-role-only `hm_auth_status`, migration 7). That makes account enumeration possible, so switch it off for a public launch; users then get generic messages. Password-rule messages are always specific, because they reveal nothing about other people.
+- **Rate limits suited to shared Wi-Fi:** a whole venue often shares one public IP. Login allows 30/min per network plus 5/min per email; signup allows 10/min per network plus 3/min per username.
+- **Missing server configuration** (no `.env.local` when a teammate runs the app locally) now names the missing variables in development or detailed mode, instead of "Something went wrong".
+
 ## Forms
 - **Every `<form>` uses `method="post"`.** Login, signup and username submit buttons are disabled until React has hydrated. Without this, pressing Enter before the JavaScript loaded made the browser do a native GET, putting the email and password in the URL (and so in history and server logs).
 - **StepCheck inputs are disabled until hydration** (placeholder "Loading…"), so lines typed early aren't silently discarded.
