@@ -173,7 +173,7 @@ Do not widen collection to full URLs, prompts, keystrokes or page contents. Do n
 ## 8. UI, typography and brand conventions
 
 - Light parchment/cream surfaces, navy text and primary buttons, sun/orange accents; use existing semantic CSS tokens in `app/globals.css`, not one-off palette replacements.
-- Bricolage Grotesque is the established self-hosted UI font; long-form writing uses a book serif. Fonts must satisfy the same-origin CSP. Do not add third-party font without reviewing privacy/CSP and existing assets.
+- Source Sans 3 is the self-hosted UI body font and Playfair Display is the self-hosted application/display-heading font. A separate book-serif token serves long-form writing. Preserve the writer's document-font catalog, including Bricolage, and scope application display rules so they do not override published MLA/APA documents or replay text. Fonts must satisfy the same-origin CSP; do not add a third-party font origin.
 - Reuse `btn`, `chip`, `card`, `input`, `HubHeader`, `IndexRow`, `TitleField` where appropriate and `lucide-react` for icons.
 - Every responsive grid starts with `grid-cols-1`; use `min-w-0` around shrinking text/math and wrapping flex groups. A math display may itself scroll, but the document must not overflow horizontally at 320px.
 - Use native links/buttons, visible focus, accessible names, semantic headings and visible status text rather than color alone. Avoid nested `<main>` landmarks.

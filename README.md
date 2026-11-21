@@ -143,8 +143,8 @@ The whole UI takes its colors from the logo: soft **parchment** backgrounds, **n
 All text colors meet WCAG AA contrast (≥ 4.5:1) on both parchment and cream. Tokens live in `apps/web/src/app/globals.css`, and the extension mirrors them in `apps/extension/src/ui.css`.
 
 **Type:**
-- **Bricolage Grotesque** (self-hosted from npm, because the CSP allows same-origin fonts only) for the friendly UI.
-- A book serif for long-form writing: the editor, the replay player and published pieces.
+- **Source Sans 3** for UI body text and **Playfair Display** for application/display headings, both self-hosted from pinned OFL-1.1 Fontsource packages because the CSP allows same-origin fonts only.
+- A book serif for long-form writing: the editor, the replay player and published pieces. Writer and publication font choices stay independent of the application display font, including the existing Bricolage option.
 
 **Logo and app icons** are generated from one source file, `apps/web/brand/humagination-logo.png`, by `pnpm --filter web brand`. The script turns the white background into transparency without white halos.
 
