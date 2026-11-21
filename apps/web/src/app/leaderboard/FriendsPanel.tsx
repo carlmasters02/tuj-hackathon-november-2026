@@ -20,7 +20,7 @@ export function FriendsPanel({ links }: { me: string; links: { other: string; in
   return (
     <section className="card space-y-3 p-5">
       <h2 className="text-lg font-extrabold">Friends</h2>
-      <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (name) void act(name.toLowerCase(), "invite"); }}>
+      <form method="post" className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (name) void act(name.toLowerCase(), "invite"); }}>
         <input className="input" placeholder="username" value={name} onChange={(e) => setName(e.target.value)} maxLength={20} />
         <button className="btn">Invite</button>
       </form>

@@ -14,13 +14,13 @@ export const GET = api(async () => {
   return json({ docs: (data ?? []).map((d) => ({ id: d.id, title: dec(d.id, "title", d.title_enc), status: d.status, updatedAt: d.updated_at })) });
 });
 
-const Body = z.object({ title: z.string().trim().max(200).default("Untitled") }).strict();
+const Body = z.object({ title: z.string().trim().max(200).default("Untitled"), genre: z.enum(["free", "research-paper", "argumentative", "poetry"]).default("free") }).strict();
 
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
   await rateLimit("api", user.id);
-  const { title } = await parseJson(req, Body, 2_000);
+  const { title, genre } = await parseJson(req, Body, 2_000);
   const id = randomUUID();
   const { error } = await supabaseAdmin().from("documents").insert({
     id,
@@ -28,6 +28,7 @@ export const POST = api(async (req: NextRequest) => {
     title_enc: enc(id, "title", title || "Untitled"),
     content_enc: enc(id, "content", JSON.stringify(EMPTY_DOC)),
     text_enc: enc(id, "text", ""),
+    genre,
   });
   if (error) throw error;
   return json({ id });

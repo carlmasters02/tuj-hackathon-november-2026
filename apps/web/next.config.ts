@@ -6,6 +6,13 @@ const config: NextConfig = {
   transpilePackages: ["@hm/shared"],
   serverExternalPackages: ["sharp"],
   experimental: { serverActions: { bodySizeLimit: "1mb" } },
+  async redirects() {
+    return [
+      { source: "/gallery", destination: "/portfolio", permanent: false },
+      { source: "/gallery/upload", destination: "/portfolio/upload", permanent: false },
+      { source: "/gallery/:id", destination: "/portfolio/work/:id", permanent: false },
+    ];
+  },
   async headers() {
     return [
       {

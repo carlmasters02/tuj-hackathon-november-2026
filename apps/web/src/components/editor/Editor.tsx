@@ -10,6 +10,13 @@ import { postJson, ApiError } from "@/lib/client";
 import { PasteHighlight, RedPenFocus, redpenFocusKey } from "./extensions";
 import { ProvenanceRecorder, type RecorderStatus } from "./recorder";
 import { RedPenPanel } from "./RedPenPanel";
+import { DefaultTitleWarning, TitleField } from "@/components/TitleField";
+import { GenreCoach } from "./GenreCoach";
+import { isDefaultTitle, type Genre } from "@hm/shared/genres";
+import { HIDDEN_RULES } from "@hm/shared/genreCoach";
+import type { RuleId } from "@hm/shared/redpen";
+
+const NONE: RuleId[] = [];
 
 interface Props {
   docId: string;
@@ -17,6 +24,7 @@ interface Props {
   content: unknown;
   lastSeq: number;
   headHash: string | null;
+  genre?: Genre;
 }
 
 const STATUS_TEXT: Record<RecorderStatus, string> = {
@@ -27,7 +35,7 @@ const STATUS_TEXT: Record<RecorderStatus, string> = {
   conflict: "Stopped",
 };
 
-export function Editor({ docId, title: initialTitle, content, lastSeq, headHash }: Props) {
+export function Editor({ docId, title: initialTitle, content, lastSeq, headHash, genre = "free" }: Props) {
   const router = useRouter();
   const recorder = useRef<ProvenanceRecorder | null>(null);
   const [status, setStatus] = useState<RecorderStatus>("idle");
@@ -37,6 +45,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
   const [pasteWarnings, setPasteWarnings] = useState(0);
   const [finalizing, setFinalizing] = useState(false);
   const [confirmFinalize, setConfirmFinalize] = useState(false);
+  const titleRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -92,6 +101,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
     setFinalizing(true);
     setError(null);
     try {
+      await saveTitle();
       const drained = await recorder.current.drain();
       if (!drained) throw new Error(recorder.current.error ?? "Couldn't save the latest edits — check your connection.");
       const r = await postJson<{ certId: string }>(`/api/docs/${docId}/finalize`, {});
@@ -106,27 +116,33 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <input
-            className="min-w-0 flex-1 bg-transparent text-3xl font-extrabold tracking-tight outline-none placeholder:text-fg-faint"
-            value={title}
-            maxLength={200}
-            onChange={(e) => setTitle(e.target.value)}
-            onBlur={saveTitle}
-            aria-label="Title"
-          />
-          {!confirmFinalize ? (
-            <button className="btn btn-primary" disabled={finalizing || status === "conflict" || !text.trim()} onClick={() => setConfirmFinalize(true)}>
+        <div className="flex flex-wrap items-end gap-3">
+          <TitleField value={title} onChange={setTitle} onBlur={saveTitle} maxLength={200} inputRef={titleRef} />
+          {!confirmFinalize && (
+            <button className="btn btn-primary h-[3.4rem] px-5" disabled={finalizing || status === "conflict" || !text.trim()} onClick={() => setConfirmFinalize(true)}>
               Finalize & certify
             </button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-fg-dim">This publishes the text and its replay at a public link.</span>
-              <button className="btn btn-primary" disabled={finalizing} onClick={finalize}>{finalizing ? "Verifying…" : "Confirm"}</button>
-              <button className="btn btn-ghost" onClick={() => setConfirmFinalize(false)}>Cancel</button>
-            </div>
           )}
         </div>
+        {confirmFinalize && (
+          <div className="hm-pop space-y-3 rounded-2xl border border-line bg-surface p-4 shadow-[var(--shadow-soft)]">
+            {isDefaultTitle(title) && (
+              <DefaultTitleWarning
+                title={title}
+                onChange={() => {
+                  setConfirmFinalize(false);
+                  titleRef.current?.focus();
+                  titleRef.current?.select();
+                }}
+              />
+            )}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="mr-auto text-sm text-fg-dim">This publishes the text and its replay at a public link.</span>
+              <button className="btn btn-ghost" onClick={() => setConfirmFinalize(false)} disabled={finalizing}>Cancel</button>
+              <button className="btn btn-primary" disabled={finalizing} onClick={finalize}>{finalizing ? "Verifying…" : isDefaultTitle(title) ? "Publish anyway" : "Confirm"}</button>
+            </div>
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-2 text-xs text-fg-faint">
           <span className={`inline-block h-2 w-2 rounded-full ${status === "conflict" ? "bg-redpen" : status === "offline" ? "bg-warn" : "bg-ok"}`} />
           <span>{STATUS_TEXT[status]}</span>
@@ -136,12 +152,13 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
         </div>
         {error && <p role="alert" className="rounded-md border border-redpen/50 bg-redpen-dim p-3 text-sm">{error} {status === "conflict" && <button className="link" onClick={() => location.reload()}>Reload</button>}</p>}
         <Toolbar editor={editor} />
-        <div className="hm-editor card min-h-[60vh] px-6 py-5 sm:px-10">
+        <div className={`hm-editor card min-h-[60vh] px-6 py-5 sm:px-10 ${genre === "poetry" ? "hm-poem" : ""}`}>
           <EditorContent editor={editor} />
         </div>
       </div>
-      <div className="lg:sticky lg:top-20 lg:self-start">
-        <RedPenPanel text={text} onFocusFlag={focusFlag} />
+      <div className="space-y-5 lg:sticky lg:top-20 lg:self-start">
+        <GenreCoach genre={genre} text={text} />
+        <RedPenPanel text={text} onFocusFlag={focusFlag} hide={(HIDDEN_RULES[genre] as RuleId[] | undefined) ?? NONE} />
       </div>
     </div>
   );

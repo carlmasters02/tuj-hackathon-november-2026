@@ -1,11 +1,13 @@
 @import "tailwindcss";
-@import "@fontsource-variable/nunito";
+@import "@fontsource-variable/bricolage-grotesque";
 
 /*
  * Humagination theme — taken from the logo:
  *   navy  #1B2B5E (wordmark)      plum  #2B2142 (bulb outline)
  *   sun   #FBCB3D (fingerprint)   flame #FF9F1C (light rays)
  * on soft parchment. Text colours are ≥ 4.5:1 against both canvas and surface.
+ * Signature motif: the fingerprint inside the bulb — contour lines behind section headers and the
+ * "Human-made" seal on authentic work. Nowhere else.
  */
 @theme {
   /* surfaces */
@@ -33,7 +35,7 @@
   --color-warn: #9a5a00;
   --color-warn-dim: #ff9f1c26;
 
-  --font-sans: "Nunito Variable", ui-rounded, ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  --font-sans: "Bricolage Grotesque Variable", ui-rounded, ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
   /* long-form writing keeps a book serif: it reads like ink on paper */
   --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, ui-serif, serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
@@ -131,6 +133,8 @@ body {
 .hm-editor .ProseMirror ol { list-style: decimal; padding-left: 1.4em; }
 .hm-editor .ProseMirror blockquote { border-left: 4px solid var(--color-sun); padding-left: 1em; color: var(--color-fg-dim); }
 .hm-editor .ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--color-fg-faint); float: left; height: 0; pointer-events: none; }
+/* poems: one paragraph per line, an empty line between stanzas */
+.hm-poem .ProseMirror p { margin: 0; min-height: 1.8em; }
 .hm-paste-external { background: var(--color-warn-dim); box-shadow: inset 0 -2px 0 var(--color-flame); }
 .hm-redpen-mark { text-decoration: underline wavy var(--color-redpen); text-underline-offset: 4px; }
 .hm-redpen-focus { background: var(--color-redpen-dim); box-shadow: inset 0 -2px 0 var(--color-redpen); }
@@ -142,6 +146,23 @@ body {
 .cm-editor { font-size: 14px; }
 .katex { font-size: 1.1em; }
 
+/* page header with faint fingerprint contours */
+.hm-hero { position: relative; isolation: isolate; }
+.hm-hero > .hm-whorl { position: absolute; z-index: -1; right: -1rem; top: -3rem; width: min(26rem, 70vw); color: var(--color-fg); opacity: 0.07; pointer-events: none; }
+
+/* the fingerprint may bleed past the column only where the page has room for it */
+@media (min-width: 1280px) { .hm-hero > .hm-whorl { right: -2rem; } }
+
+/* index rows used by hub pages */
+.hm-index-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.5rem 2rem; align-items: center; padding: 1.5rem 0.25rem; border-top: 1px solid var(--color-line); text-decoration: none; transition: background-color .2s ease, padding .2s ease; }
+.hm-index-row:last-child { border-bottom: 1px solid var(--color-line); }
+.hm-index-row:hover, .hm-index-row:focus-visible { background: linear-gradient(90deg, var(--color-sun-soft), transparent 70%); padding-left: 1rem; }
+.hm-index-row .hm-index-title { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 750; letter-spacing: -0.03em; line-height: 1; font-stretch: 85%; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* menus answer the click/hover that opened them */
+@keyframes hm-pop { from { opacity: 0; transform: translateY(-4px) scale(0.985); } to { opacity: 1; transform: none; } }
+.hm-pop { animation: hm-pop 140ms cubic-bezier(.2,.8,.2,1); transform-origin: top center; }

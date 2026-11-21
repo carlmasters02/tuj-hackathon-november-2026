@@ -5,12 +5,12 @@ import bulb from "@/assets/bulb.png";
 import { Icon, type IconName } from "@/components/Icon";
 
 const FEATURES: { icon: IconName; title: string; tag: string; body: string; href: string }[] = [
-  { icon: "sigma", title: "StepCheck", tag: "Math tutor", body: "Write your solution one line at a time. StepCheck finds the first line that stops being equivalent and tells you what kind of mistake it is — never the answer.", href: "/tutor/math" },
+  { icon: "sigma", title: "StepCheck", tag: "Algebra to Calculus 3", body: "Write your solution one line at a time, from algebra through integrals and probability. StepCheck finds the first line that stops being equivalent and tells you what kind of mistake it is — never the answer.", href: "/tutor/math" },
   { icon: "code", title: "Code Dojo", tag: "Python · C · Java", body: "Exercises graded against hidden tests on our own sandbox. Compiler errors explained in plain English. Hints unlock slowly. There's no 'show solution' button.", href: "/tutor/code" },
   { icon: "pencil", title: "Written Here", tag: "Authentic editor", body: "Every keystroke goes into a hash-chained log. Finalize to get a signed certificate and a replay anyone can watch. Pasted text shows up — honestly.", href: "/write" },
-  { icon: "pilcrow", title: "RedPen", tag: "Writing coach", body: "Flags passive voice, filler, clichés and 40-word sentences, and explains why. It never rewrites a word for you.", href: "/write" },
+  { icon: "pilcrow", title: "RedPen", tag: "Writing coach", body: "Flags passive voice, filler, clichés and sentences over 30 words, and coaches research papers, essays and poems on their own terms. It never rewrites a word for you.", href: "/tutor/writing" },
   { icon: "clock", title: "Reliance Tracker", tag: "Chrome extension", body: "Counts only active minutes on AI sites — no URLs, no prompts, no keystrokes. Think First asks for your own attempt before you ask a bot.", href: "/dashboard" },
-  { icon: "frame", title: "Protected Gallery", tag: "Art · writing · music", body: "AI crawlers get a 403. Originals are encrypted and never served. Every preview carries the viewer's name, so leaks are traceable.", href: "/gallery" },
+  { icon: "frame", title: "Portfolio", tag: "Art · writing · music", body: "Draw in the studio or compose in the composer, and the whole process is on record. Only work that passes the checks earns the Human-made seal. AI crawlers get a 403.", href: "/portfolio" },
 ];
 
 export default async function Home() {
@@ -27,7 +27,7 @@ export default async function Home() {
           </h1>
           <p className="max-w-xl text-lg leading-relaxed text-fg-dim">
             Humagination is a tutor that cheers you on but never hands you the answer, an editor that proves you wrote it, and a
-            gallery that keeps your art out of AI training sets. Everything runs on plain, honest code — no AI anywhere.
+            portfolio where only work made by a human earns the seal. Everything runs on plain, honest code — no AI anywhere.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href={user || process.env.HM_DEMO_MODE === "true" ? "/dashboard" : "/signup"} className="btn btn-primary px-6 py-3 text-base">

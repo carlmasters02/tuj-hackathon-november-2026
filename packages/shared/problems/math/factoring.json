@@ -1,6 +1,50 @@
 [
-  { "id": "fac-1", "topic": "Factoring quadratics", "difficulty": 1, "prompt": "\\text{Factor } x^2 + 5x + 6", "kind": "expression", "start": "x^2 + 5x + 6", "variable": "x", "finalForm": "factored", "answer": "(x + 2)(x + 3)" },
-  { "id": "fac-2", "topic": "Factoring quadratics", "difficulty": 2, "prompt": "\\text{Factor } x^2 - 9", "kind": "expression", "start": "x^2 - 9", "variable": "x", "finalForm": "factored", "answer": "(x - 3)(x + 3)" },
-  { "id": "fac-3", "topic": "Factoring quadratics", "difficulty": 2, "prompt": "\\text{Factor } 2x^2 + 7x + 3", "kind": "expression", "start": "2x^2 + 7x + 3", "variable": "x", "finalForm": "factored", "answer": "(2x + 1)(x + 3)" },
-  { "id": "fac-4", "topic": "Factoring quadratics", "difficulty": 3, "prompt": "\\text{Solve } x^2 - x - 12 = 0", "kind": "equation", "start": "x^2 - x - 12 = 0", "variable": "x", "finalForm": "solutions", "answer": "x = 4 or x = -3" }
+  {
+    "id": "fac-1",
+    "topic": "Factoring quadratics",
+    "difficulty": 1,
+    "prompt": "\\text{Factor } x^2 + 5x + 6",
+    "kind": "expression",
+    "start": "x^2 + 5x + 6",
+    "variable": "x",
+    "finalForm": "factored",
+    "answer": "(x + 2)(x + 3)",
+    "subject": "algebra"
+  },
+  {
+    "id": "fac-2",
+    "topic": "Factoring quadratics",
+    "difficulty": 2,
+    "prompt": "\\text{Factor } x^2 - 9",
+    "kind": "expression",
+    "start": "x^2 - 9",
+    "variable": "x",
+    "finalForm": "factored",
+    "answer": "(x - 3)(x + 3)",
+    "subject": "algebra"
+  },
+  {
+    "id": "fac-3",
+    "topic": "Factoring quadratics",
+    "difficulty": 2,
+    "prompt": "\\text{Factor } 2x^2 + 7x + 3",
+    "kind": "expression",
+    "start": "2x^2 + 7x + 3",
+    "variable": "x",
+    "finalForm": "factored",
+    "answer": "(2x + 1)(x + 3)",
+    "subject": "algebra"
+  },
+  {
+    "id": "fac-4",
+    "topic": "Factoring quadratics",
+    "difficulty": 3,
+    "prompt": "\\text{Solve } x^2 - x - 12 = 0",
+    "kind": "equation",
+    "start": "x^2 - x - 12 = 0",
+    "variable": "x",
+    "finalForm": "solutions",
+    "answer": "x = 4 or x = -3",
+    "subject": "algebra"
+  }
 ]

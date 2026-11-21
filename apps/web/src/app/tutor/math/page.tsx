@@ -2,42 +2,58 @@ import Link from "next/link";
 import { MATH_PROBLEMS } from "@hm/shared/math/problems";
 import { requireUserPage } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
-import { TexServer } from "@/components/math/TexServer";
+import { MATH_SUBJECTS } from "@/lib/sitemap";
+import { HubHeader, IndexRow, Progress } from "@/components/Hub";
 
-export const metadata = { title: "StepCheck" };
+export const metadata = { title: "Math" };
 
-export default async function MathIndex() {
+export default async function MathHub() {
   await requireUserPage("/tutor/math");
   const sb = await supabaseServer();
-  const { data } = await sb.from("tutor_progress").select("problem_id, solved_at, failed_attempts");
-  const prog = new Map((data ?? []).map((r) => [r.problem_id, r]));
-  const topics = [...new Set(MATH_PROBLEMS.map((p) => p.topic))];
-  const solved = MATH_PROBLEMS.filter((p) => prog.get(p.id)?.solved_at).length;
+  const { data, error } = await sb
+    .from("tutor_progress")
+    .select("problem_id")
+    .not("solved_at", "is", null);
+  const solved = new Set((data ?? []).map((r) => r.problem_id));
+
+  const bySubject = new Map<string, typeof MATH_PROBLEMS>();
+  for (const p of MATH_PROBLEMS) {
+    bySubject.set(p.subject, [...(bySubject.get(p.subject) ?? []), p]);
+  }
+
+  const totalSolved = MATH_PROBLEMS.filter((p) => solved.has(p.id)).length;
+  const nextSubject = MATH_SUBJECTS.find((s) =>
+    (bySubject.get(s.slug) ?? []).some((p) => !solved.has(p.id))
+  );
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="h-page">StepCheck</h1>
-          <p className="mt-1 max-w-2xl text-sm text-fg-dim">Work each problem one line at a time. StepCheck checks every line against the one before and points to the first one that goes wrong. It never shows the answer.</p>
-        </div>
-        <span className="chip">{solved}/{MATH_PROBLEMS.length} solved</span>
+    <div>
+      <HubHeader title="Math" intro="One step per line. StepCheck checks each line against the one before and tells you what kind of mistake it is." back={{ href: "/tutor", label: "Tutor" }} />
+
+      <div className="my-4 flex flex-wrap items-center justify-between gap-3">
+        <Progress done={totalSolved} total={MATH_PROBLEMS.length} label="Math problems solved" />
+        {nextSubject && (
+          <Link href={`/tutor/math/${nextSubject.slug}`} className="btn btn-primary">
+            {totalSolved === 0 ? "Start with " : "Continue with "}{nextSubject.label}
+          </Link>
+        )}
       </div>
-      {topics.map((t) => (
-        <section key={t} className="space-y-2">
-          <h2 className="text-xs uppercase tracking-wide text-fg-faint">{t}</h2>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {MATH_PROBLEMS.filter((p) => p.topic === t).map((p) => {
-              const s = prog.get(p.id);
-              return (
-                <Link key={p.id} href={`/tutor/math/${p.id}`} className="card flex items-center justify-between gap-3 p-4 hover:border-fg-faint">
-                  <TexServer tex={p.prompt} />
-                  <span className={`shrink-0 text-xs ${s?.solved_at ? "text-ok" : "text-fg-faint"}`}>{s?.solved_at ? "✓ solved" : "●".repeat(p.difficulty)}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      ))}
+      {error && <p className="text-sm">Couldn’t load your progress, so the counts below may be wrong.</p>}
+
+      <nav aria-label="Math subjects">
+        {MATH_SUBJECTS.map((s) => {
+          const list = bySubject.get(s.slug) ?? [];
+          return (
+            <IndexRow
+              key={s.slug}
+              href={`/tutor/math/${s.slug}`}
+              title={s.label}
+              note={s.note}
+              status={list.length ? <Progress done={list.filter((p) => solved.has(p.id)).length} total={list.length} label={`${s.label} solved`} /> : "Coming soon"}
+            />
+          );
+        })}
+      </nav>
     </div>
   );
 }

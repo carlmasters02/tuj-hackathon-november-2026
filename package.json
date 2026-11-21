@@ -16,7 +16,8 @@
     "check:ai": "node scripts/no-ai-check.mjs",
     "gen:exercises": "node scripts/gen-exercises.mjs",
     "gen:types": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_REF\" > packages/shared/src/db.types.ts",
-    "test:authz": "vitest run apps/web/test/authz.test.ts"
+    "test:authz": "vitest run apps/web/test/authz.test.ts",
+    "e2e:live": "pnpm --filter web e2e:live"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

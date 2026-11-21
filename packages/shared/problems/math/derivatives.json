@@ -1,4 +1,86 @@
 [
-  { "id": "der-1", "topic": "Derivatives of polynomials", "difficulty": 2, "prompt": "\\frac{d}{dx}\\left(3x^2 + 2x\\right)", "kind": "derivative", "start": "3x^2 + 2x", "variable": "x", "finalForm": "polynomial", "answer": "6x + 2" },
-  { "id": "der-2", "topic": "Derivatives of polynomials", "difficulty": 3, "prompt": "\\frac{d}{dx}\\left(x^3 - 4x^2 + 7\\right)", "kind": "derivative", "start": "x^3 - 4x^2 + 7", "variable": "x", "finalForm": "polynomial", "answer": "3x^2 - 8x" }
+  {
+    "id": "der-1",
+    "topic": "Derivatives of polynomials",
+    "difficulty": 2,
+    "prompt": "\\frac{d}{dx}\\left(3x^2 + 2x\\right)",
+    "kind": "derivative",
+    "start": "3x^2 + 2x",
+    "variable": "x",
+    "finalForm": "polynomial",
+    "answer": "6x + 2",
+    "subject": "calc-1"
+  },
+  {
+    "id": "der-2",
+    "topic": "Derivatives of polynomials",
+    "difficulty": 3,
+    "prompt": "\\frac{d}{dx}\\left(x^3 - 4x^2 + 7\\right)",
+    "kind": "derivative",
+    "start": "x^3 - 4x^2 + 7",
+    "variable": "x",
+    "finalForm": "polynomial",
+    "answer": "3x^2 - 8x",
+    "subject": "calc-1"
+  },
+  {
+    "id": "der-3",
+    "subject": "calc-1",
+    "topic": "Product rule",
+    "difficulty": 2,
+    "prompt": "\\frac{d}{dx}\\left(x^2 \\sin x\\right)",
+    "kind": "derivative",
+    "start": "x^2 sin(x)",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "2x sin(x) + x^2 cos(x)"
+  },
+  {
+    "id": "der-4",
+    "subject": "calc-1",
+    "topic": "Chain rule",
+    "difficulty": 2,
+    "prompt": "\\frac{d}{dx}\\,(3x + 1)^4",
+    "kind": "derivative",
+    "start": "(3x + 1)^4",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "12 (3x + 1)^3"
+  },
+  {
+    "id": "der-5",
+    "subject": "calc-1",
+    "topic": "Chain rule",
+    "difficulty": 2,
+    "prompt": "\\frac{d}{dx}\\,e^{2x}",
+    "kind": "derivative",
+    "start": "e^(2x)",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "2 e^(2x)"
+  },
+  {
+    "id": "der-6",
+    "subject": "calc-1",
+    "topic": "Chain rule",
+    "difficulty": 3,
+    "prompt": "\\frac{d}{dx}\\,\\ln\\!\\left(x^2 + 1\\right)",
+    "kind": "derivative",
+    "start": "log(x^2 + 1)",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "2x/(x^2 + 1)"
+  },
+  {
+    "id": "der-7",
+    "subject": "calc-1",
+    "topic": "Quotient rule",
+    "difficulty": 3,
+    "prompt": "\\frac{d}{dx}\\,\\frac{x}{x + 1}",
+    "kind": "derivative",
+    "start": "x/(x + 1)",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "1/(x + 1)^2"
+  }
 ]

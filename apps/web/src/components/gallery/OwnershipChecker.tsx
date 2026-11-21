@@ -5,7 +5,7 @@ export function OwnershipChecker() {
   const [result, setResult] = useState<any>(null);
   const [busy, setBusy] = useState(false);
   return (
-    <form
+    <form method="post"
       className="card space-y-3 p-5"
       onSubmit={async (e) => {
         e.preventDefault();

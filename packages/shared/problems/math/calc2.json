@@ -1,0 +1,110 @@
+[
+  {
+    "id": "int-1",
+    "subject": "calc-2",
+    "topic": "Antiderivatives",
+    "difficulty": 1,
+    "prompt": "\\int \\left(3x^2 + 4x\\right)\\,dx",
+    "kind": "antiderivative",
+    "start": "3x^2 + 4x",
+    "variable": "x",
+    "finalForm": "antiderivative",
+    "answer": "x^3 + 2x^2 + C"
+  },
+  {
+    "id": "int-2",
+    "subject": "calc-2",
+    "topic": "Antiderivatives",
+    "difficulty": 1,
+    "prompt": "\\int \\cos x\\,dx",
+    "kind": "antiderivative",
+    "start": "cos(x)",
+    "variable": "x",
+    "finalForm": "antiderivative",
+    "answer": "sin(x) + C"
+  },
+  {
+    "id": "int-3",
+    "subject": "calc-2",
+    "topic": "Substitution",
+    "difficulty": 2,
+    "prompt": "\\int e^{3x}\\,dx",
+    "kind": "antiderivative",
+    "start": "e^(3x)",
+    "variable": "x",
+    "finalForm": "antiderivative",
+    "answer": "e^(3x)/3 + C"
+  },
+  {
+    "id": "int-4",
+    "subject": "calc-2",
+    "topic": "Substitution",
+    "difficulty": 2,
+    "prompt": "\\int \\frac{2x}{x^2 + 1}\\,dx",
+    "kind": "antiderivative",
+    "start": "2x/(x^2 + 1)",
+    "variable": "x",
+    "finalForm": "antiderivative",
+    "answer": "log(x^2 + 1) + C"
+  },
+  {
+    "id": "int-5",
+    "subject": "calc-2",
+    "topic": "Integration by parts",
+    "difficulty": 3,
+    "prompt": "\\int x e^{x}\\,dx",
+    "kind": "antiderivative",
+    "start": "x e^x",
+    "variable": "x",
+    "finalForm": "antiderivative",
+    "answer": "x e^x - e^x + C"
+  },
+  {
+    "id": "dint-1",
+    "subject": "calc-2",
+    "topic": "Definite integrals",
+    "difficulty": 1,
+    "prompt": "\\int_0^2 3x^2\\,dx",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "8"
+  },
+  {
+    "id": "dint-2",
+    "subject": "calc-2",
+    "topic": "Definite integrals",
+    "difficulty": 2,
+    "prompt": "\\int_0^{\\pi} \\sin x\\,dx",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "2"
+  },
+  {
+    "id": "ser-1",
+    "subject": "calc-2",
+    "topic": "Series",
+    "difficulty": 2,
+    "prompt": "\\sum_{n=0}^{\\infty} \\left(\\tfrac{1}{2}\\right)^n",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "2"
+  },
+  {
+    "id": "ser-2",
+    "subject": "calc-2",
+    "topic": "Series",
+    "difficulty": 3,
+    "prompt": "\\sum_{n=1}^{\\infty} 3\\left(\\tfrac{1}{4}\\right)^n",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "1"
+  }
+]

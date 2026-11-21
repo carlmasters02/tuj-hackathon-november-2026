@@ -122,6 +122,24 @@ describe.skipIf(!enabled)("RLS isolation between two users", () => {
     expect(rpc.error).not.toBeNull();
   });
 
+  it("comments: post as yourself on visible works only; author or work owner can delete", async () => {
+    const { data: pub } = await admin.from("gallery_works").insert({ owner_id: A.id, kind: "art", title: "public piece", published: true }).select("id").single();
+    const { data: priv } = await admin.from("gallery_works").select("id").eq("owner_id", A.id).eq("published", false).limit(1).single();
+    const ok = await B.c.from("comments").insert({ work_id: pub!.id, author_id: B.id, body: "nice" }).select("id").single();
+    expect(ok.error).toBeNull();
+    const asA = await B.c.from("comments").insert({ work_id: pub!.id, author_id: A.id, body: "impersonation" });
+    expect(asA.error).not.toBeNull();
+    const onPrivate = await B.c.from("comments").insert({ work_id: priv!.id, author_id: B.id, body: "sneaky" });
+    expect(onPrivate.error).not.toBeNull();
+    const edit = await B.c.from("comments").update({ body: "edited" }).eq("id", ok.data!.id);
+    expect(edit.error).not.toBeNull(); // comments can't be edited
+    const { data: aComment } = await admin.from("comments").insert({ work_id: pub!.id, author_id: A.id, body: "owner says hi" }).select("id").single();
+    const bDeletesA = await B.c.from("comments").delete().eq("id", aComment!.id).select("id");
+    expect(bDeletesA.data ?? []).toHaveLength(0);
+    const ownerModerates = await A.c.from("comments").delete().eq("id", ok.data!.id).select("id");
+    expect(ownerModerates.data).toHaveLength(1);
+  });
+
   it("anonymous visitors see only public data", async () => {
     const anon = createClient(URL_!, ANON!, { auth: { persistSession: false } });
     expect((await anon.from("documents").select("*")).data ?? []).toHaveLength(0);

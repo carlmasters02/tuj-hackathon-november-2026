@@ -4,6 +4,7 @@ import { toTex } from "@hm/shared/math/parse";
 import type { Hint, PublicMathProblem } from "@hm/shared/math/types";
 import { postJson, ApiError } from "@/lib/client";
 import { useActiveTime } from "@/hooks/useActiveTime";
+import { useHydrated } from "@/hooks/useHydrated";
 import { Tex } from "./Tex";
 
 type Status = "ok" | "error" | "parse_error" | "pending" | "unchecked";
@@ -31,18 +32,19 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
   const [solved, setSolved] = useState(initiallySolved);
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
   const active = useActiveTime();
+  const hydrated = useHydrated();
 
   const previews = useMemo(
     () =>
       lines.map((l) => {
         if (!l.trim()) return null;
         try {
-          return toTex(l, problem.variable);
+          return toTex(l, problem.variable, problem.kind === "antiderivative" ? [...(problem.symbols ?? []), "C"] : problem.symbols ?? []);
         } catch {
           return null;
         }
       }),
-    [lines, problem.variable],
+    [lines, problem.variable, problem.kind, problem.symbols],
   );
 
   const edit = (i: number, v: string) => {
@@ -119,7 +121,8 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
                   }}
                   className="min-w-0 flex-1 bg-transparent font-mono text-base outline-none placeholder:text-fg-faint"
                   value={l}
-                  placeholder={i === 0 ? (problem.kind === "equation" ? "e.g. 2x = 11 - 3" : "your first step") : "next step"}
+                  placeholder={!hydrated ? "Loading…" : i === 0 ? (problem.kind === "equation" ? "e.g. 2x = 11 - 3" : "your first step") : "next step"}
+                  disabled={!hydrated}
                   maxLength={300}
                   spellCheck={false}
                   autoComplete="off"
@@ -149,7 +152,7 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
       </ol>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button className="btn btn-primary" onClick={check} disabled={busy}>{busy ? "Checking…" : "Check my steps"}</button>
+        <button className="btn btn-primary" onClick={check} disabled={!hydrated || busy}>{busy ? "Checking…" : "Check my steps"}</button>
         <button className="btn btn-ghost" onClick={() => addLine(lines.length - 1)}>+ Line</button>
         <span className="text-xs text-fg-faint">Enter = new line · Ctrl/⌘+Enter = check · use * for times, ^ for powers, / for fractions</span>
       </div>

@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { z } from "zod";
-import { checkSteps, getMathProblem, publicProblem, MAX_LINES } from "@hm/shared/math/index";
+import { checkSteps, getMathProblem, MAX_LINES } from "@hm/shared/math/index";
 import { api, assertSameOrigin, HttpError, json, parseJson, rateLimit } from "@/lib/http";
 import { requireUser } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
@@ -18,7 +18,7 @@ export const POST = api(async (req: NextRequest) => {
   if (!problem) throw new HttpError(404, "Unknown problem");
   const prog = await getProgress(user.id, problem.id);
   const tier = Math.min(3, Math.max(1, prog.hint_tier)) as 1 | 2 | 3;
-  const result = checkSteps(publicProblem(problem), body.lines, tier);
+  const result = checkSteps(problem, body.lines, tier);
   if (result.firstError === null) return json({ hints: [] });
   if (tier >= 2) {
     await supabaseAdmin().from("tutor_progress").update({ hints_used: Math.max(prog.hints_used, tier - 1) }).eq("user_id", user.id).eq("problem_id", problem.id);

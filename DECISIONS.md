@@ -50,6 +50,26 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
   - The demo account can't be deleted.
   - The `next` parameter only accepts same-site paths.
 
+## Team contributions
+- **`feature/art-gallery` (dasbristy997-ux, "Add artwork comments UI"):** the idea is adopted, but the commit isn't merged as-is.
+  - Its comments lived only in React state: never saved, invisible to others, author always "You".
+  - It was based on the pre-rebrand commit and used theme tokens that no longer exist.
+  - It reformatted the whole page, conflicting with every later change.
+
+  Instead, migration 6 adds a `comments` table with row-level security: read where the work is visible, post as yourself on visible works, delete as author or work owner, no edits. The API and component keep the original UI and copy, and the commit credits the author as co-author.
+- **`detection_api.py` (Marquine-Silva) is on `main` but not deployed**, because Vercel builds only `apps/web`. It needs authentication, upload limits and honest wording before it could be hosted.
+- **`his-feature-name`** contains nothing that isn't already on `main` (a stale branch).
+
+## Login & sign-up diagnostics
+- **Reason codes:** every auth failure has one (e.g. `login.no_account`, `login.wrong_password`, `rate_limit.loginIp`, `signup.password_breached`). It's logged on the server as `[auth] <reason> net=<hashed IP>`, never with the email or password.
+- **`HM_DETAILED_AUTH_ERRORS=true`** shows users the precise explanation and the reason code, including whether an email has an account (via the service-role-only `hm_auth_status`, migration 7). That makes account enumeration possible, so switch it off for a public launch; users then get generic messages. Password-rule messages are always specific, because they reveal nothing about other people.
+- **Rate limits suited to shared Wi-Fi:** a whole venue often shares one public IP. Login allows 30/min per network plus 5/min per email; signup allows 10/min per network plus 3/min per username.
+- **Missing server configuration** (no `.env.local` when a teammate runs the app locally) now names the missing variables in development or detailed mode, instead of "Something went wrong".
+
+## Forms
+- **Every `<form>` uses `method="post"`.** Login, signup and username submit buttons are disabled until React has hydrated. Without this, pressing Enter before the JavaScript loaded made the browser do a native GET, putting the email and password in the URL (and so in history and server logs).
+- **StepCheck inputs are disabled until hydration** (placeholder "Loading…"), so lines typed early aren't silently discarded.
+
 ## Google sign-in
 - **Server-initiated PKCE flow:** `/api/auth/oauth` calls `signInWithOAuth({ skipBrowserRedirect: true })`. The verifier lives in an httpOnly cookie, and the route refuses to return any URL whose host isn't our Supabase project.
 - **Same-site redirects only:** `/auth/callback` and `/welcome` accept `next` only as a same-site relative path (`safeNext`), which blocks open redirects.
@@ -116,3 +136,14 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 
 ## Seed
 - The seeded certificate comes from a **synthetic typing log** (human-like cadence with typos fixed). Its title says "(seeded demo)" so it can't pass for a real attestation.
+
+## Layout v2: Dashboard, Tutor, Portfolio (2026-11-21)
+- **Navigation** is three tabs. Tutor and Portfolio open a menu on hover (with a chevron button for keyboard and touch), and clicking the tab opens its hub page. `/gallery/*` redirects permanently to `/portfolio/*`.
+- **"Authentic" means "made here with a passing record".** We can't detect AI in an uploaded file without AI (and detectors are unreliable anyway), so the Human-made seal is earned only by work created in the app's own recorded tools: the editor (writing), the drawing studio (art) and the composer (music). Uploads are allowed in Art and Music but are never sealed, and the work page says why.
+- **Studio art is rendered on the server from the stroke log** (SVG → sharp → the normal art pipeline), so the published image can't differ from what the log describes. The client never uploads pixels for a studio piece.
+- **Seal thresholds** for studio and composer: at least 12 strokes or note edits, 45 seconds of active time, no flags, and an intact chain. Flags: long strokes in under 40 ms, more than 4 strokes per second, more than 8 note edits per second, or a client clock running more than 15 s ahead of server receipt times. The thresholds are deliberately modest: the record and its replay are the real evidence, and the certificate page shows both.
+- **Composer** is a 16-step × 12-note grid (C major, two octaves), played with Web Audio. It's small enough to finish in a session and leaves an unambiguous log.
+- **Math "value" problems** (integrals, series, probability) are checked against an answer that only the server holds. StepCheck already checked on the server, so the browser never receives it. `checkSteps` throws if it's given a public problem of this kind.
+- **Antiderivatives** are checked by differentiating each line (with `C` set to 0) and comparing with the integrand, so any correct antiderivative is accepted. The final line must include `+ C`.
+- **Genre coach and rhyme detection** are rule-based. Rhyme keys normalise common spellings (moon/tune, thread/bread, night/kite), but spelling can't always tell sounds apart (bread/bead), and the UI says counts can be off by one.
+- **Levels** grow by 50 more points per level (0, 50, 150, 300, 500…), named after the logo's light: Spark, Glow, Lamp, Lantern, Beacon, Lighthouse.

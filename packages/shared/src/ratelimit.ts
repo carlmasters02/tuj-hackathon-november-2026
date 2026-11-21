@@ -69,8 +69,10 @@ export class ConcurrencyLimiter {
 }
 
 export const RATE_RULES = {
-  login: { capacity: 5, windowMs: 60_000 },
-  signup: { capacity: 3, windowMs: 60_000 },
+  login: { capacity: 5, windowMs: 60_000 }, // per email
+  loginIp: { capacity: 30, windowMs: 60_000 }, // per network (shared Wi-Fi = one IP)
+  signup: { capacity: 3, windowMs: 60_000 }, // per username
+  signupIp: { capacity: 10, windowMs: 60_000 }, // per network
   upload: { capacity: 10, windowMs: 60_000 },
   api: { capacity: 120, windowMs: 60_000 },
   media: { capacity: 60, windowMs: 60_000 },

@@ -36,3 +36,15 @@ describe("scoring", () => {
     expect(lastNDates("2026-03-02", 3)).toEqual(["2026-02-28", "2026-03-01", "2026-03-02"]);
   });
 });
+
+describe("levels", () => {
+  it("thresholds grow by 50 each level", async () => {
+    const { levelFor, levelThreshold } = await import("@hm/shared/scoring");
+    expect([1, 2, 3, 4, 5].map(levelThreshold)).toEqual([0, 50, 150, 300, 500]);
+    expect(levelFor(0)).toMatchObject({ level: 1, name: "Spark", floor: 0, next: 50 });
+    expect(levelFor(49).level).toBe(1);
+    expect(levelFor(50)).toMatchObject({ level: 2, name: "Glow" });
+    expect(levelFor(320)).toMatchObject({ level: 4, name: "Lantern", floor: 300, next: 500 });
+    expect(levelFor(99999).name).toBe("Lighthouse");
+  });
+});

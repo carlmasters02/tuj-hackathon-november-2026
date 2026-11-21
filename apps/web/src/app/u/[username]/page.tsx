@@ -37,7 +37,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
         <ul className="divide-y divide-line rounded-xl border border-line">
           {(works.data ?? []).length === 0 && <li className="p-4 text-sm text-fg-faint">Nothing published yet.</li>}
           {(works.data ?? []).map((w) => (
-            <li key={w.id}><Link href={`/gallery/${w.id}`} className="flex justify-between px-4 py-3 hover:bg-surface"><span className="font-bold">{w.title}</span><span className="chip">{w.kind}</span></Link></li>
+            <li key={w.id}><Link href={`/portfolio/work/${w.id}`} className="flex justify-between px-4 py-3 hover:bg-surface"><span className="font-bold">{w.title}</span><span className="chip">{w.kind}</span></Link></li>
           ))}
         </ul>
       </section>

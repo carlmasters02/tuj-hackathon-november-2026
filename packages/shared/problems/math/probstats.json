@@ -1,0 +1,98 @@
+[
+  {
+    "id": "prob-1",
+    "subject": "prob-stats",
+    "topic": "Counting",
+    "difficulty": 1,
+    "prompt": "\\text{In how many orders can 5 different books be arranged on a shelf?}",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "120"
+  },
+  {
+    "id": "prob-2",
+    "subject": "prob-stats",
+    "topic": "Counting",
+    "difficulty": 2,
+    "prompt": "\\text{How many ways can a 3-person committee be chosen from 7 people?}",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "35"
+  },
+  {
+    "id": "prob-3",
+    "subject": "prob-stats",
+    "topic": "Probability",
+    "difficulty": 1,
+    "prompt": "\\text{Two fair dice are rolled. } P(\\text{sum} = 7) = \\,?",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "1/6"
+  },
+  {
+    "id": "prob-4",
+    "subject": "prob-stats",
+    "topic": "Probability",
+    "difficulty": 2,
+    "prompt": "P(A) = 0.5,\\; P(B) = 0.4,\\; P(A \\cap B) = 0.2.\\quad P(A \\cup B) = \\,?",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "0.7"
+  },
+  {
+    "id": "prob-5",
+    "subject": "prob-stats",
+    "topic": "Binomial distribution",
+    "difficulty": 2,
+    "prompt": "\\text{A fair coin is flipped 3 times. } P(\\text{exactly 2 heads}) = \\,?",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "3/8"
+  },
+  {
+    "id": "prob-6",
+    "subject": "prob-stats",
+    "topic": "Binomial distribution",
+    "difficulty": 3,
+    "prompt": "X \\sim \\mathrm{Bin}(4,\\, 0.25).\\quad P(X = 1) = \\,?",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "27/64"
+  },
+  {
+    "id": "stat-1",
+    "subject": "prob-stats",
+    "topic": "Descriptive statistics",
+    "difficulty": 1,
+    "prompt": "\\text{Mean of } 4,\\, 8,\\, 15,\\, 16,\\, 23",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "66/5"
+  },
+  {
+    "id": "stat-2",
+    "subject": "prob-stats",
+    "topic": "Expected value",
+    "difficulty": 2,
+    "prompt": "\\text{Expected value of one roll of a fair six-sided die}",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "7/2"
+  }
+]
