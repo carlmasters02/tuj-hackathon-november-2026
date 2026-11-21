@@ -25,7 +25,7 @@ export function LoginForm({ next }: { next: string }) {
           router.push(next);
           router.refresh();
         } catch (err) {
-          setError(err instanceof ApiError ? err.message : "Login failed (couldn\'t reach the server — check your connection)");
+          setError(err instanceof ApiError ? err.message : "Login failed (couldn't reach the server — check your connection)");
           setReason(err instanceof ApiError ? (err.data?.reason ?? `http_${err.status}`) : "network");
         } finally {
           setBusy(false);
