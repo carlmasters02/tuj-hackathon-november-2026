@@ -328,14 +328,15 @@ $ pnpm lint
   eslint ✓   typecheck: shared ✓  extension ✓  web ✓
 
 $ pnpm test
- Test Files  18 passed (18)
-      Tests  573 passed (573)
+ Test Files  20 passed (20)
+      Tests  575 passed (575)
 ```
 
 | What | How it's proven | Where |
 |---|---|---|
 | The AI-free check really works | Adding `openai` to a `package.json`, or calling an AI API in code, makes it exit 1 (checked by hand) | `scripts/no-ai-check.mjs` |
 | Math checking | Every legacy and semester problem is solvable via its server-side answer. Six 12-unit curricula, unit objectives, unique ids and legacy links are validated; equivalence, solution sets, final forms, parse errors and all targeted hint rules are covered. | `packages/shared/test/math.test.ts`, `mathCourseContent.test.ts` |
+| Typography compatibility | Local-only font assets, retained Bricolage writer option, and display fonts that cannot override MLA/APA/publication document typography | `apps/web/test/typography.test.ts` |
 | Tamper detection | Editing one stored event, deleting or reordering events, or moving a log to another document all break the chain | `provenance.test.ts` |
 | Replay & authenticity stats | Exact replay; typed text → Human-Verified; external paste lowers the score; undo/redo of a paste stays a paste; injection bursts, superhuman speed, transcription and fake timelines are all flagged | `provenance.test.ts` |
 | Certificates | Ed25519 sign/verify; any change to the certificate, or a different key, fails | `provenance.test.ts` |
