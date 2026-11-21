@@ -154,7 +154,7 @@ export function CodeDojo({ ex, solved: initiallySolved, initialHints, failed }: 
             <button className="btn" onClick={openRosetta}>Compare my solutions across languages</button>
           </div>
           {rosetta && (
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
               {rosetta.solutions.map((s) => (
                 <div key={s.lang}>
                   <div className="mb-1 text-xs uppercase tracking-wide text-fg-faint">{LANG_LABEL[s.lang as keyof typeof LANG_LABEL]} — your code</div>
@@ -200,7 +200,7 @@ function RunCard({ title, stdin, expected, status, stdout, stderr, compileOutput
         <span className="font-medium">{title}</span>
         <span className={passed ? "text-ok" : passed === false ? "text-redpen" : "text-fg-dim"}>{status === "timeout" ? "time limit exceeded" : status === "compile_error" ? "compile error" : passed === true ? "✓ matches" : passed === false ? "✗ different output" : status}</span>
       </div>
-      <div className="grid gap-px bg-line sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
         <div className="bg-surface p-2"><div className="mb-1 text-fg-faint">input</div><pre className="whitespace-pre-wrap font-mono">{stdin || "(none)"}</pre></div>
         {diff ? (
           <div className="bg-surface p-2">

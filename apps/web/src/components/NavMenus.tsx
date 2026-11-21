@@ -18,7 +18,7 @@ function Chevron({ open }: { open: boolean }) {
 /** Mega-menu panel: one column per section, each with its subsections. */
 function Panel({ sections, onPick }: { sections: Section[]; onPick: () => void }) {
   return (
-    <div className="grid gap-1 p-2 sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3">
       {sections.map((s) => (
         <div key={s.key} className="rounded-xl p-3 hover:bg-canvas/70">
           <Link href={s.href} onClick={onPick} className="block rounded-md">

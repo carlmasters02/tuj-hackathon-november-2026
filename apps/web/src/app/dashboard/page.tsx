@@ -45,7 +45,7 @@ export default async function Dashboard() {
       </header>
 
       {/* the one number this app is about */}
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div className="card relative min-w-0 overflow-hidden p-6 sm:p-8">
           {humanShare === null ? (
             <>
@@ -126,7 +126,7 @@ export default async function Dashboard() {
         </section>
       )}
 
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div className="card min-w-0 p-5">
           <h2 className="text-lg font-extrabold">Day by day</h2>
           <WeekChart days={s.days} />
@@ -150,7 +150,7 @@ export default async function Dashboard() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/tutor" className="card card-hover block space-y-4 p-5">
           <h2 className="text-lg font-extrabold">Tutor</h2>
           <Meter done={x.tutor.mathSolved} total={x.tutor.mathTotal} label="Math problems solved" />

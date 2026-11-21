@@ -28,12 +28,13 @@
     "subject": "precalculus",
     "topic": "Exponential equations",
     "difficulty": 3,
-    "prompt": "e^{2x} = 7 \\quad\\text{(exact answer)}",
+    "prompt": "e^{2x} = 7",
     "kind": "equation",
     "start": "e^(2x) = 7",
     "variable": "x",
     "finalForm": "exact",
-    "answer": "x = log(7)/2"
+    "answer": "x = log(7)/2",
+    "statement": "Solve for x. Give an exact answer."
   },
   {
     "id": "pre-4",
@@ -88,24 +89,26 @@
     "subject": "precalculus",
     "topic": "Quadratics with irrational roots",
     "difficulty": 3,
-    "prompt": "x^2 - 4x + 1 = 0 \\quad\\text{(exact answers)}",
+    "prompt": "x^2 - 4x + 1 = 0",
     "kind": "equation",
     "start": "x^2 - 4x + 1 = 0",
     "variable": "x",
     "finalForm": "exact",
-    "answer": "x = 2 + sqrt(3) or x = 2 - sqrt(3)"
+    "answer": "x = 2 + sqrt(3) or x = 2 - sqrt(3)",
+    "statement": "Solve for x. Give both answers exactly."
   },
   {
     "id": "pre-9",
     "subject": "precalculus",
     "topic": "Rational expressions",
     "difficulty": 2,
-    "prompt": "\\text{Simplify } \\frac{x^3 - x}{x^2 + x}",
+    "prompt": "\\frac{x^3 - x}{x^2 + x}",
     "kind": "expression",
     "start": "(x^3 - x)/(x^2 + x)",
     "variable": "x",
     "finalForm": "no_division",
-    "answer": "x - 1"
+    "answer": "x - 1",
+    "statement": "Simplify."
   },
   {
     "id": "pre-10",

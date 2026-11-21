@@ -16,17 +16,17 @@ export default async function ArtFeed() {
         <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full border-[42px] border-sun/20 sm:h-[28rem] sm:w-[28rem]" />
         <div aria-hidden="true" className="pointer-events-none absolute bottom-[-8rem] right-24 h-64 w-64 rounded-full bg-sun/10 blur-3xl" />
         <div className="relative z-10 max-w-2xl">
-          <Link href="/portfolio" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-fg-dim transition hover:text-fg">
+          <Link href="/portfolio" className="mb-8 flex w-fit items-center gap-2 text-sm font-semibold text-fg-dim transition hover:text-fg">
             <span aria-hidden="true">←</span> Back to portfolio
           </Link>
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line bg-canvas px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-fg-dim">
+          <p className="mb-4 flex w-fit items-center gap-2 rounded-full border border-line bg-canvas px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-fg-dim">
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-flame" />
             Humagination / Art
           </p>
           <h1 className="max-w-xl text-[clamp(3rem,7vw,5.5rem)] font-extrabold leading-[0.98] tracking-[-0.055em] text-fg">
             Made by <span className="relative whitespace-nowrap">humans<span aria-hidden="true" className="absolute -bottom-1 left-0 h-2 w-full -rotate-1 rounded-full bg-sun/70" /></span>.
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-fg-dim">
+          <p className="mt-9 max-w-lg text-lg leading-relaxed text-fg-dim">
             A home for original art and the people behind it. Explore the gallery, celebrate every creative voice, and share something of your own.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">

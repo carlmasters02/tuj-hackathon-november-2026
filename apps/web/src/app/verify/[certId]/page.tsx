@@ -59,13 +59,13 @@ export default async function CertificatePage({ params }: { params: Promise<{ ce
         {isOwner && v === "human_verified" && <PublishCertButton certId={certId} publishedId={published?.id ?? null} />}
       </header>
 
-      <section className="grid gap-3 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Check ok={sigOk} label="Signature" detail={sigOk ? "Ed25519 signature matches Humagination's published key" : "Signature does NOT verify"} />
         <Check ok={chainOk} label="Hash chain" detail={chainOk ? `${s.events} events, chain re-computed on this page load` : `Broken: ${chain.ok ? "head mismatch" : chain.reason}`} />
         <Check ok={contentOk} label="Replay" detail={contentOk ? "Replaying the log reproduces the certified text exactly" : "Replay does not reproduce the text"} />
       </section>
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Typed here" value={`${s.typedPct}%`} hint="share of the final text's characters typed in this editor" />
         <Stat label="External pastes" value={`${s.externalPasteCount}`} hint={`${s.externalPasteChars} characters pasted from outside`} />
         <Stat label="Active writing time" value={fmtTime(s.activeSeconds)} hint={`${s.finalWords} words · ${s.wpm} wpm average`} />
@@ -139,13 +139,13 @@ async function CreationCertificate({ row, sigOk, cert }: { row: { id: string; ow
         </div>
       </header>
 
-      <section className="grid gap-3 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Check ok={sigOk} label="Signature" detail={sigOk ? "Ed25519 signature matches Humagination's published key" : "Signature does NOT verify"} />
         <Check ok={chainOk} label="Hash chain" detail={chainOk ? `${s.events} events, chain re-computed on this page load` : `Broken: ${chain.ok ? "head mismatch" : chain.reason}`} />
         <Check ok={contentOk} label="Replay" detail={contentOk ? `Replaying the log reproduces the certified ${art ? "drawing" : "score"} exactly` : "Replay does not match the certificate"} />
       </section>
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {art ? (
           <>
             <Stat label="Strokes drawn" value={`${s.strokes ?? 0}`} hint={`${s.finalStrokes ?? 0} in the final drawing, ${s.undos ?? 0} undone`} />

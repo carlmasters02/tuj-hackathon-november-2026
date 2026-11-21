@@ -70,7 +70,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
         <span aria-hidden>←</span> {KIND_LABEL[w.kind as keyof typeof KIND_LABEL]}
       </Link>
 
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_19rem]">
         <div className="min-w-0">
           {w.kind === "art" && w.preview_key && <ProtectedImage src={signedMediaUrl(id, user.id)} width={w.width ?? 4} height={w.height ?? 3} alt={w.title} />}
           {w.kind === "music" && c?.kind === "music" && <ScorePlayer batches={c.events_json as { events: unknown[] }[]} />}
@@ -141,8 +141,11 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
         </aside>
       </div>
 
-      <div className="max-w-3xl">
-        <ArtworkComments workId={id} initial={comments} canModerate={isOwner} />
+      {/* comments line up with the artwork column above */}
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_19rem]">
+        <div className="min-w-0">
+          <ArtworkComments workId={id} initial={comments} canModerate={isOwner} />
+        </div>
       </div>
     </div>
   );

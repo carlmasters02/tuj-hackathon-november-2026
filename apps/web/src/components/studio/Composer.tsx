@@ -156,7 +156,7 @@ export function Composer({ id, initialTitle, lastSeq, headHash, events, prior }:
       </div>
       {err && <p role="alert" className="rounded-xl bg-redpen-dim p-3 text-sm text-redpen">{err}</p>}
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_16rem]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_16rem]">
         <div className="min-w-0 rounded-3xl border border-line bg-surface p-4 shadow-[var(--shadow-lift)] sm:p-6">
           <ScoreGrid cells={cells} playhead={playhead} onToggle={toggle} />
           <div className="mt-5 flex flex-wrap items-center gap-3">

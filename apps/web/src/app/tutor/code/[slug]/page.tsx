@@ -53,10 +53,10 @@ export default async function CodeSlugPage({ params }: { params: Promise<{ slug:
   const failed = prog?.failed_submissions ?? 0;
   const pub = publicExercise(ex); // hidden tests and locked hints never reach the browser
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
       <div className="space-y-4">
         <Link href={`/tutor/code/${ex.lang}`} className="inline-flex items-center gap-1 text-sm font-semibold text-fg-dim hover:text-fg"><span aria-hidden>←</span> {LABEL[ex.lang]}</Link>
-        <div className="flex flex-wrap items-center gap-2 text-xs"><span className="chip">{LABEL[ex.lang]}</span><span className="chip">{CONCEPT_LABEL[ex.concept]}</span><span className="chip">{"●".repeat(ex.difficulty)}</span>{prog?.solved_at && <span className="chip border-ok/50 text-ok">✓ solved</span>}</div>
+        <div className="flex flex-wrap items-center gap-2 text-xs"><span className="chip">{LABEL[ex.lang]}</span><span className="chip">{CONCEPT_LABEL[ex.concept]}</span><span className="chip" title="Difficulty">{["Warm-up", "Standard", "Stretch"][ex.difficulty - 1] ?? "Stretch"}</span>{prog?.solved_at && <span className="chip border-ok/50 text-ok">✓ solved</span>}</div>
         <h1 className="h-page">{ex.title}</h1>
         <div className="space-y-3 text-sm leading-relaxed text-fg-dim [&_strong]:text-fg" dangerouslySetInnerHTML={{ __html: renderMarkdown(ex.promptMd) }} />
         <div className="text-xs text-fg-faint">{pub.visibleTests.length} example tests · {pub.hiddenCount} hidden tests</div>

@@ -76,7 +76,7 @@ export function WritingList({ items }: { items: FeedItem[] }) {
 
 export function MusicList({ items }: { items: FeedItem[] }) {
   return (
-    <ul className="grid gap-3 sm:grid-cols-2">
+    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {items.map((w) => (
         <li key={w.id}>
           <Link href={`/portfolio/work/${w.id}`} className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition hover:border-fg/30">

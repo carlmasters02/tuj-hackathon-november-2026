@@ -12,8 +12,10 @@ export interface MathProblem {
   subject: MathSubject;
   topic: string;
   difficulty: 1 | 2 | 3;
-  /** LaTeX shown to the student */
+  /** LaTeX shown to the student (may be empty when the statement says it all) */
   prompt: string;
+  /** a word problem's sentence, shown as plain text so it wraps on small screens */
+  statement?: string;
   /**
    * equation / expression: transform `start` step by step.
    * derivative / partial: every line must equal d(start)/d(variable).

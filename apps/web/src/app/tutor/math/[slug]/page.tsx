@@ -35,13 +35,16 @@ export default async function MathSlugPage({ params }: { params: Promise<{ slug:
         {topics.map((t) => (
           <section key={t} className="mb-10">
             <h2 className="mb-3 text-xl font-bold">{t}</h2>
-            <ol className="grid gap-2 sm:grid-cols-2">
+            <ol className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {list.filter((p) => p.topic === t).map((p) => {
                 const s = prog.get(p.id);
                 return (
                   <li key={p.id}>
                     <Link href={`/tutor/math/${p.id}`} className="flex min-h-20 items-center justify-between gap-4 rounded-2xl border border-line bg-surface px-5 py-4 transition hover:border-fg/30">
-                      <span className="text-lg"><TexServer tex={p.prompt} /></span>
+                      <span className="min-w-0">
+                        {p.statement && <span className="block text-[0.95rem] leading-snug font-semibold">{p.statement}</span>}
+                        {p.prompt && <span className={`block overflow-x-auto ${p.statement ? "mt-1 text-base text-fg-dim" : "text-lg"}`}><TexServer tex={p.prompt} /></span>}
+                      </span>
                       <span className={`shrink-0 text-xs font-bold ${s?.solved_at ? "text-ok" : "text-fg-faint"}`}>
                         {s?.solved_at ? "Solved" : s?.failed_attempts ? "In progress" : ["Warm-up", "Standard", "Stretch"][p.difficulty - 1]}
                       </span>
@@ -78,7 +81,8 @@ export default async function MathSlugPage({ params }: { params: Promise<{ slug:
     <div className="mx-auto max-w-3xl space-y-6">
       <Link href={`/tutor/math/${p.subject}`} className="inline-flex items-center gap-1 text-sm font-semibold text-fg-dim hover:text-fg"><span aria-hidden>←</span> {subj?.label ?? "Math"} · {p.topic}</Link>
       <div className="rounded-3xl border border-line bg-surface px-6 py-8 text-center shadow-[var(--shadow-soft)]">
-        <div className="text-3xl"><TexServer tex={p.prompt} display /></div>
+        {p.statement && <p className="mx-auto max-w-xl text-xl leading-snug font-semibold text-balance">{p.statement}</p>}
+        {p.prompt && <div className={`overflow-x-auto overflow-y-hidden ${p.statement ? "mt-3 text-2xl" : "text-3xl"}`}><TexServer tex={p.prompt} display /></div>}
         <p className="mt-3 text-sm text-fg-dim">{instruction}</p>
         {syntax && <p className="mt-1 text-xs text-fg-faint">{syntax}</p>}
       </div>

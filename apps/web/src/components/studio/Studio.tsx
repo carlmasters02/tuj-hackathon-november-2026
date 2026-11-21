@@ -181,7 +181,7 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
       </div>
       {err && <p role="alert" className="rounded-xl bg-redpen-dim p-3 text-sm text-redpen">{err}</p>}
 
-      <div className="grid gap-4 lg:grid-cols-[4.25rem_minmax(0,1fr)_16rem]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[4.25rem_minmax(0,1fr)_16rem]">
         {/* tool rail */}
         <div role="toolbar" aria-label="Tools" className="flex gap-1.5 rounded-2xl border border-line bg-surface p-1.5 shadow-[var(--shadow-soft)] lg:flex-col lg:self-start">
           {TOOLS.map((t) => (

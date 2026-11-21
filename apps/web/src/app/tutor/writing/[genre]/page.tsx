@@ -28,7 +28,7 @@ export default async function GenrePage({ params }: { params: Promise<{ genre: s
         <NewDocButton genre={g.slug} title={g.starterTitle} label={`Start a new ${g.noun}`} />
       </HubHeader>
 
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <section aria-labelledby="your-pieces">
           <h2 id="your-pieces" className="mb-3 text-xl font-bold">Your pieces</h2>
           {(docs ?? []).length === 0 ? (

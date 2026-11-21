@@ -4,95 +4,103 @@
     "subject": "prob-stats",
     "topic": "Counting",
     "difficulty": 1,
-    "prompt": "\\text{In how many orders can 5 different books be arranged on a shelf?}",
+    "prompt": "",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "120"
+    "answer": "120",
+    "statement": "In how many different orders can 5 different books be arranged on a shelf?"
   },
   {
     "id": "prob-2",
     "subject": "prob-stats",
     "topic": "Counting",
     "difficulty": 2,
-    "prompt": "\\text{How many ways can a 3-person committee be chosen from 7 people?}",
+    "prompt": "",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "35"
+    "answer": "35",
+    "statement": "How many ways can a 3-person committee be chosen from 7 people?"
   },
   {
     "id": "prob-3",
     "subject": "prob-stats",
     "topic": "Probability",
     "difficulty": 1,
-    "prompt": "\\text{Two fair dice are rolled. } P(\\text{sum} = 7) = \\,?",
+    "prompt": "P(\\text{sum} = 7)",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "1/6"
+    "answer": "1/6",
+    "statement": "Two fair dice are rolled. What is the probability that the sum is 7?"
   },
   {
     "id": "prob-4",
     "subject": "prob-stats",
     "topic": "Probability",
     "difficulty": 2,
-    "prompt": "P(A) = 0.5,\\; P(B) = 0.4,\\; P(A \\cap B) = 0.2.\\quad P(A \\cup B) = \\,?",
+    "prompt": "P(A) = 0.5,\\; P(B) = 0.4,\\; P(A \\cap B) = 0.2",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "0.7"
+    "answer": "0.7",
+    "statement": "Events A and B have these probabilities. What is the probability of A or B?"
   },
   {
     "id": "prob-5",
     "subject": "prob-stats",
     "topic": "Binomial distribution",
     "difficulty": 2,
-    "prompt": "\\text{A fair coin is flipped 3 times. } P(\\text{exactly 2 heads}) = \\,?",
+    "prompt": "",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "3/8"
+    "answer": "3/8",
+    "statement": "A fair coin is flipped 3 times. What is the probability of getting exactly 2 heads?"
   },
   {
     "id": "prob-6",
     "subject": "prob-stats",
     "topic": "Binomial distribution",
     "difficulty": 3,
-    "prompt": "X \\sim \\mathrm{Bin}(4,\\, 0.25).\\quad P(X = 1) = \\,?",
+    "prompt": "X \\sim \\mathrm{Bin}(4,\\, 0.25),\\quad P(X = 1)",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "27/64"
+    "answer": "27/64",
+    "statement": "X is binomial with 4 trials and success probability 0.25. Find the probability that X = 1."
   },
   {
     "id": "stat-1",
     "subject": "prob-stats",
     "topic": "Descriptive statistics",
     "difficulty": 1,
-    "prompt": "\\text{Mean of } 4,\\, 8,\\, 15,\\, 16,\\, 23",
+    "prompt": "4,\\; 8,\\; 15,\\; 16,\\; 23",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "66/5"
+    "answer": "66/5",
+    "statement": "Find the mean of these five numbers."
   },
   {
     "id": "stat-2",
     "subject": "prob-stats",
     "topic": "Expected value",
     "difficulty": 2,
-    "prompt": "\\text{Expected value of one roll of a fair six-sided die}",
+    "prompt": "E[X]",
     "kind": "value",
     "start": "",
     "variable": "x",
     "finalForm": "number",
-    "answer": "7/2"
+    "answer": "7/2",
+    "statement": "What is the expected value of one roll of a fair six-sided die?"
   }
 ]

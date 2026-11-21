@@ -78,7 +78,7 @@ export default function ArtworkComments({ workId, initial, canModerate }: { work
       <div className="flex items-center justify-between gap-3">
         <span className="text-xs text-fg-faint">{message.length}/500</span>
         <button type="button" onClick={addComment} disabled={!message.trim() || busy} className="btn btn-primary">
-          {busy ? "Posting…" : "Post Comment"}
+          {busy ? "Posting…" : "Post comment"}
         </button>
       </div>
       {error && <p role="alert" className="text-sm text-redpen">{error}</p>}

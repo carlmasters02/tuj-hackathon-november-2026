@@ -12,7 +12,7 @@ export function WeekChart({ days }: { days: { date: string; aiMinutes: number; h
   return (
     <figure className="space-y-2">
       <div className="overflow-x-auto">
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full min-w-[480px]" role="img" aria-label="Minutes per day: AI versus human work">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full min-w-[300px]" role="img" aria-label="Minutes per day: AI versus human work">
           {ticks.map((t) => (
             <g key={t}>
               <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="var(--color-line)" strokeDasharray={t ? "3 4" : undefined} />

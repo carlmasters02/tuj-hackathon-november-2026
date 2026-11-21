@@ -17,7 +17,7 @@ export default async function Home() {
   const user = await currentUser();
   return (
     <div className="space-y-20">
-      <section className="grid items-center gap-10 pt-4 md:grid-cols-[1.25fr_1fr]">
+      <section className="grid grid-cols-1 items-center gap-10 pt-4 md:grid-cols-[1.25fr_1fr]">
         <div className="space-y-6">
           <span className="chip chip-sun">✓ Verified AI-free — zero model calls, checked on every build</span>
           <h1 className="h-display">
@@ -55,7 +55,7 @@ export default async function Home() {
 
       <section className="space-y-5">
         <h2 className="text-2xl font-extrabold">Six ways to keep your mind in the driver&apos;s seat</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => (
             <Link key={f.title} href={f.href} className="card card-hover group p-5">
               <div className="flex items-center gap-3">
@@ -71,13 +71,13 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="card grid gap-6 bg-gradient-to-br from-surface to-sun-soft/60 p-6 md:grid-cols-3">
+      <section className="card grid grid-cols-1 gap-6 bg-gradient-to-br from-surface to-sun-soft/60 p-6 md:grid-cols-3">
         <div>
           <h2 className="text-2xl font-extrabold">What we promise — and what we don&apos;t</h2>
         </div>
         <ul className="space-y-2 text-sm leading-relaxed text-fg-dim md:col-span-2">
           <li>✓ Certificates prove text was produced in this editor, keystroke by keystroke. They can&apos;t prove you didn&apos;t copy by hand from another screen — the revision and cadence stats are there so readers can judge.</li>
-          <li>✓ Gallery images are screenshot-<em>deterred</em> and <em>traceable</em>, not screenshot-proof. Nothing on the web is.</li>
+          <li>✓ Portfolio images are screenshot-<em>deterred</em> and <em>traceable</em>, not screenshot-proof. Nothing on the web is.</li>
           <li>✓ Tracker numbers are self-reported by your own browser extension. They&apos;re for motivation, not proof.</li>
         </ul>
       </section>
