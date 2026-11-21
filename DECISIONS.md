@@ -136,3 +136,14 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 
 ## Seed
 - The seeded certificate comes from a **synthetic typing log** (human-like cadence with typos fixed). Its title says "(seeded demo)" so it can't pass for a real attestation.
+
+## Layout v2: Dashboard, Tutor, Portfolio (2026-11-21)
+- **Navigation** is three tabs. Tutor and Portfolio open a menu on hover (with a chevron button for keyboard and touch), and clicking the tab opens its hub page. `/gallery/*` redirects permanently to `/portfolio/*`.
+- **"Authentic" means "made here with a passing record".** We can't detect AI in an uploaded file without AI (and detectors are unreliable anyway), so the Human-made seal is earned only by work created in the app's own recorded tools: the editor (writing), the drawing studio (art) and the composer (music). Uploads are allowed in Art and Music but are never sealed, and the work page says why.
+- **Studio art is rendered on the server from the stroke log** (SVG → sharp → the normal art pipeline), so the published image can't differ from what the log describes. The client never uploads pixels for a studio piece.
+- **Seal thresholds** for studio and composer: at least 12 strokes or note edits, 45 seconds of active time, no flags, and an intact chain. Flags: long strokes in under 40 ms, more than 4 strokes per second, more than 8 note edits per second, or a client clock running more than 15 s ahead of server receipt times. The thresholds are deliberately modest: the record and its replay are the real evidence, and the certificate page shows both.
+- **Composer** is a 16-step × 12-note grid (C major, two octaves), played with Web Audio. It's small enough to finish in a session and leaves an unambiguous log.
+- **Math "value" problems** (integrals, series, probability) are checked against an answer that only the server holds. StepCheck already checked on the server, so the browser never receives it. `checkSteps` throws if it's given a public problem of this kind.
+- **Antiderivatives** are checked by differentiating each line (with `C` set to 0) and comparing with the integrand, so any correct antiderivative is accepted. The final line must include `+ C`.
+- **Genre coach and rhyme detection** are rule-based. Rhyme keys normalise common spellings (moon/tune, thread/bread, night/kite), but spelling can't always tell sounds apart (bread/bead), and the UI says counts can be off by one.
+- **Levels** grow by 50 more points per level (0, 50, 150, 300, 500…), named after the logo's light: Spark, Glow, Lamp, Lantern, Beacon, Lighthouse.
