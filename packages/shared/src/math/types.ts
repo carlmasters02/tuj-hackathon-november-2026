@@ -35,6 +35,24 @@ export interface MathProblem {
 
 export type PublicMathProblem = Omit<MathProblem, "answer">;
 
+export interface MathCourseUnit {
+  id: string;
+  week: string;
+  title: string;
+  summary: string;
+  objectives: string[];
+  problems: MathProblem[];
+}
+
+export interface MathCourse {
+  slug: MathSubject;
+  title: string;
+  semester: string;
+  description: string;
+  outcomes: string[];
+  units: MathCourseUnit[];
+}
+
 export type HintType = "sign_error" | "one_side_only" | "partial_distribution" | "divided_one_term" | "arithmetic_slip" | "generic";
 
 export interface Hint {

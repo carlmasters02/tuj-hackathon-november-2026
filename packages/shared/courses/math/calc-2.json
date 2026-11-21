@@ -1,0 +1,1150 @@
+{
+  "slug": "calc-2",
+  "title": "Calculus 2",
+  "semester": "15-week semester · 12 instructional units · Week 15 review and assessment",
+  "description": "A coherent second-semester calculus pathway through integration techniques, applications, differential equations, infinite series, and introductory parametric and polar calculus.",
+  "outcomes": [
+    "Interpret definite integrals through accumulation and Riemann sums, and apply both parts of the Fundamental Theorem of Calculus.",
+    "Select and carry out appropriate integration techniques, including substitution, parts, trigonometric methods, and partial fractions.",
+    "Model geometric and physical quantities with definite integrals while attending to orientation, domains, and dimensional units.",
+    "Solve separable differential equations with initial conditions and interpret exponential, cooling, logistic, and mixing models.",
+    "Analyze improper integrals, sequences, and numerical series using limits, comparisons, and standard convergence tests.",
+    "Construct and use power and Taylor series, then extend derivative and area ideas to parametric and polar curves."
+  ],
+  "units": [
+    {
+      "id": "calc-2-u01",
+      "week": "Week 1",
+      "title": "Riemann Sums, Definite Integrals, and the FTC",
+      "summary": "Build the definite integral from partition width, sample points, and limiting Riemann sums, emphasizing that it measures net signed accumulation rather than automatically giving geometric area. Connect evaluation by antiderivatives with both parts of the Fundamental Theorem of Calculus, checking endpoints carefully and differentiating accumulation functions with the chain rule when an upper limit varies.",
+      "objectives": [
+        "Compute left and right Riemann sums from a specified interval, partition, and sampling rule.",
+        "Evaluate definite integrals by applying an antiderivative at both endpoints with correct subtraction.",
+        "Differentiate accumulation functions using the Fundamental Theorem of Calculus and account for variable limits."
+      ],
+      "problems": [
+        {
+          "id": "c2-u01-01",
+          "subject": "calc-2",
+          "topic": "Riemann Sums, Definite Integrals, and the FTC",
+          "difficulty": 1,
+          "prompt": "f(x)=x^2,\\qquad [a,b]=[0,2],\\qquad n=4",
+          "statement": "Use four equal subintervals and right endpoints to compute the Riemann sum for this function on the given interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "15/4"
+        },
+        {
+          "id": "c2-u01-02",
+          "subject": "calc-2",
+          "topic": "Riemann Sums, Definite Integrals, and the FTC",
+          "difficulty": 1,
+          "prompt": "f(x)=2x+1,\\qquad [a,b]=[0,3],\\qquad n=3",
+          "statement": "Use three equal subintervals and left endpoints to compute the Riemann sum for this function on the given interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9"
+        },
+        {
+          "id": "c2-u01-03",
+          "subject": "calc-2",
+          "topic": "Riemann Sums, Definite Integrals, and the FTC",
+          "difficulty": 1,
+          "prompt": "\\int_0^3 (2x+1)\\,dx",
+          "statement": "Evaluate the definite integral using the second part of the Fundamental Theorem of Calculus.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        },
+        {
+          "id": "c2-u01-04",
+          "subject": "calc-2",
+          "topic": "Riemann Sums, Definite Integrals, and the FTC",
+          "difficulty": 2,
+          "prompt": "F(x)=\\int_1^x (t^3+2t)\\,dt",
+          "statement": "Use the first part of the Fundamental Theorem of Calculus to find F prime evaluated at x equals 2.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        },
+        {
+          "id": "c2-u01-05",
+          "subject": "calc-2",
+          "topic": "Riemann Sums, Definite Integrals, and the FTC",
+          "difficulty": 2,
+          "prompt": "\\int_1^4 \\frac{1}{2\\sqrt{x}}\\,dx",
+          "statement": "Evaluate the definite integral, including the contributions from both endpoints.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u02",
+      "week": "Week 2",
+      "title": "Integration by Substitution",
+      "summary": "Recognize an inner expression whose differential is present up to a constant factor, then rewrite the entire integral in one temporary variable. For indefinite integrals return to the original variable; for definite integrals either transform both bounds or return to the original antiderivative before evaluation, and watch for reversed differentials, missing constant factors, and logarithm domains.",
+      "objectives": [
+        "Choose substitutions that align an inner expression with its differential, including constant correction factors.",
+        "Find indefinite integrals by substitution and rewrite the antiderivative in the original variable.",
+        "Evaluate definite integrals by substitution while transforming the limits consistently."
+      ],
+      "problems": [
+        {
+          "id": "c2-u02-01",
+          "subject": "calc-2",
+          "topic": "Integration by Substitution",
+          "difficulty": 1,
+          "prompt": "\\int 2x\\cos(x^2)\\,dx",
+          "kind": "antiderivative",
+          "start": "2x*cos(x^2)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "sin(x^2) + C"
+        },
+        {
+          "id": "c2-u02-02",
+          "subject": "calc-2",
+          "topic": "Integration by Substitution",
+          "difficulty": 2,
+          "prompt": "\\int 3x^2(x^3+1)^4\\,dx",
+          "kind": "antiderivative",
+          "start": "3x^2*(x^3 + 1)^4",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "(x^3 + 1)^5/5 + C"
+        },
+        {
+          "id": "c2-u02-03",
+          "subject": "calc-2",
+          "topic": "Integration by Substitution",
+          "difficulty": 2,
+          "prompt": "\\int \\frac{e^x}{(1+e^x)^2}\\,dx",
+          "kind": "antiderivative",
+          "start": "e^x/(1 + e^x)^2",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "-1/(1 + e^x) + C"
+        },
+        {
+          "id": "c2-u02-04",
+          "subject": "calc-2",
+          "topic": "Integration by Substitution",
+          "difficulty": 2,
+          "prompt": "\\int_0^1 6x(x^2+1)^2\\,dx",
+          "statement": "Evaluate the definite integral by substitution, keeping the limits consistent with the variable in use.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "c2-u02-05",
+          "subject": "calc-2",
+          "topic": "Integration by Substitution",
+          "difficulty": 3,
+          "prompt": "\\int_0^{\\pi/2} \\sin^2 x\\cos x\\,dx",
+          "statement": "Use a trigonometric substitution of the u-du form to evaluate the definite integral.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/3"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u03",
+      "week": "Week 3",
+      "title": "Integration by Parts",
+      "summary": "Derive integration by parts from the product rule and choose u and dv so the new integral is simpler, using logarithmic, inverse-trigonometric, algebraic, trigonometric, and exponential factors as a guide. Track every minus sign and coefficient through repeated parts, and recognize cyclic cases where the original integral returns and must be solved algebraically.",
+      "objectives": [
+        "Select u and dv strategically and apply the integration-by-parts formula with consistent signs.",
+        "Evaluate integrals requiring repeated parts, including products with higher-degree polynomial factors.",
+        "Resolve cyclic integration-by-parts problems involving paired exponential and trigonometric factors."
+      ],
+      "problems": [
+        {
+          "id": "c2-u03-01",
+          "subject": "calc-2",
+          "topic": "Integration by Parts",
+          "difficulty": 1,
+          "prompt": "\\int xe^x\\,dx",
+          "kind": "antiderivative",
+          "start": "x*e^x",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "x*e^x - e^x + C"
+        },
+        {
+          "id": "c2-u03-02",
+          "subject": "calc-2",
+          "topic": "Integration by Parts",
+          "difficulty": 2,
+          "prompt": "\\int x\\cos x\\,dx",
+          "kind": "antiderivative",
+          "start": "x*cos(x)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "x*sin(x) + cos(x) + C"
+        },
+        {
+          "id": "c2-u03-03",
+          "subject": "calc-2",
+          "topic": "Integration by Parts",
+          "difficulty": 2,
+          "prompt": "\\int \\ln x\\,dx",
+          "statement": "Find the antiderivative on the interval x greater than 0 using integration by parts.",
+          "kind": "antiderivative",
+          "start": "log(x)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "x*log(x) - x + C"
+        },
+        {
+          "id": "c2-u03-04",
+          "subject": "calc-2",
+          "topic": "Integration by Parts",
+          "difficulty": 3,
+          "prompt": "\\int x^2e^x\\,dx",
+          "statement": "Find the antiderivative using integration by parts twice.",
+          "kind": "antiderivative",
+          "start": "x^2*e^x",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "e^x*(x^2 - 2x + 2) + C"
+        },
+        {
+          "id": "c2-u03-05",
+          "subject": "calc-2",
+          "topic": "Integration by Parts",
+          "difficulty": 3,
+          "prompt": "\\int e^x\\sin x\\,dx",
+          "statement": "Find the antiderivative by applying parts twice and solving for the original integral.",
+          "kind": "antiderivative",
+          "start": "e^x*sin(x)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "e^x*(sin(x) - cos(x))/2 + C"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u04",
+      "week": "Week 4",
+      "title": "Trigonometric Integrals and Powers",
+      "summary": "Use Pythagorean identities and parity to integrate products and powers of sine, cosine, tangent, and secant, saving one factor for the differential when an odd power permits. For even sine or cosine powers use half-angle identities; for tangent and secant retain suitable secant-squared or secant-tangent factors, and distinguish these patterns before attempting substitution.",
+      "objectives": [
+        "Integrate odd powers of sine or cosine by saving one factor and converting the remaining even power.",
+        "Apply half-angle identities to even powers without losing factor-of-two coefficients.",
+        "Integrate standard secant-tangent powers by pairing identities with an appropriate differential."
+      ],
+      "problems": [
+        {
+          "id": "c2-u04-01",
+          "subject": "calc-2",
+          "topic": "Trigonometric Integrals and Powers",
+          "difficulty": 2,
+          "prompt": "\\int \\sin^3 x\\,dx",
+          "kind": "antiderivative",
+          "start": "sin(x)^3",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "-cos(x) + cos(x)^3/3 + C"
+        },
+        {
+          "id": "c2-u04-02",
+          "subject": "calc-2",
+          "topic": "Trigonometric Integrals and Powers",
+          "difficulty": 3,
+          "prompt": "\\int \\cos^5 x\\,dx",
+          "kind": "antiderivative",
+          "start": "cos(x)^5",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "sin(x) - 2*sin(x)^3/3 + sin(x)^5/5 + C"
+        },
+        {
+          "id": "c2-u04-03",
+          "subject": "calc-2",
+          "topic": "Trigonometric Integrals and Powers",
+          "difficulty": 2,
+          "prompt": "\\int \\sin^2 x\\,dx",
+          "statement": "Find the antiderivative using a power-reducing identity.",
+          "kind": "antiderivative",
+          "start": "sin(x)^2",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "x/2 - sin(2x)/4 + C"
+        },
+        {
+          "id": "c2-u04-04",
+          "subject": "calc-2",
+          "topic": "Trigonometric Integrals and Powers",
+          "difficulty": 2,
+          "prompt": "\\int \\sec^4 x\\,dx",
+          "kind": "antiderivative",
+          "start": "1/cos(x)^4",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "tan(x) + tan(x)^3/3 + C"
+        },
+        {
+          "id": "c2-u04-05",
+          "subject": "calc-2",
+          "topic": "Trigonometric Integrals and Powers",
+          "difficulty": 3,
+          "prompt": "\\int \\tan^3 x\\sec^3 x\\,dx",
+          "statement": "Find the antiderivative by saving a secant-tangent pair for the differential.",
+          "kind": "antiderivative",
+          "start": "tan(x)^3/cos(x)^3",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "1/(5*cos(x)^5) - 1/(3*cos(x)^3) + C"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u05",
+      "week": "Week 5",
+      "title": "Trigonometric Substitution",
+      "summary": "Match radicals and quadratic denominators to substitutions based on sine, tangent, or secant, using a reference triangle and the corresponding Pythagorean identity. Convert the differential as well as the integrand, respect domain branches when simplifying square roots, and back-substitute into a function of x rather than leaving the final antiderivative in the angle variable.",
+      "objectives": [
+        "Identify appropriate trigonometric substitutions for sums and differences of squares.",
+        "Transform the differential and simplify radical factors using identities on a stated domain.",
+        "Back-substitute to express antiderivatives in the original variable and verify domain-sensitive factors."
+      ],
+      "problems": [
+        {
+          "id": "c2-u05-01",
+          "subject": "calc-2",
+          "topic": "Trigonometric Substitution",
+          "difficulty": 1,
+          "prompt": "\\int \\frac{x\\,dx}{\\sqrt{4-x^2}}",
+          "kind": "antiderivative",
+          "start": "x/sqrt(4 - x^2)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "-sqrt(4 - x^2) + C"
+        },
+        {
+          "id": "c2-u05-02",
+          "subject": "calc-2",
+          "topic": "Trigonometric Substitution",
+          "difficulty": 1,
+          "prompt": "\\int_0^3 \\frac{dx}{x^2+9}",
+          "statement": "After a tangent substitution, the definite integral has value k pi. Find the coefficient k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/12"
+        },
+        {
+          "id": "c2-u05-03",
+          "subject": "calc-2",
+          "topic": "Trigonometric Substitution",
+          "difficulty": 3,
+          "prompt": "\\int_0^3 \\sqrt{9-x^2}\\,dx",
+          "statement": "After a sine substitution, the definite integral has value k pi. Find the coefficient k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9/4"
+        },
+        {
+          "id": "c2-u05-04",
+          "subject": "calc-2",
+          "topic": "Trigonometric Substitution",
+          "difficulty": 3,
+          "prompt": "\\int \\frac{dx}{(x^2+4)^{3/2}}",
+          "kind": "antiderivative",
+          "start": "1/(x^2 + 4)^(3/2)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "x/(4*sqrt(x^2 + 4)) + C"
+        },
+        {
+          "id": "c2-u05-05",
+          "subject": "calc-2",
+          "topic": "Trigonometric Substitution",
+          "difficulty": 3,
+          "prompt": "\\int \\frac{dx}{\\sqrt{x^2-4}}",
+          "statement": "Find the antiderivative on the interval x greater than 2 using a secant substitution.",
+          "kind": "antiderivative",
+          "start": "1/sqrt(x^2 - 4)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "log(x + sqrt(x^2 - 4)) + C"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u06",
+      "week": "Week 6",
+      "title": "Partial Fractions",
+      "summary": "Prepare rational integrands by using long division when the numerator degree is at least the denominator degree, then factor the denominator completely over the real numbers. Set up distinct linear, repeated linear, and irreducible quadratic terms correctly; integrate logarithmic terms with domain awareness and inverse-tangent terms with the coefficient produced by completing the square.",
+      "objectives": [
+        "Decompose rational functions with distinct or repeated linear factors and determine all coefficients.",
+        "Handle irreducible quadratic denominators by completing the square when needed.",
+        "Use polynomial long division before decomposition for improper rational functions."
+      ],
+      "problems": [
+        {
+          "id": "c2-u06-01",
+          "subject": "calc-2",
+          "topic": "Partial Fractions",
+          "difficulty": 1,
+          "prompt": "\\int \\frac{2x+1}{(x-1)(x+2)}\\,dx",
+          "kind": "antiderivative",
+          "start": "(2x + 1)/((x - 1)*(x + 2))",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "log(abs(x - 1)) + log(abs(x + 2)) + C"
+        },
+        {
+          "id": "c2-u06-02",
+          "subject": "calc-2",
+          "topic": "Partial Fractions",
+          "difficulty": 2,
+          "prompt": "\\int \\frac{3x+5}{x^2+x}\\,dx",
+          "kind": "antiderivative",
+          "start": "(3x + 5)/(x^2 + x)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "5*log(abs(x)) - 2*log(abs(x + 1)) + C"
+        },
+        {
+          "id": "c2-u06-03",
+          "subject": "calc-2",
+          "topic": "Partial Fractions",
+          "difficulty": 3,
+          "prompt": "\\int \\frac{2x+3}{x(x+1)^2}\\,dx",
+          "statement": "Find the antiderivative using a decomposition that includes both terms for the repeated linear factor.",
+          "kind": "antiderivative",
+          "start": "(2x + 3)/(x*(x + 1)^2)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "3*log(abs(x)) - 3*log(abs(x + 1)) + 1/(x + 1) + C"
+        },
+        {
+          "id": "c2-u06-04",
+          "subject": "calc-2",
+          "topic": "Partial Fractions",
+          "difficulty": 3,
+          "prompt": "\\int \\frac{2x+3}{x^2+4x+5}\\,dx",
+          "statement": "After completing the square, an antiderivative has the form log(x^2+4x+5)+k arctan(x+2)+C. Find the coefficient k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-1"
+        },
+        {
+          "id": "c2-u06-05",
+          "subject": "calc-2",
+          "topic": "Partial Fractions",
+          "difficulty": 2,
+          "prompt": "\\int \\frac{x^2+2x+3}{x+1}\\,dx",
+          "statement": "Find the antiderivative after performing polynomial long division.",
+          "kind": "antiderivative",
+          "start": "(x^2 + 2x + 3)/(x + 1)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "x^2/2 + x + 2*log(abs(x + 1)) + C"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u07",
+      "week": "Week 7",
+      "title": "Improper Integrals and Comparison",
+      "summary": "Replace an infinite endpoint or an interior singular endpoint with a finite parameter and take the appropriate one-sided limit only after integrating. Distinguish convergence of a finite limiting value from boundedness alone at a finite cutoff; comparison with a convergent dominant integrand or a divergent smaller nonnegative integrand can settle behavior without finding the original value.",
+      "objectives": [
+        "Evaluate convergent Type 1 and Type 2 improper integrals through finite-cutoff limits.",
+        "Identify finite power thresholds for standard infinite-interval and endpoint-singularity integrals.",
+        "Apply direct comparison to nonnegative integrands and evaluate finite comparison bounds accurately."
+      ],
+      "problems": [
+        {
+          "id": "c2-u07-01",
+          "subject": "calc-2",
+          "topic": "Improper Integrals and Comparison",
+          "difficulty": 2,
+          "prompt": "\\int_1^{\\infty} \\frac{1}{x^3}\\,dx",
+          "statement": "Evaluate this convergent improper integral as a limit of finite-cutoff integrals.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2"
+        },
+        {
+          "id": "c2-u07-02",
+          "subject": "calc-2",
+          "topic": "Improper Integrals and Comparison",
+          "difficulty": 2,
+          "prompt": "\\int_0^1 \\frac{1}{\\sqrt{x}}\\,dx",
+          "statement": "Evaluate this convergent improper integral using a right-hand limit at the singular endpoint.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c2-u07-03",
+          "subject": "calc-2",
+          "topic": "Improper Integrals and Comparison",
+          "difficulty": 2,
+          "prompt": "\\int_1^{\\infty} \\frac{1}{x^p}\\,dx",
+          "statement": "The integral converges exactly when p exceeds a finite real threshold a. Find a.",
+          "kind": "value",
+          "start": "",
+          "variable": "p",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u07-04",
+          "subject": "calc-2",
+          "topic": "Improper Integrals and Comparison",
+          "difficulty": 2,
+          "prompt": "\\int_0^1 \\frac{1}{x^q}\\,dx",
+          "statement": "Interpreting nonpositive powers as proper integrals, the displayed integral has a finite value exactly when q is below a finite real threshold b. Find b.",
+          "kind": "value",
+          "start": "",
+          "variable": "q",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u07-05",
+          "subject": "calc-2",
+          "topic": "Improper Integrals and Comparison",
+          "difficulty": 3,
+          "prompt": "\\lim_{b\\to\\infty}\\int_1^b \\frac{1}{x^2}\\,dx",
+          "statement": "For x at least 1, the inequality 1/(x^2+sin^2 x) is at most 1/x^2 gives a convergent comparison. Evaluate this finite comparison bound.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u08",
+      "week": "Week 8",
+      "title": "Areas Between Curves and Arc Length",
+      "summary": "Determine intersections and choose vertical or horizontal slices before integrating upper minus lower or right minus left expressions; split the interval whenever that ordering changes. Keep total area distinct from net signed integral by integrating absolute height across sign changes, and compute arc length from a square-root integral of one plus the squared derivative when that derivative is integrable on the interval.",
+      "objectives": [
+        "Find intersection points and set up areas using either vertical or horizontal slices.",
+        "Compute total area when curves cross or the boundary lies across the axis rather than relying on signed area.",
+        "Evaluate arc length with the square-root formula and simplify perfect-square radicands on their domains."
+      ],
+      "problems": [
+        {
+          "id": "c2-u08-01",
+          "subject": "calc-2",
+          "topic": "Areas Between Curves and Arc Length",
+          "difficulty": 1,
+          "prompt": "y=x,\\qquad y=x^2,\\qquad 0\\leq x\\leq1",
+          "statement": "Find the area of the region between the two curves on the specified interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/6"
+        },
+        {
+          "id": "c2-u08-02",
+          "subject": "calc-2",
+          "topic": "Areas Between Curves and Arc Length",
+          "difficulty": 2,
+          "prompt": "y=x^2,\\qquad y=2x",
+          "statement": "Find the area of the finite region enclosed by the parabola and the line.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4/3"
+        },
+        {
+          "id": "c2-u08-03",
+          "subject": "calc-2",
+          "topic": "Areas Between Curves and Arc Length",
+          "difficulty": 3,
+          "prompt": "x=y^2,\\qquad x=y+2",
+          "statement": "Integrate with respect to y to find the area of the finite region enclosed by these curves.",
+          "kind": "value",
+          "start": "",
+          "variable": "y",
+          "finalForm": "number",
+          "answer": "9/2"
+        },
+        {
+          "id": "c2-u08-04",
+          "subject": "calc-2",
+          "topic": "Areas Between Curves and Arc Length",
+          "difficulty": 2,
+          "prompt": "y=\\sin x,\\qquad y=0,\\qquad 0\\leq x\\leq2\\pi",
+          "statement": "Find the total geometric area between the curve and the x-axis, not the net signed integral.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c2-u08-05",
+          "subject": "calc-2",
+          "topic": "Areas Between Curves and Arc Length",
+          "difficulty": 3,
+          "prompt": "y=\\frac13(x^2+2)^{3/2},\\qquad 0\\leq x\\leq1",
+          "statement": "Find the exact arc length of the curve on the specified interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u09",
+      "week": "Weeks 9–10",
+      "title": "Volumes by Disks, Washers, and Shells; Work",
+      "summary": "Sketch the generating region and axis of rotation before deciding whether cross-sections or cylindrical shells give the simpler integral, identifying outer and inner radii or shell radius and height in the integration variable. Apply the same accumulation idea to work as force times small displacement, using spring or variable-force laws and reporting numerical work in the units stated by the model.",
+      "objectives": [
+        "Set up disk and washer integrals with cross-sections perpendicular to an axis of rotation.",
+        "Set up shell integrals with radius, height, and thickness expressed in one consistent variable.",
+        "Calculate work from Hooke's law or a variable force and distinguish its units from volume."
+      ],
+      "problems": [
+        {
+          "id": "c2-u09-01",
+          "subject": "calc-2",
+          "topic": "Volumes by Disks, Washers, and Shells; Work",
+          "difficulty": 1,
+          "prompt": "y=\\sqrt{x},\\qquad y=0,\\qquad 0\\leq x\\leq4",
+          "statement": "Rotate the region about the x-axis. Its disk-method volume is k pi cubic units; find the coefficient k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8"
+        },
+        {
+          "id": "c2-u09-02",
+          "subject": "calc-2",
+          "topic": "Volumes by Disks, Washers, and Shells; Work",
+          "difficulty": 2,
+          "prompt": "y=x,\\qquad y=x^2",
+          "statement": "Rotate the enclosed region about the x-axis. Its washer-method volume is k pi cubic units; find k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/15"
+        },
+        {
+          "id": "c2-u09-03",
+          "subject": "calc-2",
+          "topic": "Volumes by Disks, Washers, and Shells; Work",
+          "difficulty": 2,
+          "prompt": "y=x(1-x),\\qquad y=0",
+          "statement": "Rotate the enclosed region about the y-axis. Using cylindrical shells, the volume is k pi cubic units; find k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/6"
+        },
+        {
+          "id": "c2-u09-04",
+          "subject": "calc-2",
+          "topic": "Volumes by Disks, Washers, and Shells; Work",
+          "difficulty": 3,
+          "prompt": "y=x+1,\\qquad y=0,\\qquad x=0,\\qquad x=1",
+          "statement": "Rotate the bounded region about the y-axis. Its shell-method volume is k pi cubic units; find k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5/3"
+        },
+        {
+          "id": "c2-u09-05",
+          "subject": "calc-2",
+          "topic": "Volumes by Disks, Washers, and Shells; Work",
+          "difficulty": 1,
+          "prompt": "F(x)=12x",
+          "statement": "A spring obeys this force law in newtons when stretched x meters from natural length. Find the work in joules required to stretch it 2 meters from natural length.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "24"
+        },
+        {
+          "id": "c2-u09-06",
+          "subject": "calc-2",
+          "topic": "Volumes by Disks, Washers, and Shells; Work",
+          "difficulty": 2,
+          "prompt": "F(x)=3x^2+2x,\\qquad 0\\leq x\\leq2",
+          "statement": "A force in newtons moves an object from 0 to 2 meters along the x-axis. Find the work in joules.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u10",
+      "week": "Week 11",
+      "title": "Separable Differential Equations and Applications",
+      "summary": "Separate variables only after preserving constant and equilibrium solutions, integrate both sides with a single combined constant, and use an initial condition before evaluating a requested quantity. Interpret exponential growth and decay, Newton cooling, logistic change, and mixing through their rates and limiting states, checking that signs, domains, and initial values agree with the selected solution branch.",
+      "objectives": [
+        "Solve separable initial-value problems and select the solution branch consistent with the initial condition.",
+        "Use exponential and Newton cooling laws to evaluate modeled quantities at specified times.",
+        "Analyze logistic and mixing models algebraically after separation and verify physically sensible values."
+      ],
+      "problems": [
+        {
+          "id": "c2-u10-01",
+          "subject": "calc-2",
+          "topic": "Separable Differential Equations and Applications",
+          "difficulty": 1,
+          "prompt": "\\frac{dy}{dx}=y,\\qquad y(0)=5",
+          "statement": "Solve the initial-value problem and evaluate y at x equal to the natural logarithm of 3.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "15"
+        },
+        {
+          "id": "c2-u10-02",
+          "subject": "calc-2",
+          "topic": "Separable Differential Equations and Applications",
+          "difficulty": 2,
+          "prompt": "\\frac{dy}{dx}=\\frac{2x}{y},\\qquad y(0)=3",
+          "statement": "Find the positive value y(4) for the solution satisfying the initial condition.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "c2-u10-03",
+          "subject": "calc-2",
+          "topic": "Separable Differential Equations and Applications",
+          "difficulty": 2,
+          "prompt": "T'(t)=-(\\ln2)(T-20),\\qquad T(0)=100",
+          "statement": "Newton cooling gives this temperature model in degrees with time measured in minutes. Find T(1) in degrees.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "60"
+        },
+        {
+          "id": "c2-u10-04",
+          "subject": "calc-2",
+          "topic": "Separable Differential Equations and Applications",
+          "difficulty": 3,
+          "prompt": "\\frac{dy}{dt}=y\\left(1-\\frac y4\\right),\\qquad y(0)=1",
+          "statement": "Solve this logistic initial-value problem and find y at t equal to the natural logarithm of 9.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "c2-u10-05",
+          "subject": "calc-2",
+          "topic": "Separable Differential Equations and Applications",
+          "difficulty": 3,
+          "prompt": "Q'(t)=6-\\frac{Q}{50},\\qquad Q(0)=0",
+          "statement": "A tank mixing model gives Q in grams and t in minutes. Find Q at t equal to 50 times the natural logarithm of 2.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "150"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u11",
+      "week": "Weeks 12–13",
+      "title": "Sequences and Numerical Series",
+      "summary": "Distinguish convergence of a sequence of terms from convergence of its series of partial sums, beginning with the divergence test but never treating a zero term limit as proof of convergence. Develop geometric and telescoping sums, p-series, integral and comparison tests, alternating error control, ratio and root tests, and absolute versus conditional convergence, always asking for finite limits, partial sums, thresholds, or error bounds.",
+      "objectives": [
+        "Evaluate sequence limits using algebraic simplification and distinguish them from series sums.",
+        "Compute geometric, finite partial, and telescoping sums while tracking starting indices.",
+        "Choose and apply divergence, integral, comparison, alternating, ratio, and root tests appropriately.",
+        "Classify absolute and conditional convergence through separate analysis of signed and absolute series."
+      ],
+      "problems": [
+        {
+          "id": "c2-u11-01",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 1,
+          "prompt": "a_n=\\frac{3n^2+1}{n^2+2}",
+          "statement": "Find the limit of this sequence as n approaches infinity.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "c2-u11-02",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "a_n=\\sqrt{n^2+3n}-n",
+          "statement": "Find the limit of this sequence as n approaches infinity by rationalizing.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "3/2"
+        },
+        {
+          "id": "c2-u11-03",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 1,
+          "prompt": "\\sum_{n=0}^{\\infty}3\\left(\\frac25\\right)^n",
+          "statement": "Evaluate the sum of this convergent geometric series.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "c2-u11-04",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 1,
+          "prompt": "S_5=\\sum_{n=0}^{5}\\left(\\frac12\\right)^n",
+          "statement": "Evaluate this finite partial sum exactly.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "63/32"
+        },
+        {
+          "id": "c2-u11-05",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "\\sum_{n=1}^{\\infty}\\frac{1}{n(n+1)}",
+          "statement": "Evaluate the series by decomposing its general term and examining the telescoping partial sums.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u11-06",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "\\sum_{n=1}^{\\infty}\\frac{1}{n^p}",
+          "statement": "This p-series converges exactly when p exceeds a finite real threshold a. Find a.",
+          "kind": "value",
+          "start": "",
+          "variable": "p",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u11-07",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "\\sum_{n=1}^{\\infty}\\frac{n+1}{2n+1}",
+          "statement": "The divergence test begins by evaluating the limit of the general term. Find that finite limit.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "1/2"
+        },
+        {
+          "id": "c2-u11-08",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "L=\\lim_{n\\to\\infty}\\frac{n^2}{n^2+5}",
+          "statement": "This is the limit used to compare the series for 1/(n^2+5) with the p-series for 1/n^2. Evaluate L.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u11-09",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 3,
+          "prompt": "\\lim_{b\\to\\infty}\\int_e^b\\frac{dx}{x(\\ln x)^2}",
+          "statement": "Evaluate the finite limit used by the integral test for the series with n from 3 to infinity and general term 1/[n(ln n)^2].",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u11-10",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "\\sum_{n=1}^{\\infty}\\frac{(-1)^{n+1}}{n}",
+          "statement": "For the approximation by the first 9 terms, find the alternating-series error bound given by the absolute value of the next term.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "1/10"
+        },
+        {
+          "id": "c2-u11-11",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "a_n=\\frac{2^n}{n!},\\qquad L=\\lim_{n\\to\\infty}\\left|\\frac{a_{n+1}}{a_n}\\right|",
+          "statement": "Evaluate the ratio-test limit L for the series whose terms are given by this sequence.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "0"
+        },
+        {
+          "id": "c2-u11-12",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 2,
+          "prompt": "a_n=\\left(\\frac{2n+1}{3n+1}\\right)^n,\\qquad L=\\lim_{n\\to\\infty}\\sqrt[n]{|a_n|}",
+          "statement": "Evaluate the root-test limit L for the series whose terms are given by this sequence.",
+          "kind": "value",
+          "start": "",
+          "variable": "n",
+          "finalForm": "number",
+          "answer": "2/3"
+        },
+        {
+          "id": "c2-u11-13",
+          "subject": "calc-2",
+          "topic": "Sequences and Numerical Series",
+          "difficulty": 3,
+          "prompt": "\\sum_{n=1}^{\\infty}\\frac{(-1)^{n+1}}{n^p}",
+          "statement": "For positive p, this alternating series is conditionally convergent exactly when p is at most a finite threshold a. Find a.",
+          "kind": "value",
+          "start": "",
+          "variable": "p",
+          "finalForm": "number",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "id": "calc-2-u12",
+      "week": "Week 14",
+      "title": "Power and Taylor Series; Parametric and Polar Preview",
+      "summary": "Find power-series centers and radii with ratio or root limits, then test endpoints separately because the radius alone never decides endpoint behavior; represent functions through Taylor coefficients and polynomial approximations. Close with parametric slopes and arc length from derivatives with respect to the parameter, and polar slopes and sector area from products and one-half r squared, previewing how integral ideas transfer to new coordinates.",
+      "objectives": [
+        "Determine a power series radius of convergence and examine endpoint behavior with separate numerical series.",
+        "Compute Taylor coefficients and evaluate finite Taylor polynomials for representation and approximation.",
+        "Calculate parametric derivatives and arc lengths from parameter derivatives without eliminating the parameter.",
+        "Evaluate elementary polar slopes and sector areas while respecting angular domains and factors of one-half."
+      ],
+      "problems": [
+        {
+          "id": "c2-u12-01",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 1,
+          "prompt": "\\sum_{n=0}^{\\infty}\\left(\\frac{x}{3}\\right)^n",
+          "statement": "Find the radius of convergence R of this power series centered at 0.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "c2-u12-02",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "\\sum_{n=0}^{\\infty}\\frac{n+1}{2^n}(x-1)^n",
+          "statement": "Find the radius of convergence R of this power series centered at 1.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c2-u12-03",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "\\sum_{n=0}^{\\infty}n!\\,x^n",
+          "statement": "Find the finite radius of convergence R of this power series centered at 0.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "0"
+        },
+        {
+          "id": "c2-u12-04",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 3,
+          "prompt": "S_N=\\sum_{n=0}^{N}(-1)^n",
+          "statement": "At the left endpoint of the geometric power series with ratio x/3 and radius 3, the partial sums have this form. Find S_100 as a finite endpoint diagnostic.",
+          "kind": "value",
+          "start": "",
+          "variable": "N",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u12-05",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 1,
+          "prompt": "e^x=\\sum_{n=0}^{\\infty}c_nx^n",
+          "statement": "Find the Maclaurin coefficient c_5.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/120"
+        },
+        {
+          "id": "c2-u12-06",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "\\cos x=\\sum_{n=0}^{\\infty}c_nx^n",
+          "statement": "Find the Maclaurin coefficient c_4.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/24"
+        },
+        {
+          "id": "c2-u12-07",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "\\ln(1+x)=\\sum_{n=1}^{\\infty}c_nx^n",
+          "statement": "Find the Maclaurin coefficient c_5 for the series valid near x equal to 0.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/5"
+        },
+        {
+          "id": "c2-u12-08",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "P_3(x)=1+x+\\frac{x^2}{2}+\\frac{x^3}{6}",
+          "statement": "This is the third Maclaurin polynomial for e^x. Evaluate the approximation P_3(1).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8/3"
+        },
+        {
+          "id": "c2-u12-09",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "x=t^2+1,\\qquad y=t^3-t",
+          "statement": "Find dy/dx for this parametric curve at t equals 1.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c2-u12-10",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "x=3t,\\qquad y=4t,\\qquad 0\\leq t\\leq2",
+          "statement": "Find the arc length of this parametric curve on the specified parameter interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "10"
+        },
+        {
+          "id": "c2-u12-11",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 2,
+          "prompt": "r=2,\\qquad 0\\leq\\theta\\leq2\\pi",
+          "statement": "The polar sector area is k pi square units. Use the polar area integral to find k.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c2-u12-12",
+          "subject": "calc-2",
+          "topic": "Power and Taylor Series; Parametric and Polar Preview",
+          "difficulty": 3,
+          "prompt": "r=2\\cos\\theta,\\qquad \\theta=\\frac\\pi4",
+          "statement": "Using x=r cos(theta) and y=r sin(theta), find the Cartesian slope dy/dx at the indicated point of this polar curve.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "0"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,798 @@
+{
+  "slug": "precalculus",
+  "title": "Precalculus",
+  "semester": "15-week semester · 12 instructional units",
+  "description": "A function-centered precalculus pathway through trigonometry, analytic geometry, vectors, sequences, and a limits preview; twelve teaching weeks leave three weeks for synthesis, review, and assessment.",
+  "outcomes": [
+    "Analyze functions algebraically and graphically, including compositions, inverses, end behavior, and discontinuities.",
+    "Build and interpret exponential, logarithmic, and sinusoidal models in clearly defined applied contexts.",
+    "Use unit-circle reasoning, identities, inverse functions, and equations to solve trigonometric problems exactly.",
+    "Solve general triangles and reason with polar coordinates, complex numbers, vectors, and dot products.",
+    "Identify and analyze circles, parabolas, ellipses, and hyperbolas from their standard equations.",
+    "Work with sequences, induction, binomial expansions, and introductory limiting behavior as preparation for calculus."
+  ],
+  "units": [
+    {
+      "id": "precalculus-u01",
+      "week": "Week 1",
+      "title": "Functions, Composition, and Inverses",
+      "summary": "Treat functions as input-output relationships and connect their formulas, graphs, and domains. Compose functions in the stated order, and find inverse values by reversing the input-output relationship rather than by mechanically taking reciprocals; remember that only one-to-one functions have inverse functions.",
+      "objectives": [
+        "Evaluate functions and interpret input-output notation in numerical and graphical settings.",
+        "Compute compositions in the correct order and track the domain of each stage.",
+        "Determine inverse function values by solving an appropriate input-output equation."
+      ],
+      "problems": [
+        {
+          "id": "pre-u01-01",
+          "subject": "precalculus",
+          "topic": "Functions, Composition, and Inverses",
+          "difficulty": 1,
+          "prompt": "f(x)=2x^2-3x+1",
+          "statement": "For the given function, evaluate f(-2).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "15"
+        },
+        {
+          "id": "pre-u01-02",
+          "subject": "precalculus",
+          "topic": "Functions, Composition, and Inverses",
+          "difficulty": 2,
+          "prompt": "f(x)=x^2-4, \\qquad g(x)=3x+1",
+          "statement": "For the given functions, evaluate the composition (f ∘ g)(2).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "45"
+        },
+        {
+          "id": "pre-u01-03",
+          "subject": "precalculus",
+          "topic": "Functions, Composition, and Inverses",
+          "difficulty": 2,
+          "prompt": "f(x)=\\frac{5x-3}{2}",
+          "statement": "The given function is one-to-one. Evaluate its inverse at 4, namely f^{-1}(4).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "11/5"
+        },
+        {
+          "id": "pre-u01-04",
+          "subject": "precalculus",
+          "topic": "Functions, Composition, and Inverses",
+          "difficulty": 3,
+          "prompt": "f(x)=\\frac{3x+2}{x-1}",
+          "statement": "The given function is one-to-one on its domain. Evaluate f^{-1}(4).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u02",
+      "week": "Week 2",
+      "title": "Polynomial and Rational Function Behavior",
+      "summary": "Use degree, leading coefficient, real zeros, and multiplicity to predict polynomial graphs and end behavior. For rational functions, factor before deciding whether a missing point is a hole or a vertical asymptote, and compare degrees for horizontal asymptotes; simplification does not restore excluded domain values.",
+      "objectives": [
+        "Predict polynomial degree, end behavior, and zero multiplicity from factored formulas.",
+        "Distinguish removable discontinuities from vertical asymptotes using factored rational forms.",
+        "Determine horizontal asymptotes by comparing numerator and denominator degrees."
+      ],
+      "problems": [
+        {
+          "id": "pre-u02-01",
+          "subject": "precalculus",
+          "topic": "Polynomial and Rational Function Behavior",
+          "difficulty": 1,
+          "prompt": "p(x)=-2(x-1)^2(x+4)^3",
+          "statement": "What is the degree of the given polynomial?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "pre-u02-02",
+          "subject": "precalculus",
+          "topic": "Polynomial and Rational Function Behavior",
+          "difficulty": 2,
+          "prompt": "p(x)=(x+2)^3(x-1)(x-4)^2",
+          "statement": "For the given polynomial, what is the multiplicity of the zero at x = -2?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "pre-u02-03",
+          "subject": "precalculus",
+          "topic": "Polynomial and Rational Function Behavior",
+          "difficulty": 2,
+          "prompt": "f(x)=\\frac{x^2-9}{x-3}",
+          "statement": "The function has a removable discontinuity. What value should be assigned to f(3) to make the continuous extension at x = 3?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "pre-u02-04",
+          "subject": "precalculus",
+          "topic": "Polynomial and Rational Function Behavior",
+          "difficulty": 3,
+          "prompt": "f(x)=\\frac{5x^3-2x+1}{2x^3+x^2+7}",
+          "statement": "The graph has a horizontal asymptote y = k. Find k.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5/2"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u03",
+      "week": "Week 3",
+      "title": "Exponential and Logarithmic Models",
+      "summary": "Connect exponential growth and decay with logarithms, which recover exponents and time scales. Use equivalent bases, logarithm laws, and model parameters carefully, and check candidate solutions against every logarithm's positive-input requirement before accepting them.",
+      "objectives": [
+        "Evaluate logarithms and solve exponential equations by rewriting with a common base.",
+        "Interpret initial values and doubling periods in exponential growth models.",
+        "Solve logarithmic equations while enforcing all input-domain restrictions."
+      ],
+      "problems": [
+        {
+          "id": "pre-u03-01",
+          "subject": "precalculus",
+          "topic": "Exponential and Logarithmic Models",
+          "difficulty": 1,
+          "prompt": "\\log_3 81",
+          "statement": "Evaluate the logarithm exactly.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "pre-u03-02",
+          "subject": "precalculus",
+          "topic": "Exponential and Logarithmic Models",
+          "difficulty": 2,
+          "prompt": "5^{2x-1}=125",
+          "statement": "Solve the exponential equation for x.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "pre-u03-03",
+          "subject": "precalculus",
+          "topic": "Exponential and Logarithmic Models",
+          "difficulty": 2,
+          "prompt": "P(t)=250\\cdot 2^{t/6}",
+          "statement": "A culture begins with 250 bacteria and doubles every 6 hours, where t is measured in hours. According to the model, how many bacteria are present after 18 hours?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2000"
+        },
+        {
+          "id": "pre-u03-04",
+          "subject": "precalculus",
+          "topic": "Exponential and Logarithmic Models",
+          "difficulty": 3,
+          "prompt": "\\log_2(x+1)+\\log_2(x-1)=3",
+          "statement": "Solve the logarithmic equation, retaining only solutions in its domain.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u04",
+      "week": "Week 4",
+      "title": "Angle Measure and the Unit Circle",
+      "summary": "Measure angles in radians so that arc length, angular speed, and trigonometric definitions use a common scale. Locate terminal sides on the unit circle, use reference angles and signs by quadrant, and derive exact sine, cosine, and tangent values rather than relying on degree-mode approximations.",
+      "objectives": [
+        "Relate radian angle measures to fractions of a complete revolution.",
+        "Evaluate exact sine and cosine values using unit-circle coordinates.",
+        "Combine exact trigonometric values using signs and reference angles."
+      ],
+      "problems": [
+        {
+          "id": "pre-u04-01",
+          "subject": "precalculus",
+          "topic": "Angle Measure and the Unit Circle",
+          "difficulty": 1,
+          "prompt": "\\theta=7\\pi",
+          "statement": "Express the angle's measure as a number of revolutions, including any fractional part.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7/2"
+        },
+        {
+          "id": "pre-u04-02",
+          "subject": "precalculus",
+          "topic": "Angle Measure and the Unit Circle",
+          "difficulty": 1,
+          "prompt": "\\sin\\frac{5\\pi}{6}",
+          "statement": "Evaluate the expression exactly using the unit circle.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2"
+        },
+        {
+          "id": "pre-u04-03",
+          "subject": "precalculus",
+          "topic": "Angle Measure and the Unit Circle",
+          "difficulty": 2,
+          "prompt": "\\cos\\frac{4\\pi}{3}",
+          "statement": "Evaluate the expression exactly using the unit circle.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-1/2"
+        },
+        {
+          "id": "pre-u04-04",
+          "subject": "precalculus",
+          "topic": "Angle Measure and the Unit Circle",
+          "difficulty": 3,
+          "prompt": "\\sin^2\\frac{3\\pi}{4}+\\tan\\frac{5\\pi}{4}",
+          "statement": "Evaluate the expression exactly using unit-circle values.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3/2"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u05",
+      "week": "Week 5",
+      "title": "Trigonometric Graphs and Modeling",
+      "summary": "Read amplitude, period, phase shift, and midline from transformed sine and cosine formulas and connect them to graph features. In periodic models, interpret those parameters with units and check whether a horizontal or vertical shift has been applied before evaluating or predicting extrema.",
+      "objectives": [
+        "Determine amplitude, period, and vertical shifts from sinusoidal formulas.",
+        "Find maximum values by combining amplitude with the midline.",
+        "Evaluate phase-shifted periodic models at specified times."
+      ],
+      "problems": [
+        {
+          "id": "pre-u05-01",
+          "subject": "precalculus",
+          "topic": "Trigonometric Graphs and Modeling",
+          "difficulty": 1,
+          "prompt": "y=4\\sin(3x)-2",
+          "statement": "What is the amplitude of the graph?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "pre-u05-02",
+          "subject": "precalculus",
+          "topic": "Trigonometric Graphs and Modeling",
+          "difficulty": 2,
+          "prompt": "y=3\\cos\\left(\\frac{\\pi x}{4}\\right)-1",
+          "statement": "What is the period of the graph? Give only the numerical period, not an expression containing π.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8"
+        },
+        {
+          "id": "pre-u05-03",
+          "subject": "precalculus",
+          "topic": "Trigonometric Graphs and Modeling",
+          "difficulty": 2,
+          "prompt": "y=5\\sin(2x-\\pi)+3",
+          "statement": "What is the maximum value of the function?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8"
+        },
+        {
+          "id": "pre-u05-04",
+          "subject": "precalculus",
+          "topic": "Trigonometric Graphs and Modeling",
+          "difficulty": 3,
+          "prompt": "H(t)=9\\sin\\left(\\frac{\\pi(t-3)}{6}\\right)+12",
+          "statement": "A periodic model gives height H(t) at time t. Evaluate H(6).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "21"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u06",
+      "week": "Week 6",
+      "title": "Inverse Trigonometry and Identities",
+      "summary": "Use inverse trigonometric ranges to select the intended angle before evaluating a composition. Rearrange Pythagorean, quotient, reciprocal, and double-angle identities to transform expressions, while preserving domain exclusions and determining signs from the stated quadrant.",
+      "objectives": [
+        "Evaluate compositions involving inverse trigonometric functions and right-triangle reasoning.",
+        "Use Pythagorean identities and quadrant information to determine signed trigonometric values.",
+        "Apply double-angle identities to compute exact values without finding an angle."
+      ],
+      "problems": [
+        {
+          "id": "pre-u06-01",
+          "subject": "precalculus",
+          "topic": "Inverse Trigonometry and Identities",
+          "difficulty": 2,
+          "prompt": "\\sin\\left(\\arccos\\frac{3}{5}\\right)",
+          "statement": "Evaluate the inverse-trigonometric composition exactly.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4/5"
+        },
+        {
+          "id": "pre-u06-02",
+          "subject": "precalculus",
+          "topic": "Inverse Trigonometry and Identities",
+          "difficulty": 2,
+          "prompt": "\\cos\\left(\\arcsin\\left(-\\frac{5}{13}\\right)\\right)",
+          "statement": "Evaluate the composition exactly, using the range of arcsine to choose the sign.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12/13"
+        },
+        {
+          "id": "pre-u06-03",
+          "subject": "precalculus",
+          "topic": "Inverse Trigonometry and Identities",
+          "difficulty": 2,
+          "prompt": "\\sin\\theta=\\frac{3}{5}, \\qquad \\frac{\\pi}{2}<\\theta<\\pi",
+          "statement": "Given the quadrant restriction shown, find cos θ.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-4/5"
+        },
+        {
+          "id": "pre-u06-04",
+          "subject": "precalculus",
+          "topic": "Inverse Trigonometry and Identities",
+          "difficulty": 3,
+          "prompt": "\\sin\\theta=\\frac{5}{13}, \\qquad \\frac{\\pi}{2}<\\theta<\\pi",
+          "statement": "Use the identity cos(2θ) = 1 - 2sin²θ to find cos(2θ).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "119/169"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u07",
+      "week": "Week 7",
+      "title": "Trigonometric Equations",
+      "summary": "Reduce trigonometric equations to familiar values by factoring, substitution, or identities, then account for every family created by periodicity. On a bounded interval, enumerate candidates systematically and remove duplicates at endpoints; when reporting all real solutions, include the appropriate integer-parameter family and state its restrictions.",
+      "objectives": [
+        "Find a specified principal solution of a basic trigonometric equation.",
+        "Count all solutions on bounded intervals without duplicating periodic representatives.",
+        "Solve factorable trigonometric equations and count every solution in the stated domain."
+      ],
+      "problems": [
+        {
+          "id": "pre-u07-01",
+          "subject": "precalculus",
+          "topic": "Trigonometric Equations",
+          "difficulty": 1,
+          "prompt": "\\sin x=\\frac{\\sqrt{3}}{2}",
+          "statement": "Let a be the smallest positive solution of the equation. Find a/π.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/3"
+        },
+        {
+          "id": "pre-u07-02",
+          "subject": "precalculus",
+          "topic": "Trigonometric Equations",
+          "difficulty": 2,
+          "prompt": "\\cos x=-\\frac{1}{2}, \\qquad 0\\leq x\\leq 2\\pi",
+          "statement": "How many solutions does the equation have on the stated closed interval?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "pre-u07-03",
+          "subject": "precalculus",
+          "topic": "Trigonometric Equations",
+          "difficulty": 2,
+          "prompt": "\\tan(3x)=1, \\qquad 0\\leq x<2\\pi",
+          "statement": "How many solutions does the equation have on the stated interval?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "pre-u07-04",
+          "subject": "precalculus",
+          "topic": "Trigonometric Equations",
+          "difficulty": 3,
+          "prompt": "2\\cos^2x-3\\cos x+1=0, \\qquad 0\\leq x<2\\pi",
+          "statement": "Factor in terms of cos x, then determine how many solutions lie on the stated interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u08",
+      "week": "Week 8",
+      "title": "Solving Triangles with the Laws of Sines and Cosines",
+      "summary": "Match the law of sines to angle-side pairs and the law of cosines to SAS or SSS information, labeling each side opposite its corresponding angle. Include the area formula for two sides and their included angle, and analyze the SSA case explicitly because zero, one, or two triangles may satisfy the same data.",
+      "objectives": [
+        "Solve for an unknown side using the law of sines with a known opposite pair.",
+        "Apply the law of cosines to SAS information without dropped signs.",
+        "Compute triangle area from two sides and their included angle.",
+        "Determine the number of triangles in the potentially ambiguous SSA case."
+      ],
+      "problems": [
+        {
+          "id": "pre-u08-01",
+          "subject": "precalculus",
+          "topic": "Solving Triangles with the Laws of Sines and Cosines",
+          "difficulty": 2,
+          "prompt": "a=10, \\qquad A=\\frac{\\pi}{6}, \\qquad B=\\frac{\\pi}{2}",
+          "statement": "In triangle ABC, sides a and b are opposite angles A and B, respectively. Use the law of sines to find b.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "20"
+        },
+        {
+          "id": "pre-u08-02",
+          "subject": "precalculus",
+          "topic": "Solving Triangles with the Laws of Sines and Cosines",
+          "difficulty": 2,
+          "prompt": "b=8, \\qquad c=5, \\qquad A=\\frac{\\pi}{3}",
+          "statement": "In triangle ABC, angle A is included between sides b and c. Use the law of cosines to find side a.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "pre-u08-03",
+          "subject": "precalculus",
+          "topic": "Solving Triangles with the Laws of Sines and Cosines",
+          "difficulty": 2,
+          "prompt": "b=7, \\qquad c=10, \\qquad A=\\frac{\\pi}{6}",
+          "statement": "In triangle ABC, angle A is included between sides b and c. Find the triangle's area.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "35/2"
+        },
+        {
+          "id": "pre-u08-04",
+          "subject": "precalculus",
+          "topic": "Solving Triangles with the Laws of Sines and Cosines",
+          "difficulty": 3,
+          "prompt": "a=8, \\qquad b=10, \\qquad A=\\frac{\\pi}{6}",
+          "statement": "Side a is opposite angle A and side b is opposite angle B. How many distinct noncongruent triangles in the plane satisfy these SSA measurements?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u09",
+      "week": "Week 9",
+      "title": "Polar Coordinates and Complex Numbers",
+      "summary": "Translate between rectangular and polar coordinates with x = r cos θ, y = r sin θ, and r² = x² + y², choosing angle representations appropriate to the requested quadrant. Treat complex numbers as ordered real-imaginary pairs, use i² = -1 in products, and rationalize denominators with conjugates before reading components.",
+      "objectives": [
+        "Convert between polar and rectangular coordinates using trigonometric relationships.",
+        "Compute products of complex numbers and identify their real components.",
+        "Divide complex numbers by multiplying numerator and denominator by a conjugate."
+      ],
+      "problems": [
+        {
+          "id": "pre-u09-01",
+          "subject": "precalculus",
+          "topic": "Polar Coordinates and Complex Numbers",
+          "difficulty": 1,
+          "prompt": "(r,\\theta)=\\left(6,\\frac{\\pi}{3}\\right)",
+          "statement": "Convert the polar point to rectangular coordinates. Find its x-coordinate.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "pre-u09-02",
+          "subject": "precalculus",
+          "topic": "Polar Coordinates and Complex Numbers",
+          "difficulty": 2,
+          "prompt": "(x,y)=(5,12)",
+          "statement": "For the standard polar representation with r > 0, find the radius r of this rectangular point.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "13"
+        },
+        {
+          "id": "pre-u09-03",
+          "subject": "precalculus",
+          "topic": "Polar Coordinates and Complex Numbers",
+          "difficulty": 2,
+          "prompt": "(3+4i)(1-2i)",
+          "statement": "Multiply the complex numbers. What is the real part of the product?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "11"
+        },
+        {
+          "id": "pre-u09-04",
+          "subject": "precalculus",
+          "topic": "Polar Coordinates and Complex Numbers",
+          "difficulty": 3,
+          "prompt": "\\frac{2+3i}{1-i}",
+          "statement": "Use the conjugate of the denominator to find the real part of this complex quotient.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-1/2"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u10",
+      "week": "Week 10",
+      "title": "Vectors and Dot Products",
+      "summary": "Represent vectors by components and compute addition or scalar multiplication component by component. Connect magnitude with the distance formula and dot products with orthogonality and angle, keeping the distinction between a vector result and a requested scalar component or parameter.",
+      "objectives": [
+        "Add vectors and report specified components of the resulting vector.",
+        "Compute squared magnitudes and dot products from rectangular components.",
+        "Use a zero dot product to determine parameters that make vectors orthogonal."
+      ],
+      "problems": [
+        {
+          "id": "pre-u10-01",
+          "subject": "precalculus",
+          "topic": "Vectors and Dot Products",
+          "difficulty": 1,
+          "prompt": "\\mathbf{u}=\\langle3,-2\\rangle, \\qquad \\mathbf{v}=\\langle4,5\\rangle",
+          "statement": "Find the first component of the vector sum u + v.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "pre-u10-02",
+          "subject": "precalculus",
+          "topic": "Vectors and Dot Products",
+          "difficulty": 1,
+          "prompt": "\\mathbf{u}=\\langle2,-3\\rangle",
+          "statement": "Find the squared magnitude of u, written ||u||².",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "13"
+        },
+        {
+          "id": "pre-u10-03",
+          "subject": "precalculus",
+          "topic": "Vectors and Dot Products",
+          "difficulty": 2,
+          "prompt": "\\mathbf{u}=\\langle4,-1\\rangle, \\qquad \\mathbf{v}=\\langle2,3\\rangle",
+          "statement": "Compute the dot product u · v.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "pre-u10-04",
+          "subject": "precalculus",
+          "topic": "Vectors and Dot Products",
+          "difficulty": 3,
+          "prompt": "\\mathbf{u}=\\langle2,k\\rangle, \\qquad \\mathbf{v}=\\langle3,-4\\rangle",
+          "statement": "Find k so that the vectors u and v are orthogonal.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3/2"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u11",
+      "week": "Week 11",
+      "title": "Conic Sections",
+      "summary": "Recognize conics from standard-form equations and read off their centers, vertices, radii, axes, foci, and asymptotes. Complete the square when necessary, distinguish major-axis orientation in ellipses and transverse-axis orientation in hyperbolas, and use c² relationships appropriate to each conic.",
+      "objectives": [
+        "Identify parabola vertices and circle centers or radii from standard forms.",
+        "Use ellipse parameters to locate foci along the major axis.",
+        "Determine asymptote slopes for hyperbolas in standard form."
+      ],
+      "problems": [
+        {
+          "id": "pre-u11-01",
+          "subject": "precalculus",
+          "topic": "Conic Sections",
+          "difficulty": 1,
+          "prompt": "y=(x-3)^2-4",
+          "statement": "Find the x-coordinate of the parabola's vertex.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "pre-u11-02",
+          "subject": "precalculus",
+          "topic": "Conic Sections",
+          "difficulty": 1,
+          "prompt": "(x+2)^2+(y-5)^2=49",
+          "statement": "Find the radius of the circle.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "pre-u11-03",
+          "subject": "precalculus",
+          "topic": "Conic Sections",
+          "difficulty": 2,
+          "prompt": "\\frac{x^2}{25}+\\frac{y^2}{9}=1",
+          "statement": "Find the distance c from the ellipse's center to either focus.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "pre-u11-04",
+          "subject": "precalculus",
+          "topic": "Conic Sections",
+          "difficulty": 3,
+          "prompt": "\\frac{x^2}{16}-\\frac{y^2}{9}=1",
+          "statement": "The hyperbola has one asymptote with positive slope. Find that slope.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3/4"
+        }
+      ]
+    },
+    {
+      "id": "precalculus-u12",
+      "week": "Week 12",
+      "title": "Sequences, Induction, Binomials, and Limits Preview",
+      "summary": "Describe sequences recursively or explicitly and distinguish term formulas from partial sums. Verify induction bases and inductive-step algebra, identify binomial coefficients alongside powers of both terms, and preview limits by simplifying a removable indeterminate form before substitution; these ideas prepare for calculus without assuming derivative rules.",
+      "objectives": [
+        "Compute specified terms of arithmetic sequences from initial values and common differences.",
+        "Verify numerical instances of the algebra used in mathematical induction.",
+        "Find a specified coefficient in a binomial expansion using the binomial theorem.",
+        "Evaluate an introductory removable-discontinuity limit by factoring and substitution."
+      ],
+      "problems": [
+        {
+          "id": "pre-u12-01",
+          "subject": "precalculus",
+          "topic": "Sequences, Induction, Binomials, and Limits Preview",
+          "difficulty": 1,
+          "prompt": "a_1=5, \\qquad a_n=a_{n-1}+3\\ \\text{for }n\\geq2",
+          "statement": "The recurrence defines an arithmetic sequence. Find its twentieth term, a_20.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "62"
+        },
+        {
+          "id": "pre-u12-02",
+          "subject": "precalculus",
+          "topic": "Sequences, Induction, Binomials, and Limits Preview",
+          "difficulty": 2,
+          "prompt": "\\sum_{k=1}^{n}(2k-1)=n^2",
+          "statement": "In an induction step, assume the formula when n = m. Verify its transition at m = 6 by evaluating m² + (2m + 1).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "49"
+        },
+        {
+          "id": "pre-u12-03",
+          "subject": "precalculus",
+          "topic": "Sequences, Induction, Binomials, and Limits Preview",
+          "difficulty": 2,
+          "prompt": "(x+2)^5",
+          "statement": "In the expanded binomial, what is the coefficient of x³?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "40"
+        },
+        {
+          "id": "pre-u12-04",
+          "subject": "precalculus",
+          "topic": "Sequences, Induction, Binomials, and Limits Preview",
+          "difficulty": 3,
+          "prompt": "\\lim_{x\\to2}\\frac{x^2-4}{x-2}",
+          "statement": "Evaluate the limit by factoring and simplifying before substituting.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        }
+      ]
+    }
+  ]
+}

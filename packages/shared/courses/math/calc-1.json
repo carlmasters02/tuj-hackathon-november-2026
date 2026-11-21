@@ -1,0 +1,790 @@
+{
+  "slug": "calc-1",
+  "title": "Calculus 1",
+  "semester": "15-week semester · 12 instructional units · Week 15 review and assessment",
+  "description": "A full first-semester differential calculus pathway from limits through derivatives, applications, curve analysis, optimization, and a preview of integration.",
+  "outcomes": [
+    "Evaluate limits algebraically and use continuity, including the Intermediate Value Theorem, to reason about function behavior.",
+    "Compute derivatives from the definition and apply power, product, quotient, chain, trigonometric, exponential, logarithmic, implicit, and inverse differentiation rules.",
+    "Interpret derivatives as slopes and instantaneous rates in tangent-line, motion, related-rates, and approximation problems.",
+    "Use derivatives and the Mean Value Theorem to locate extrema, analyze graph shape, and solve clearly stated optimization problems.",
+    "Find basic antiderivatives and evaluate simple definite integrals using the Fundamental Theorem of Calculus."
+  ],
+  "units": [
+    {
+      "id": "calc-1-u01",
+      "week": "Week 1",
+      "title": "Limits and Limit Laws",
+      "summary": "Develop the limit as the value a function approaches, distinguishing nearby behavior from the function's value at the point. Use limit laws for direct substitution and algebraic methods such as factoring and expanding to remove zero-over-zero forms, while checking that any cancellation is valid only near the limiting point.",
+      "objectives": [
+        "Evaluate polynomial and rational limits using direct substitution and limit laws.",
+        "Use factoring or expansion to evaluate selected indeterminate zero-over-zero forms.",
+        "Combine known function limits with constant multiples, sums, and differences."
+      ],
+      "problems": [
+        {
+          "id": "c1-u01-01",
+          "subject": "calc-1",
+          "topic": "Limits and Limit Laws",
+          "difficulty": 1,
+          "prompt": "\\lim_{x\\to 3}\\left(2x^2-5x+1\\right)",
+          "statement": "Evaluate the limit. Enter a single number.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c1-u01-02",
+          "subject": "calc-1",
+          "topic": "Limits and Limit Laws",
+          "difficulty": 2,
+          "prompt": "\\lim_{x\\to 2}\\frac{x^2-4}{x-2}",
+          "statement": "Evaluate the limit by factoring before substituting.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c1-u01-03",
+          "subject": "calc-1",
+          "topic": "Limits and Limit Laws",
+          "difficulty": 2,
+          "prompt": "\\lim_{x\\to 0}\\frac{(3+x)^2-9}{x}",
+          "statement": "Evaluate the difference quotient limit. Enter a single number.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "c1-u01-04",
+          "subject": "calc-1",
+          "topic": "Limits and Limit Laws",
+          "difficulty": 3,
+          "prompt": "\\lim_{x\\to 4}\\left[3f(x)-4g(x)\\right]",
+          "statement": "Suppose f(x) approaches 5 and g(x) approaches -2 as x approaches 4. Use the limit laws to evaluate this limit.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "23"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u02",
+      "week": "Week 2",
+      "title": "Continuity and the Intermediate Value Theorem",
+      "summary": "Connect continuity at a point with the agreement of the limit and the function value, and use one-sided information to choose parameters in piecewise functions. Apply the Intermediate Value Theorem only on a closed interval where continuity is known, using endpoint signs to guarantee an intermediate output without confusing that guarantee with a formula for locating it.",
+      "objectives": [
+        "Determine parameter values that make piecewise functions continuous at a joining point.",
+        "Verify the continuity and endpoint hypotheses needed for the Intermediate Value Theorem.",
+        "Use intermediate-value conclusions to identify or compute guaranteed function values."
+      ],
+      "problems": [
+        {
+          "id": "c1-u02-01",
+          "subject": "calc-1",
+          "topic": "Continuity and the Intermediate Value Theorem",
+          "difficulty": 2,
+          "prompt": "f(x)=\\begin{cases}3x+a,&x<2\\\\x^2+1,&x\\geq 2\\end{cases}",
+          "statement": "Find the value of a that makes f continuous at x = 2 by matching the two limiting values.",
+          "kind": "equation",
+          "start": "6 + a = 5",
+          "variable": "a",
+          "finalForm": "isolated",
+          "answer": "a = -1"
+        },
+        {
+          "id": "c1-u02-02",
+          "subject": "calc-1",
+          "topic": "Continuity and the Intermediate Value Theorem",
+          "difficulty": 2,
+          "prompt": "f(x)=\\begin{cases}\\dfrac{x^2-9}{x-3},&x\\neq 3\\\\k,&x=3\\end{cases}",
+          "statement": "Find k so that f is continuous at x = 3. Enter a single number.",
+          "kind": "value",
+          "start": "",
+          "variable": "k",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "c1-u02-03",
+          "subject": "calc-1",
+          "topic": "Continuity and the Intermediate Value Theorem",
+          "difficulty": 1,
+          "prompt": "f(x)=x^3+2x-2",
+          "statement": "For the Intermediate Value Theorem sign check on [0,1], compute f(0) + f(1). The separate endpoint values have opposite signs, so the continuous function has an interior root.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-1"
+        },
+        {
+          "id": "c1-u02-04",
+          "subject": "calc-1",
+          "topic": "Continuity and the Intermediate Value Theorem",
+          "difficulty": 2,
+          "prompt": "f(c)=2c-5,\\qquad 1\\leq c\\leq 4",
+          "statement": "The Intermediate Value Theorem guarantees a zero c in this interval. Solve f(c) = 0 to find c.",
+          "kind": "equation",
+          "start": "2c - 5 = 0",
+          "variable": "c",
+          "finalForm": "isolated",
+          "answer": "c = 5/2"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u03",
+      "week": "Week 3",
+      "title": "Derivative Definition and Tangent Rates",
+      "summary": "Define the derivative as the limit of a difference quotient and interpret it simultaneously as tangent slope and instantaneous rate of change. Contrast average rates over intervals with instantaneous rates at a point; when evaluating the definition, simplify the quotient before letting the increment approach zero to avoid treating an indeterminate form as an ordinary value.",
+      "objectives": [
+        "Evaluate derivative limits from simplified difference quotients at specified points.",
+        "Use differentiation to determine the slope of a tangent line at a given point.",
+        "Interpret a position function's derivative as instantaneous velocity in a motion model."
+      ],
+      "problems": [
+        {
+          "id": "c1-u03-01",
+          "subject": "calc-1",
+          "topic": "Derivative Definition and Tangent Rates",
+          "difficulty": 2,
+          "prompt": "\\lim_{h\\to 0}\\frac{(3+h)^2-3^2}{h}",
+          "statement": "This is the definition of f'(3) for f(x) = x^2. Evaluate the limit.",
+          "kind": "value",
+          "start": "",
+          "variable": "h",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "c1-u03-02",
+          "subject": "calc-1",
+          "topic": "Derivative Definition and Tangent Rates",
+          "difficulty": 2,
+          "prompt": "\\lim_{h\\to 0}\\frac{[2(1+h)^2-(1+h)]-[2(1)^2-1]}{h}",
+          "statement": "Evaluate the difference quotient to find f'(1) for f(x) = 2x^2 - x.",
+          "kind": "value",
+          "start": "",
+          "variable": "h",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "c1-u03-03",
+          "subject": "calc-1",
+          "topic": "Derivative Definition and Tangent Rates",
+          "difficulty": 1,
+          "prompt": "f(x)=x^3-2x",
+          "statement": "Find the slope of the tangent line to the graph of f at x = 2. Enter a single number.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "10"
+        },
+        {
+          "id": "c1-u03-04",
+          "subject": "calc-1",
+          "topic": "Derivative Definition and Tangent Rates",
+          "difficulty": 2,
+          "prompt": "s(t)=t^2+3t",
+          "statement": "A particle's position is s(t) meters after t seconds. Find its instantaneous velocity at t = 4 in meters per second; enter only the number.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "11"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u04",
+      "week": "Week 4",
+      "title": "Power Rule and Polynomial Derivatives",
+      "summary": "Move from the limit definition to efficient shortcuts for constants, powers, constant multiples, sums, and differences. Extend the power rule to fractional and negative exponents after rewriting radicals and reciprocals, taking care with exponent subtraction, constant terms, and restrictions inherited from the original function's domain.",
+      "objectives": [
+        "Differentiate polynomial functions term by term using the power and constant-multiple rules.",
+        "Rewrite radical and reciprocal terms as powers before differentiating them.",
+        "Track signs and constant terms accurately when differentiating combinations of powers."
+      ],
+      "problems": [
+        {
+          "id": "c1-u04-01",
+          "subject": "calc-1",
+          "topic": "Power Rule and Polynomial Derivatives",
+          "difficulty": 1,
+          "prompt": "\\frac{d}{dx}\\left(5x^4-3x^2+7x-2\\right)",
+          "kind": "derivative",
+          "start": "5x^4 - 3x^2 + 7x - 2",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "20x^3 - 6x + 7"
+        },
+        {
+          "id": "c1-u04-02",
+          "subject": "calc-1",
+          "topic": "Power Rule and Polynomial Derivatives",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\left(2x^3+\\frac12x^2-4x\\right)",
+          "kind": "derivative",
+          "start": "2x^3 + x^2/2 - 4x",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "6x^2 + x - 4"
+        },
+        {
+          "id": "c1-u04-03",
+          "subject": "calc-1",
+          "topic": "Power Rule and Polynomial Derivatives",
+          "difficulty": 3,
+          "prompt": "\\frac{d}{dx}\\left(3\\sqrt{x}+\\frac{4}{x}\\right)",
+          "kind": "derivative",
+          "start": "3sqrt(x) + 4/x",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "3/(2sqrt(x)) - 4/x^2"
+        },
+        {
+          "id": "c1-u04-04",
+          "subject": "calc-1",
+          "topic": "Power Rule and Polynomial Derivatives",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\left(\\frac{x^5}{5}-\\frac{2x^3}{3}+4\\right)",
+          "kind": "derivative",
+          "start": "x^5/5 - 2x^3/3 + 4",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "x^4 - 2x^2"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u05",
+      "week": "Week 5",
+      "title": "Product and Quotient Rules",
+      "summary": "Differentiate products and quotients without incorrectly distributing differentiation across multiplication or division. Organize the product rule as first times second's derivative plus second times first's derivative, and keep the quotient numerator's subtraction order explicit before simplifying or factoring the result.",
+      "objectives": [
+        "Apply the product rule to products of polynomial factors and simplify the derivative.",
+        "Apply the quotient rule with the correct numerator order and squared denominator.",
+        "Choose algebraic simplification that preserves every factor and sign in a derivative."
+      ],
+      "problems": [
+        {
+          "id": "c1-u05-01",
+          "subject": "calc-1",
+          "topic": "Product and Quotient Rules",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\left[(2x+1)(x^2-3)\\right]",
+          "kind": "derivative",
+          "start": "(2x + 1)(x^2 - 3)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "6x^2 + 2x - 6"
+        },
+        {
+          "id": "c1-u05-02",
+          "subject": "calc-1",
+          "topic": "Product and Quotient Rules",
+          "difficulty": 3,
+          "prompt": "\\frac{d}{dx}\\left[(x^2-4)(3x^2+x)\\right]",
+          "kind": "derivative",
+          "start": "(x^2 - 4)(3x^2 + x)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "12x^3 + 3x^2 - 24x - 4"
+        },
+        {
+          "id": "c1-u05-03",
+          "subject": "calc-1",
+          "topic": "Product and Quotient Rules",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\left(\\frac{3x+2}{x-1}\\right)",
+          "kind": "derivative",
+          "start": "(3x + 2)/(x - 1)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "-5/(x - 1)^2"
+        },
+        {
+          "id": "c1-u05-04",
+          "subject": "calc-1",
+          "topic": "Product and Quotient Rules",
+          "difficulty": 3,
+          "prompt": "\\frac{d}{dx}\\left(\\frac{x^2}{x^2+1}\\right)",
+          "kind": "derivative",
+          "start": "x^2/(x^2 + 1)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "2x/(x^2 + 1)^2"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u06",
+      "week": "Week 6",
+      "title": "The Chain Rule",
+      "summary": "Recognize compositions by identifying an outer function and an inner function, then multiply the outer derivative evaluated at the inner expression by the inner derivative. Practice nested powers, roots, and reciprocals while watching for missing inner factors, unintended expansion, and parentheses that change which expression is raised to a power.",
+      "objectives": [
+        "Identify outer and inner components in algebraic compositions before differentiating.",
+        "Differentiate composite powers, roots, and reciprocals with the complete inner derivative.",
+        "Apply the chain rule more than once when differentiating nested compositions."
+      ],
+      "problems": [
+        {
+          "id": "c1-u06-01",
+          "subject": "calc-1",
+          "topic": "The Chain Rule",
+          "difficulty": 1,
+          "prompt": "\\frac{d}{dx}(4x-1)^5",
+          "kind": "derivative",
+          "start": "(4x - 1)^5",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "20(4x - 1)^4"
+        },
+        {
+          "id": "c1-u06-02",
+          "subject": "calc-1",
+          "topic": "The Chain Rule",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\sqrt{3x^2+2}",
+          "kind": "derivative",
+          "start": "sqrt(3x^2 + 2)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "3x/sqrt(3x^2 + 2)"
+        },
+        {
+          "id": "c1-u06-03",
+          "subject": "calc-1",
+          "topic": "The Chain Rule",
+          "difficulty": 3,
+          "prompt": "\\frac{d}{dx}(x^2+3x)^{-2}",
+          "kind": "derivative",
+          "start": "(x^2 + 3x)^(-2)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "-2(2x + 3)/(x^2 + 3x)^3"
+        },
+        {
+          "id": "c1-u06-04",
+          "subject": "calc-1",
+          "topic": "The Chain Rule",
+          "difficulty": 3,
+          "prompt": "\\frac{d}{dx}\\left[(2x+1)^3-4\\right]^2",
+          "kind": "derivative",
+          "start": "((2x + 1)^3 - 4)^2",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "12(2x + 1)^2((2x + 1)^3 - 4)"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u07",
+      "week": "Week 7",
+      "title": "Trigonometric, Exponential, and Logarithmic Derivatives",
+      "summary": "Build the standard derivatives of sine, cosine, tangent, natural exponentials, and natural logarithms, with angles measured in radians. Combine these rules with the chain and product rules, paying special attention to negative inner coefficients, the natural-log convention, and equivalent forms such as sec²x = 1/cos²x for the derivative of tangent.",
+      "objectives": [
+        "Differentiate combinations of sine, cosine, and tangent using radian-based rules.",
+        "Differentiate natural exponential and logarithmic functions with composite arguments.",
+        "Combine elementary derivative rules with product and chain rules in mixed expressions."
+      ],
+      "problems": [
+        {
+          "id": "c1-u07-01",
+          "subject": "calc-1",
+          "topic": "Trigonometric, Exponential, and Logarithmic Derivatives",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\left(3\\sin x-2\\cos x+\\tan x\\right)",
+          "kind": "derivative",
+          "start": "3sin(x) - 2cos(x) + tan(x)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "3cos(x) + 2sin(x) + 1/cos(x)^2"
+        },
+        {
+          "id": "c1-u07-02",
+          "subject": "calc-1",
+          "topic": "Trigonometric, Exponential, and Logarithmic Derivatives",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\left(e^{3x}+2e^{-x}\\right)",
+          "kind": "derivative",
+          "start": "e^(3x) + 2e^(-x)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "3e^(3x) - 2e^(-x)"
+        },
+        {
+          "id": "c1-u07-03",
+          "subject": "calc-1",
+          "topic": "Trigonometric, Exponential, and Logarithmic Derivatives",
+          "difficulty": 2,
+          "prompt": "\\frac{d}{dx}\\ln(x^2+1)",
+          "kind": "derivative",
+          "start": "log(x^2 + 1)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "2x/(x^2 + 1)"
+        },
+        {
+          "id": "c1-u07-04",
+          "subject": "calc-1",
+          "topic": "Trigonometric, Exponential, and Logarithmic Derivatives",
+          "difficulty": 3,
+          "prompt": "\\frac{d}{dx}\\left[e^x\\sin(2x)+\\ln(3x)\\right]",
+          "kind": "derivative",
+          "start": "e^x sin(2x) + log(3x)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "e^x sin(2x) + 2e^x cos(2x) + 1/x"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u08",
+      "week": "Week 8",
+      "title": "Implicit and Inverse Derivatives",
+      "summary": "Differentiate both sides of a relation with respect to x, treating y as an implicit function so every y term acquires the appropriate dy/dx factor. For inverse functions, use the reciprocal derivative relation at corresponding input-output points, verifying the point correspondence and a nonzero original derivative rather than merely reciprocating at the same coordinate.",
+      "objectives": [
+        "Compute tangent slopes on implicitly defined curves by differentiating both sides.",
+        "Collect and solve for dy/dx while retaining product-rule and chain-rule terms.",
+        "Evaluate inverse-function derivatives at corresponding points using the reciprocal relation."
+      ],
+      "problems": [
+        {
+          "id": "c1-u08-01",
+          "subject": "calc-1",
+          "topic": "Implicit and Inverse Derivatives",
+          "difficulty": 2,
+          "prompt": "x^2+y^2=25",
+          "statement": "Use implicit differentiation to find dy/dx at the point (3,4) on this circle. Enter the slope as a reduced fraction.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-3/4"
+        },
+        {
+          "id": "c1-u08-02",
+          "subject": "calc-1",
+          "topic": "Implicit and Inverse Derivatives",
+          "difficulty": 3,
+          "prompt": "x^2+xy+y^2=7",
+          "statement": "The point (1,2) lies on this curve. Use implicit differentiation to find dy/dx at that point.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-4/5"
+        },
+        {
+          "id": "c1-u08-03",
+          "subject": "calc-1",
+          "topic": "Implicit and Inverse Derivatives",
+          "difficulty": 2,
+          "prompt": "f(x)=2x^3+3",
+          "statement": "Because f(1) = 5, the inverse derivative satisfies (f⁻¹)'(5) = 1/f'(1). Compute (f⁻¹)'(5).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/6"
+        },
+        {
+          "id": "c1-u08-04",
+          "subject": "calc-1",
+          "topic": "Implicit and Inverse Derivatives",
+          "difficulty": 3,
+          "prompt": "f(x)=x^2+1,\\qquad x\\geq 0",
+          "statement": "On the stated domain f is invertible and f(2) = 5. Use the inverse derivative formula to compute (f⁻¹)'(5).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/4"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u09",
+      "week": "Week 9",
+      "title": "Related Rates",
+      "summary": "Translate changing geometric quantities into an equation relating their values, then differentiate that relationship with respect to time before substituting the instantaneous data. Keep known constant dimensions separate from changing measurements, include every chain-rule time derivative, and use signs to distinguish increasing quantities from decreasing ones.",
+      "objectives": [
+        "Differentiate geometric relationships with respect to time to connect instantaneous rates.",
+        "Substitute measurements only after differentiating and solve for the requested rate.",
+        "Interpret positive and negative rates consistently in area, volume, and motion contexts."
+      ],
+      "problems": [
+        {
+          "id": "c1-u09-01",
+          "subject": "calc-1",
+          "topic": "Related Rates",
+          "difficulty": 1,
+          "prompt": "\\frac{dA}{dt}",
+          "statement": "The side length of a square is increasing at 3 centimeters per second. At the instant the side is 5 centimeters, how fast is its area increasing in square centimeters per second? Enter only the number.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "30"
+        },
+        {
+          "id": "c1-u09-02",
+          "subject": "calc-1",
+          "topic": "Related Rates",
+          "difficulty": 3,
+          "prompt": "\\frac{dy}{dt}",
+          "statement": "A 10-foot ladder leans against a vertical wall. When its base is x = 6 feet from the wall, its top is y = 8 feet high and dx/dt = 2 feet per second. Find dy/dt in feet per second, including its sign.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "-3/2"
+        },
+        {
+          "id": "c1-u09-03",
+          "subject": "calc-1",
+          "topic": "Related Rates",
+          "difficulty": 2,
+          "prompt": "\\frac{dV}{dt}",
+          "statement": "The side length of a cube is increasing at 2 centimeters per second. How fast is its volume increasing when the side length is 4 centimeters? Enter the number of cubic centimeters per second.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "96"
+        },
+        {
+          "id": "c1-u09-04",
+          "subject": "calc-1",
+          "topic": "Related Rates",
+          "difficulty": 3,
+          "prompt": "\\frac{dA}{dt}",
+          "statement": "At an instant, a rectangle has length 8 meters and width 6 meters. Its length is increasing at 3 meters per second and its width is decreasing at 2 meters per second. Find dA/dt in square meters per second, including its sign.",
+          "kind": "value",
+          "start": "",
+          "variable": "t",
+          "finalForm": "number",
+          "answer": "2"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u10",
+      "week": "Week 10",
+      "title": "Linearization, Differentials, and Newton's Method",
+      "summary": "Use the tangent line at a nearby known point to approximate function values, and interpret the differential dy = f'(x)dx as the corresponding linear change rather than the exact increment. Apply Newton's update formula with the current function and derivative values, keeping the subtraction sign and substituting the current iterate throughout the formula.",
+      "objectives": [
+        "Construct and evaluate local linearizations to approximate nearby function values.",
+        "Compute differentials from a function value, derivative, and specified input change.",
+        "Perform one Newton's-method iteration for a nonlinear equation using an initial estimate."
+      ],
+      "problems": [
+        {
+          "id": "c1-u10-01",
+          "subject": "calc-1",
+          "topic": "Linearization, Differentials, and Newton's Method",
+          "difficulty": 2,
+          "prompt": "f(x)=\\sqrt{x},\\qquad a=4",
+          "statement": "Use the linearization of f at a = 4 to approximate the square root of 4.2. Enter the approximation as a reduced fraction.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "41/20"
+        },
+        {
+          "id": "c1-u10-02",
+          "subject": "calc-1",
+          "topic": "Linearization, Differentials, and Newton's Method",
+          "difficulty": 3,
+          "prompt": "f(x)=\\frac{1}{x},\\qquad a=2",
+          "statement": "Use the linearization of f at a = 2 to approximate 1/2.1. Enter the approximation as a reduced fraction.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "19/40"
+        },
+        {
+          "id": "c1-u10-03",
+          "subject": "calc-1",
+          "topic": "Linearization, Differentials, and Newton's Method",
+          "difficulty": 1,
+          "prompt": "y=x^3,\\qquad dy=3x^2\\,dx",
+          "statement": "Use the differential formula to compute dy when x = 2 and dx = 0.1. Enter a reduced fraction.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6/5"
+        },
+        {
+          "id": "c1-u10-04",
+          "subject": "calc-1",
+          "topic": "Linearization, Differentials, and Newton's Method",
+          "difficulty": 3,
+          "prompt": "x_1=x_0-\\frac{f(x_0)}{f'(x_0)},\\qquad f(x)=x^2-5",
+          "statement": "Starting with x0 = 2, compute the next Newton's-method approximation x1 for a root of f. Enter a reduced fraction.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9/4"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u11",
+      "week": "Weeks 11–12",
+      "title": "Extrema, the Mean Value Theorem, and Curve Analysis",
+      "summary": "Locate critical numbers and combine them with endpoints to determine absolute extrema on closed intervals. Use the Mean Value Theorem to connect average and instantaneous rates after checking its hypotheses, then use first derivatives for monotonicity and second derivatives for concavity and inflection points without assuming every critical point or zero second derivative produces the corresponding feature.",
+      "objectives": [
+        "Find critical numbers and evaluate candidates to determine extrema on closed intervals.",
+        "Verify Mean Value Theorem conditions and solve for an interior point with the required slope.",
+        "Use second-derivative sign changes to identify inflection coordinates and describe curve shape."
+      ],
+      "problems": [
+        {
+          "id": "c1-u11-01",
+          "subject": "calc-1",
+          "topic": "Extrema, the Mean Value Theorem, and Curve Analysis",
+          "difficulty": 2,
+          "prompt": "f(x)=x^3-3x",
+          "statement": "Find both critical numbers of f by solving f'(x) = 0. Enter both values of x.",
+          "kind": "equation",
+          "start": "3x^2 - 3 = 0",
+          "variable": "x",
+          "finalForm": "solutions",
+          "answer": "x = -1 or x = 1"
+        },
+        {
+          "id": "c1-u11-02",
+          "subject": "calc-1",
+          "topic": "Extrema, the Mean Value Theorem, and Curve Analysis",
+          "difficulty": 2,
+          "prompt": "f(x)=-x^2+4x+1,\\qquad 0\\leq x\\leq 3",
+          "statement": "Find the absolute maximum value of f on the stated closed interval. Check the critical point and both endpoints.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "c1-u11-03",
+          "subject": "calc-1",
+          "topic": "Extrema, the Mean Value Theorem, and Curve Analysis",
+          "difficulty": 3,
+          "prompt": "f(x)=x^2+2x,\\qquad [a,b]=[1,4]",
+          "statement": "For the c guaranteed by the Mean Value Theorem, f'(c) equals the average rate of change over [1,4]. Solve for c.",
+          "kind": "equation",
+          "start": "2c + 2 = 7",
+          "variable": "c",
+          "finalForm": "isolated",
+          "answer": "c = 5/2"
+        },
+        {
+          "id": "c1-u11-04",
+          "subject": "calc-1",
+          "topic": "Extrema, the Mean Value Theorem, and Curve Analysis",
+          "difficulty": 2,
+          "prompt": "f(x)=x^3-3x^2+2",
+          "statement": "Use the second derivative and its sign change to find the x-coordinate of the graph's inflection point.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "id": "calc-1-u12",
+      "week": "Weeks 13–14",
+      "title": "Optimization, Antiderivatives, and Definite-Integral Preview",
+      "summary": "Model optimization problems with an objective function and a constraint, reduce to one variable over a physically meaningful domain, and justify the optimum using derivatives and endpoints. Reverse differentiation to find antiderivatives with an arbitrary constant, then connect definite integrals with net accumulation and area by evaluating an antiderivative at the two bounds; Week 15 remains available for synthesis and assessment.",
+      "objectives": [
+        "Optimize constrained geometric models and justify the requested maximum or minimum value.",
+        "Find polynomial, exponential, and trigonometric antiderivatives including the constant of integration.",
+        "Evaluate simple definite integrals by subtracting endpoint values of an antiderivative."
+      ],
+      "problems": [
+        {
+          "id": "c1-u12-01",
+          "subject": "calc-1",
+          "topic": "Optimization, Antiderivatives, and Definite-Integral Preview",
+          "difficulty": 2,
+          "prompt": "2L+2W=40",
+          "statement": "Among all rectangles with perimeter 40 meters and nonnegative side lengths, find the maximum possible area in square meters. Enter only the number.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "100"
+        },
+        {
+          "id": "c1-u12-02",
+          "subject": "calc-1",
+          "topic": "Optimization, Antiderivatives, and Definite-Integral Preview",
+          "difficulty": 3,
+          "prompt": "A(w)=w(60-2w),\\qquad 0\\leq w\\leq 30",
+          "statement": "A rectangular pen uses an existing wall for one long side and 60 meters of fencing for the other three sides. Its width is w and area is A(w). Find the maximum possible area in square meters.",
+          "kind": "value",
+          "start": "",
+          "variable": "w",
+          "finalForm": "number",
+          "answer": "450"
+        },
+        {
+          "id": "c1-u12-03",
+          "subject": "calc-1",
+          "topic": "Optimization, Antiderivatives, and Definite-Integral Preview",
+          "difficulty": 1,
+          "prompt": "\\int\\left(6x^2-4x+3\\right)\\,dx",
+          "kind": "antiderivative",
+          "start": "6x^2 - 4x + 3",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "2x^3 - 2x^2 + 3x + C"
+        },
+        {
+          "id": "c1-u12-04",
+          "subject": "calc-1",
+          "topic": "Optimization, Antiderivatives, and Definite-Integral Preview",
+          "difficulty": 3,
+          "prompt": "\\int\\left(2e^{2x}+3\\cos(3x)\\right)\\,dx",
+          "kind": "antiderivative",
+          "start": "2e^(2x) + 3cos(3x)",
+          "variable": "x",
+          "finalForm": "antiderivative",
+          "answer": "e^(2x) + sin(3x) + C"
+        },
+        {
+          "id": "c1-u12-05",
+          "subject": "calc-1",
+          "topic": "Optimization, Antiderivatives, and Definite-Integral Preview",
+          "difficulty": 2,
+          "prompt": "\\int_0^2\\left(3x^2+2x\\right)\\,dx",
+          "statement": "Evaluate the definite integral using an antiderivative and the Fundamental Theorem of Calculus.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        }
+      ]
+    }
+  ]
+}

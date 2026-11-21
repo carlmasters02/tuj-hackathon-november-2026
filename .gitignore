@@ -26,4 +26,5 @@ Thumbs.db
 # local tooling, not part of the project
 .komainu/
 .claude/
+.unlazy/
 HUMAN_MODE_PROMPT.md

@@ -1,0 +1,796 @@
+{
+  "slug": "prob-stats",
+  "title": "Introductory Probability and Statistics",
+  "semester": "15-week semester · 12 instructional units · Week 15 synthesis and assessment",
+  "description": "A coherent introduction to data, probability, statistical modeling, and inference, with exact computations and sustained attention to study design and responsible conclusions.",
+  "outcomes": [
+    "Classify data and study designs, choose appropriate visualizations, and critique sampling, measurement, and sources of bias.",
+    "Summarize numerical distributions with center, spread, quartiles, and standardized scores while respecting sample and population conventions.",
+    "Apply probability rules, counting methods, random variables, and standard discrete and continuous models to well-defined chance processes.",
+    "Use sampling distributions and the central limit theorem to construct and interpret one-sample confidence intervals and hypothesis tests.",
+    "Compare independent or paired samples and analyze categorical data with procedures whose assumptions and denominators are explicit.",
+    "Quantify and assess linear relationships, distinguish association from causation, and communicate uncertainty and limitations responsibly."
+  ],
+  "units": [
+    {
+      "id": "prob-stats-u01",
+      "week": "Week 1",
+      "title": "Data, Visualization, and Sampling Design",
+      "summary": "Distinguish categorical from numerical variables, discrete from continuous measurements, and observational studies from experiments before choosing dotplots, bar charts, histograms, or boxplots. Random sampling and random assignment answer different questions. Examine convenience sampling, voluntary response, undercoverage, nonresponse, and wording effects so that numerical summaries are not generalized beyond the data that support them.",
+      "objectives": [
+        "Classify variables and select a visualization that matches the variable type and the question being investigated.",
+        "Compare simple random, stratified, cluster, and systematic samples and identify specific sampling biases in a study description.",
+        "Distinguish random sampling from random assignment and state which generalizations or causal claims each can support."
+      ],
+      "problems": [
+        {
+          "id": "ps-u01-01",
+          "subject": "prob-stats",
+          "topic": "Data, Visualization, and Sampling Design",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "30",
+          "statement": "A college has 600 first-year students and 400 second-year students. In a proportionate stratified random sample of 50 students, how many first-year students should be selected?"
+        },
+        {
+          "id": "ps-u01-02",
+          "subject": "prob-stats",
+          "topic": "Data, Visualization, and Sampling Design",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12",
+          "statement": "A survey invitation is sent to 800 people, and 96 respond. What is the response rate as a percentage? Enter only the numerical percentage, without a percent sign."
+        },
+        {
+          "id": "ps-u01-03",
+          "subject": "prob-stats",
+          "topic": "Data, Visualization, and Sampling Design",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "25",
+          "statement": "A systematic sample of 50 items is planned from an ordered list of 1250 items by selecting every kth item after a random start. What sampling interval k gives the desired sample size?"
+        },
+        {
+          "id": "ps-u01-04",
+          "subject": "prob-stats",
+          "topic": "Data, Visualization, and Sampling Design",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8",
+          "statement": "A histogram represents 40 observations in four consecutive, nonoverlapping bins with frequencies 6, 14, 12, and f. Every observation lies in exactly one bin. Find f."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u02",
+      "week": "Week 2",
+      "title": "Center, Spread, Quartiles, and Standardization",
+      "summary": "Use mean and median to describe center, and range, interquartile range, variance, and standard deviation to describe spread in the context of shape and outliers. The unbiased sample variance divides squared deviations by n minus 1, whereas population variance divides by N. Standard scores measure signed distance from the mean in standard-deviation units, allowing comparisons without making a distribution normal.",
+      "objectives": [
+        "Compute and interpret means, medians, quartiles, and interquartile ranges for small ordered data sets using a stated quartile convention.",
+        "Calculate unbiased sample variance and standard deviation, and distinguish their denominators and units from population versions.",
+        "Compute z scores and use them to compare relative positions while considering skewness, outliers, and measurement units."
+      ],
+      "problems": [
+        {
+          "id": "ps-u02-01",
+          "subject": "prob-stats",
+          "topic": "Center, Spread, Quartiles, and Standardization",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8",
+          "statement": "Find the median of the ordered data set 3, 7, 8, 12, 20."
+        },
+        {
+          "id": "ps-u02-02",
+          "subject": "prob-stats",
+          "topic": "Center, Spread, Quartiles, and Standardization",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "20/3",
+          "statement": "The values 2, 4, 6, 8 are a sample. Using the unbiased sample variance formula with denominator n minus 1, find the sample variance."
+        },
+        {
+          "id": "ps-u02-03",
+          "subject": "prob-stats",
+          "topic": "Center, Spread, Quartiles, and Standardization",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4",
+          "statement": "For the ordered data 1, 2, 3, 4, 5, 6, 7, 8, define Q1 and Q3 as the medians of the lower four and upper four observations. Find the interquartile range Q3 minus Q1."
+        },
+        {
+          "id": "ps-u02-04",
+          "subject": "prob-stats",
+          "topic": "Center, Spread, Quartiles, and Standardization",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-1",
+          "statement": "A measurement of 42 comes from a population with mean 50 and standard deviation 8. Find its z score using z equals the measurement minus the mean, divided by the standard deviation."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u03",
+      "week": "Weeks 3-4",
+      "title": "Probability Rules, Conditional Probability, and Counting",
+      "summary": "Build sample spaces and apply complement, addition, and multiplication rules, using counting principles when outcomes are equally likely. Conditional probability updates information by restricting the relevant sample space, while independence means that this information does not change probability rather than that events cannot occur together. Tree diagrams and Bayes' rule help reverse conditioning without confusing P(A given B) with P(B given A).",
+      "objectives": [
+        "Use permutations and combinations to count outcomes and connect those counts to equally likely probability models.",
+        "Apply complement, addition, multiplication, and conditional-probability rules while distinguishing disjointness from independence.",
+        "Use tree diagrams and Bayes' rule to compute reverse conditional probabilities in prevalence and testing contexts."
+      ],
+      "problems": [
+        {
+          "id": "ps-u03-01",
+          "subject": "prob-stats",
+          "topic": "Probability Rules, Conditional Probability, and Counting",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "720",
+          "statement": "In how many different orders can 6 distinct books be arranged on a shelf?"
+        },
+        {
+          "id": "ps-u03-02",
+          "subject": "prob-stats",
+          "topic": "Probability Rules, Conditional Probability, and Counting",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/3",
+          "statement": "Events A and B satisfy P(A) = 1/2, P(B) = 1/3, and P(A and B) = 1/6. Find P(A or B), where or is inclusive."
+        },
+        {
+          "id": "ps-u03-03",
+          "subject": "prob-stats",
+          "topic": "Probability Rules, Conditional Probability, and Counting",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5/12",
+          "statement": "Independent events A and B have P(A) = 2/3 and P(B) = 3/4. Find the probability that exactly one of the two events occurs."
+        },
+        {
+          "id": "ps-u03-04",
+          "subject": "prob-stats",
+          "topic": "Probability Rules, Conditional Probability, and Counting",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/13",
+          "statement": "A condition affects 1/100 of a population. A test detects the condition with probability 9/10 and gives a false positive with probability 1/20 for someone without the condition. Given a positive result, find the probability that the person has the condition."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u04",
+      "week": "Week 5",
+      "title": "Discrete Random Variables, Expectation, and Variance",
+      "summary": "A probability mass function assigns nonnegative probabilities summing to one to each possible value of a discrete random variable. Expectation is a probability-weighted average, and variance is the expected squared deviation from that mean rather than the variance of a data sample. Use linearity of expectation and the scaling rule for variance to analyze transformed variables, remembering that adding a constant does not change variance.",
+      "objectives": [
+        "Verify probability mass functions and compute expected values from discrete probability distributions.",
+        "Compute variance using squared deviations or the equivalent difference between the second moment and the squared mean.",
+        "Find the mean and variance of a linear transformation and interpret expected net gain without treating it as a guaranteed outcome."
+      ],
+      "problems": [
+        {
+          "id": "ps-u04-01",
+          "subject": "prob-stats",
+          "topic": "Discrete Random Variables, Expectation, and Variance",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7/2",
+          "statement": "Let X be the result of one roll of a fair six-sided die with faces 1 through 6. Find the expected value E(X)."
+        },
+        {
+          "id": "ps-u04-02",
+          "subject": "prob-stats",
+          "topic": "Discrete Random Variables, Expectation, and Variance",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2",
+          "statement": "A discrete random variable X takes values 0, 1, and 2 with probabilities 1/4, 1/2, and 1/4, respectively. Find Var(X)."
+        },
+        {
+          "id": "ps-u04-03",
+          "subject": "prob-stats",
+          "topic": "Discrete Random Variables, Expectation, and Variance",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2",
+          "statement": "A game gives a net win of 8 points with probability 1/4 and a net loss of 2 points otherwise. Find the expected net change in points after one play."
+        },
+        {
+          "id": "ps-u04-04",
+          "subject": "prob-stats",
+          "topic": "Discrete Random Variables, Expectation, and Variance",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "81",
+          "statement": "A random variable X has variance 9. Let Y = 3X - 2. Find Var(Y)."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u05",
+      "week": "Week 6",
+      "title": "Binomial, Geometric, and Poisson Models",
+      "summary": "Match the model to the chance process before using a formula: binomial counts successes in a fixed number of independent trials, geometric counts trials until the first success, and Poisson counts events in a fixed exposure under its usual independent-increment assumptions. Check whether order matters and whether the number of trials is fixed. Use complements and conditioning carefully, and connect each model's mean and variance to its parameters.",
+      "objectives": [
+        "Identify when binomial, geometric, or Poisson assumptions are plausible and when dependence or varying success probabilities invalidates them.",
+        "Compute exact probabilities for specified counts, waiting times, tails, and complements in binomial and geometric models.",
+        "Compute and simplify Poisson probabilities, including conditional probabilities in which common exponential factors cancel."
+      ],
+      "problems": [
+        {
+          "id": "ps-u05-01",
+          "subject": "prob-stats",
+          "topic": "Binomial, Geometric, and Poisson Models",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "80/243",
+          "statement": "Let X have a binomial distribution with 5 independent trials and success probability 1/3 on each trial. Find P(X = 2)."
+        },
+        {
+          "id": "ps-u05-02",
+          "subject": "prob-stats",
+          "topic": "Binomial, Geometric, and Poisson Models",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8/81",
+          "statement": "Independent trials each have success probability 1/3. Let T be the trial number of the first success. Find P(T = 4)."
+        },
+        {
+          "id": "ps-u05-03",
+          "subject": "prob-stats",
+          "topic": "Binomial, Geometric, and Poisson Models",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/3",
+          "statement": "The number of calls in an hour has a Poisson distribution with mean 2. Given that at most one call arrives, find the conditional probability that exactly one call arrives."
+        },
+        {
+          "id": "ps-u05-04",
+          "subject": "prob-stats",
+          "topic": "Binomial, Geometric, and Poisson Models",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "16/27",
+          "statement": "Let X have a binomial distribution with 4 independent trials and success probability 1/3 on each trial. Find P(X is at most 1)."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u06",
+      "week": "Week 7",
+      "title": "Continuous Distributions and Normal Models",
+      "summary": "For continuous random variables, probabilities are areas under a valid density, individual points have probability zero, and the cumulative distribution function accumulates area. Normal models are symmetric and completely specified by their mean and standard deviation; standardizing converts a raw value to a z score without proving normality. When a continuous model approximates integer counts, continuity correction shifts a boundary by one half in the direction that preserves the intended count.",
+      "objectives": [
+        "Verify and use continuous density functions, interpreting probabilities as areas over intervals rather than heights at points.",
+        "Standardize values in normal models and reverse the process to find raw scores corresponding to specified z scores.",
+        "Assess whether a normal model is reasonable and apply continuity-corrected boundaries when approximating integer-valued counts."
+      ],
+      "problems": [
+        {
+          "id": "ps-u06-01",
+          "subject": "prob-stats",
+          "topic": "Continuous Distributions and Normal Models",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/4",
+          "statement": "A continuous random variable X is uniformly distributed on the interval from 2 to 10. Find the probability that X lies between 3 and 5, inclusive."
+        },
+        {
+          "id": "ps-u06-02",
+          "subject": "prob-stats",
+          "topic": "Continuous Distributions and Normal Models",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2",
+          "statement": "A continuous random variable has density f(x) = c x for 0 less than x less than 2, and f(x) = 0 elsewhere. Find the constant c that makes the total area equal to 1."
+        },
+        {
+          "id": "ps-u06-03",
+          "subject": "prob-stats",
+          "topic": "Continuous Distributions and Normal Models",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "155/2",
+          "statement": "Test scores are modeled by a normal distribution with mean 100 and standard deviation 15. What raw score is exactly 3/2 standard deviations below the mean?"
+        },
+        {
+          "id": "ps-u06-04",
+          "subject": "prob-stats",
+          "topic": "Continuous Distributions and Normal Models",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "25/2",
+          "statement": "For an integer-valued count X, a normal approximation to P(X is less than or equal to 12) uses a continuity correction. At what continuous boundary should the normal cumulative distribution be evaluated?"
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u07",
+      "week": "Week 8",
+      "title": "Sampling Distributions and the Central Limit Theorem",
+      "summary": "A sampling distribution describes how a statistic varies across repeated random samples, not how individual observations vary within one sample. Sample means have center equal to the population mean and standard error sigma divided by the square root of n when independence conditions hold; the central limit theorem explains increasingly normal behavior for many underlying distributions as n grows. For proportions, check both expected success and failure counts before a normal approximation, and use finite-population corrections when sampling without replacement is substantial.",
+      "objectives": [
+        "Distinguish population distributions, sample data distributions, and sampling distributions of statistics in repeated-sampling language.",
+        "Compute standard errors for sample means and proportions under independence and explain how sample size affects variability.",
+        "Use the central limit theorem and success-failure checks to justify approximations without claiming that a small sample makes its population normal."
+      ],
+      "problems": [
+        {
+          "id": "ps-u07-01",
+          "subject": "prob-stats",
+          "topic": "Sampling Distributions and the Central Limit Theorem",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3",
+          "statement": "Independent observations are sampled from a population with standard deviation 18. For a random sample of size 36, find the standard error of the sample mean."
+        },
+        {
+          "id": "ps-u07-02",
+          "subject": "prob-stats",
+          "topic": "Sampling Distributions and the Central Limit Theorem",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/16",
+          "statement": "For independent Bernoulli observations with true proportion p = 1/4, find the standard error of the sample proportion in a random sample of size 48."
+        },
+        {
+          "id": "ps-u07-03",
+          "subject": "prob-stats",
+          "topic": "Sampling Distributions and the Central Limit Theorem",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3/2",
+          "statement": "A population has mean 50 and standard deviation 12. A random sample of 36 observations has sample mean 53. Find the standardized statistic for the sample mean using sigma divided by the square root of n as its standard error."
+        },
+        {
+          "id": "ps-u07-04",
+          "subject": "prob-stats",
+          "topic": "Sampling Distributions and the Central Limit Theorem",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "50",
+          "statement": "A normal approximation for a sample proportion is allowed only when both np and n(1-p) are at least 10. If p = 1/5, what is the smallest integer sample size n that satisfies both conditions?"
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u08",
+      "week": "Week 9",
+      "title": "One-Sample Confidence Intervals",
+      "summary": "Confidence intervals combine a point estimate with a margin of error derived from a sampling distribution, a standard error, and a critical value. Use z intervals for a mean only in the corresponding known-sigma setting and t intervals with n minus 1 degrees of freedom when the unbiased sample standard deviation estimates sigma; proportion intervals use estimated or planned proportions as specified. Interpret repeated-sample coverage rather than assigning probability to a fixed parameter, and check independence, approximate normality, and success-failure conditions.",
+      "objectives": [
+        "Construct and interpret one-sample confidence intervals for means using the appropriate z or t standard error and degrees of freedom.",
+        "Construct a one-proportion confidence interval and verify its independence and success-failure conditions before interpreting coverage.",
+        "Determine sample size from a desired margin of error and explain why increasing confidence or decreasing error generally requires more data."
+      ],
+      "problems": [
+        {
+          "id": "ps-u08-01",
+          "subject": "prob-stats",
+          "topic": "One-Sample Confidence Intervals",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "48",
+          "statement": "A random sample of 64 observations has sample mean 52, and the population standard deviation is known to be 16. Using a confidence-interval critical value of exactly 2, find the lower endpoint of the z interval for the population mean."
+        },
+        {
+          "id": "ps-u08-02",
+          "subject": "prob-stats",
+          "topic": "One-Sample Confidence Intervals",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "36",
+          "statement": "A random sample of 25 observations has mean 40 and unbiased sample standard deviation 10. Using a t critical value of exactly 2 with 24 degrees of freedom, find the lower endpoint of the confidence interval for the population mean."
+        },
+        {
+          "id": "ps-u08-03",
+          "subject": "prob-stats",
+          "topic": "One-Sample Confidence Intervals",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3/5",
+          "statement": "In a random sample of 100 people, 50 respond yes. Using the Wald standard error evaluated at the sample proportion and a critical value of exactly 2, find the upper endpoint of the confidence interval for the population proportion."
+        },
+        {
+          "id": "ps-u08-04",
+          "subject": "prob-stats",
+          "topic": "One-Sample Confidence Intervals",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "100",
+          "statement": "For a one-proportion z interval, use critical value exactly 2 and the conservative planning value p = 1/2. What minimum sample size gives a margin of error exactly 1/10 under the usual formula?"
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u09",
+      "week": "Weeks 10-11",
+      "title": "One-Sample Tests, Errors, and Power",
+      "summary": "A hypothesis test begins with null and alternative statements about a population parameter, then measures compatibility with the null using a test statistic and p-value under stated assumptions. One-proportion z tests use the null proportion in their standard error, while one-mean t tests use the unbiased sample standard deviation and n minus 1 degrees of freedom. Type I error rejects a true null, Type II error fails to reject a false null, and power depends on effect size, variability, sample size, and significance level; failing to reject is not proof of the null.",
+      "objectives": [
+        "State null and alternative hypotheses and compute one-proportion z or one-mean t statistics with the correct null-based standard error and degrees of freedom.",
+        "Interpret p-values, significance level, Type I error, and Type II error without equating statistical significance with practical importance.",
+        "Compute exact rejection-rule probabilities and power in a discrete setting and explain how design choices affect error rates."
+      ],
+      "problems": [
+        {
+          "id": "ps-u09-01",
+          "subject": "prob-stats",
+          "topic": "One-Sample Tests, Errors, and Power",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2",
+          "statement": "To test H0: p = 1/2, a random sample of 100 observations contains 60 successes. Find the one-proportion z statistic using the null-hypothesis standard error."
+        },
+        {
+          "id": "ps-u09-02",
+          "subject": "prob-stats",
+          "topic": "One-Sample Tests, Errors, and Power",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3",
+          "statement": "To test H0: mu = 20, a random sample of 16 observations has mean 23 and unbiased sample standard deviation 4. Find the one-sample t statistic."
+        },
+        {
+          "id": "ps-u09-03",
+          "subject": "prob-stats",
+          "topic": "One-Sample Tests, Errors, and Power",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/16",
+          "statement": "A test of H0: p = 1/2 against H1: p greater than 1/2 uses four independent trials and rejects H0 only if all four are successes. Under H0, find the exact Type I error probability."
+        },
+        {
+          "id": "ps-u09-04",
+          "subject": "prob-stats",
+          "topic": "One-Sample Tests, Errors, and Power",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "81/256",
+          "statement": "A one-sided test rejects H0 only if four independent trials are all successes. If the true success probability is p = 3/4, find the exact power of this rejection rule."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u10",
+      "week": "Week 12",
+      "title": "Two-Sample Comparisons and Paired Data",
+      "summary": "Choose a procedure from the design before calculating: independent samples compare separate groups, while paired data are analyzed through within-pair differences with an explicit subtraction order. Independent-mean procedures require separate sample variances and either a Welch or a clearly justified pooled method; two-proportion tests use a pooled proportion under the null. Confidence intervals and tests should report effect size and uncertainty, and pairing does not itself remove confounding or guarantee a causal interpretation.",
+      "objectives": [
+        "Distinguish independent samples from paired measurements and select mean- or proportion-based procedures that match the design.",
+        "Compute independent-sample standard errors and test statistics, using pooled variance only when its equal-variance assumption is stated and defensible.",
+        "Analyze paired differences with the unbiased sample variance and interpret two-group effects without reversing the subtraction order."
+      ],
+      "problems": [
+        {
+          "id": "ps-u10-01",
+          "subject": "prob-stats",
+          "topic": "Two-Sample Comparisons and Paired Data",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1",
+          "statement": "Two independent samples each have size 25, with unbiased sample standard deviations 3 and 4. Find the standard error of the difference in sample means using the square root of s1 squared over n1 plus s2 squared over n2."
+        },
+        {
+          "id": "ps-u10-02",
+          "subject": "prob-stats",
+          "topic": "Two-Sample Comparisons and Paired Data",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4",
+          "statement": "Two independent samples each have size 8. Their means are 46 and 42, and equal population variances are assumed with pooled sample standard deviation 2. Find the pooled two-sample t statistic for group 1 minus group 2."
+        },
+        {
+          "id": "ps-u10-03",
+          "subject": "prob-stats",
+          "topic": "Two-Sample Comparisons and Paired Data",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2",
+          "statement": "For four matched pairs, the after-minus-before differences are 1, 1, 1, and 5. Using the unbiased sample standard deviation of these differences, find the paired t statistic for testing that the mean difference is zero."
+        },
+        {
+          "id": "ps-u10-04",
+          "subject": "prob-stats",
+          "topic": "Two-Sample Comparisons and Paired Data",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2",
+          "statement": "Independent group 1 has 30 successes in 50 trials, and independent group 2 has 20 successes in 50 trials. Find the pooled two-proportion z statistic for group 1 minus group 2 when testing equal population proportions."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u11",
+      "week": "Week 13",
+      "title": "Chi-Square Tests for Categorical Data",
+      "summary": "Chi-square goodness-of-fit tests compare observed category counts with expected counts under a proposed model, while tests of independence use row and column totals to construct expected counts in a contingency table. Pearson's statistic sums squared observed-minus-expected differences divided by expected counts, with degrees of freedom determined by the table structure and fitted constraints. Check independent observations and adequate expected counts, avoid percentages in place of counts, and do not confuse association in an observational table with causation.",
+      "objectives": [
+        "Compute expected counts and Pearson chi-square contributions for goodness-of-fit and two-way contingency tables.",
+        "Determine degrees of freedom for goodness-of-fit and independence tests and identify when sparse expected counts undermine the approximation.",
+        "Interpret categorical associations in the context of sampling design and distinguish rejecting independence from establishing causation."
+      ],
+      "problems": [
+        {
+          "id": "ps-u11-01",
+          "subject": "prob-stats",
+          "topic": "Chi-Square Tests for Categorical Data",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4",
+          "statement": "A goodness-of-fit test has four equally likely categories and 100 total observations, so each expected count is 25. The observed counts are 20, 30, 20, and 30. Find Pearson's chi-square statistic."
+        },
+        {
+          "id": "ps-u11-02",
+          "subject": "prob-stats",
+          "topic": "Chi-Square Tests for Categorical Data",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6",
+          "statement": "A chi-square test of independence is applied to a table with 3 rows and 4 columns. Find its degrees of freedom."
+        },
+        {
+          "id": "ps-u11-03",
+          "subject": "prob-stats",
+          "topic": "Chi-Square Tests for Categorical Data",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "16/5",
+          "statement": "A fair-six-sided-die model gives expected count 20 in each face after 120 rolls. The observed counts for faces 1 through 6 are 14, 22, 18, 24, 20, and 22. Find Pearson's chi-square goodness-of-fit statistic."
+        },
+        {
+          "id": "ps-u11-04",
+          "subject": "prob-stats",
+          "topic": "Chi-Square Tests for Categorical Data",
+          "difficulty": 3,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "25/3",
+          "statement": "A 2 by 2 contingency table has rows (50, 30) and (70, 50), giving row totals 80 and 120 and column totals 100 and 100. Using expected counts from the independence model, find Pearson's chi-square statistic without a continuity correction."
+        }
+      ]
+    },
+    {
+      "id": "prob-stats-u12",
+      "week": "Week 14",
+      "title": "Correlation, Regression, and Responsible Inference",
+      "summary": "Correlation summarizes the strength and direction of linear association, while least-squares regression predicts a response from an explanatory variable using slope and intercept. Residuals are observed minus fitted values; residual plots help reveal curvature, changing spread, and influential observations before predictions are trusted. Avoid extrapolation, distinguish R squared from causation, and address confounding, multiple comparisons, selective reporting, and data limitations when communicating any inference.",
+      "objectives": [
+        "Compute and interpret correlation, least-squares slope and intercept, and coefficient of determination without confusing association with causation.",
+        "Calculate residuals and use residual patterns, changing spread, influential points, and extrapolation checks to assess regression predictions.",
+        "Communicate effect sizes, uncertainty, confounding, multiple-comparison concerns, and study limitations in a transparent and responsible conclusion."
+      ],
+      "problems": [
+        {
+          "id": "ps-u12-01",
+          "subject": "prob-stats",
+          "topic": "Correlation, Regression, and Responsible Inference",
+          "difficulty": 1,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5/2",
+          "statement": "For least-squares regression, Sxx = 12 and Sxy = 30. Find the slope using Sxy divided by Sxx."
+        },
+        {
+          "id": "ps-u12-02",
+          "subject": "prob-stats",
+          "topic": "Correlation, Regression, and Responsible Inference",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4",
+          "statement": "A least-squares line has slope 3/2, the sample mean of the explanatory variable is 4, and the sample mean of the response is 10. Find the intercept."
+        },
+        {
+          "id": "ps-u12-03",
+          "subject": "prob-stats",
+          "topic": "Correlation, Regression, and Responsible Inference",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-4",
+          "statement": "A fitted line is predicted response = 7 + 2x. At x = 5, the observed response is 13. Find the residual, defined as observed response minus fitted response."
+        },
+        {
+          "id": "ps-u12-04",
+          "subject": "prob-stats",
+          "topic": "Correlation, Regression, and Responsible Inference",
+          "difficulty": 2,
+          "prompt": "",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9/25",
+          "statement": "For a simple linear regression with one explanatory variable, the sample correlation is r = -3/5. Find the coefficient of determination, R squared."
+        }
+      ]
+    }
+  ]
+}

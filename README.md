@@ -11,7 +11,7 @@ The app has three tabs, plus a browser extension:
 | Tab | What it does for the user |
 |---|---|
 | **Dashboard** | Your share of the thinking this week (your own minutes vs time on AI sites), Human Points and levels, streak, progress, and where you left off. |
-| **Tutor** — Math, Code, Writing | Math (Algebra, Precalculus, Calculus 1–3, Probability & Statistics), Code (Python, C, Java) and Writing (research papers, argumentative essays, poetry). It checks your work and says *where* and *what kind* of mistake you made. It never gives the answer. |
+| **Tutor** — Math, Code, Writing | Math (College Algebra, Precalculus, Calculus 1–3, Probability & Statistics), Code (Python, C, Java) and Writing (research papers, argumentative essays, poetry). It checks your work and says *where* and *what kind* of mistake you made. It never gives the answer. |
 | **Portfolio** — Art, Words, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and only pieces whose record passes the checks get the **Human-made seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
 | **Reliance Tracker** — Chrome extension | Measures your active time on AI sites so the dashboard can compare it with time you spent thinking for yourself. |
 
@@ -49,7 +49,7 @@ Students solve a problem one step per line. Each line renders live as math (KaTe
   3. Tier 3 points at the exact term.
 
   Each tier unlocks only after another failed attempt. Each rule rebuilds what the line *would* be if the student had made that mistake, and checks whether that matches.
-- 59 problems across six subjects: **Algebra** (linear and two-step equations, factoring, expanding, fractions), **Precalculus** (exponential, log and radical equations, exact irrational roots, rational expressions, trig values), **Calculus 1** (power, product, quotient and chain rules), **Calculus 2** (antiderivatives, substitution, by parts, definite integrals, series), **Calculus 3** (partial derivatives, double integrals) and **Probability & Statistics** (counting, probability, binomial, mean, expected value). They live in `packages/shared/problems/math/`, and a test solves every one from its answer.
+- **397 problems across 72 units and Extra practice:** College Algebra, Precalculus, Calculus 1–3, and Probability & Statistics each map twelve substantive units across a 15-week semester with course outcomes, teaching summaries and unit-level objectives. Every unit includes at least four new interactive examples—at least 48 per course—for 338 new problems in total, and the original 59 exercises remain under Extra practice so old links and progress continue to work. Semester content lives in `packages/shared/courses/math/`; legacy problems live in `packages/shared/problems/math/`; tests solve every problem from its server-side answer. These are guided course pathways, not claims of college credit or replacements for a school's instruction and assessment.
 - Checking runs **on the server**, so the answer never reaches the browser.
 
 ### 2. Code Dojo — Python, C, Java (`/tutor/code`)
@@ -327,13 +327,13 @@ $ pnpm lint
 
 $ pnpm test
  Test Files  18 passed (18)
-      Tests  232 passed (232)
+      Tests  573 passed (573)
 ```
 
 | What | How it's proven | Where |
 |---|---|---|
 | The AI-free check really works | Adding `openai` to a `package.json`, or calling an AI API in code, makes it exit 1 (checked by hand) | `scripts/no-ai-check.mjs` |
-| Math checking | All 20 problems are solvable via their answers. Equivalence and solution sets, final forms, parse errors, hint tier gating, and every hint rule (sign error, one side only, partial distribution, divided one term, arithmetic slip) | `packages/shared/test/math.test.ts` |
+| Math checking | Every legacy and semester problem is solvable via its server-side answer. Six 12-unit curricula, unit objectives, unique ids and legacy links are validated; equivalence, solution sets, final forms, parse errors and all targeted hint rules are covered. | `packages/shared/test/math.test.ts`, `mathCourseContent.test.ts` |
 | Tamper detection | Editing one stored event, deleting or reordering events, or moving a log to another document all break the chain | `provenance.test.ts` |
 | Replay & authenticity stats | Exact replay; typed text → Human-Verified; external paste lowers the score; undo/redo of a paste stays a paste; injection bursts, superhuman speed, transcription and fake timelines are all flagged | `provenance.test.ts` |
 | Certificates | Ed25519 sign/verify; any change to the certificate, or a different key, fails | `provenance.test.ts` |

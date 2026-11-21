@@ -8,12 +8,12 @@ export interface Section {
 }
 
 export const MATH_SUBJECTS = [
-  { slug: "algebra", label: "Algebra", note: "Equations, factoring, expanding, fractions" },
-  { slug: "precalculus", label: "Precalculus", note: "Exponential and log equations, radicals, exact roots, trig values" },
-  { slug: "calc-1", label: "Calculus 1", note: "Derivatives: power, product, quotient and chain rules" },
-  { slug: "calc-2", label: "Calculus 2", note: "Antiderivatives, substitution, by parts, definite integrals, series" },
-  { slug: "calc-3", label: "Calculus 3", note: "Partial derivatives and double integrals" },
-  { slug: "prob-stats", label: "Probability & statistics", note: "Counting, probability, the binomial distribution, mean and expected value" },
+  { slug: "algebra", label: "College Algebra", note: "Equations, functions, polynomials, exponentials, systems and sequences" },
+  { slug: "precalculus", label: "Precalculus", note: "Functions, trigonometry, vectors, conics, sequences and limits" },
+  { slug: "calc-1", label: "Calculus 1", note: "Limits, derivatives, rates of change, optimization and introductory integration" },
+  { slug: "calc-2", label: "Calculus 2", note: "Integration techniques, applications, differential equations and infinite series" },
+  { slug: "calc-3", label: "Calculus 3", note: "Vectors, multivariable calculus, multiple integrals and vector calculus" },
+  { slug: "prob-stats", label: "Probability & Statistics", note: "Probability models, data analysis, inference, chi-square and regression" },
 ] as const;
 
 export const CODE_LANGS = [

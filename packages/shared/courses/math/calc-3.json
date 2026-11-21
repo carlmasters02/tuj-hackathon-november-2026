@@ -1,0 +1,802 @@
+{
+  "slug": "calc-3",
+  "title": "Calculus 3: Multivariable and Vector Calculus",
+  "semester": "15-week semester · 12 instructional units · Weeks 13–15 synthesis, review, and assessment",
+  "description": "A coherent semester of three-dimensional geometry, vector-valued functions, multivariable differentiation and optimization, multiple integration, and the major theorems of vector calculus.",
+  "outcomes": [
+    "Use vectors, dot products, and cross products to analyze geometric relationships and equations of lines, planes, and surfaces in three dimensions.",
+    "Differentiate vector-valued and multivariable functions and interpret velocities, partial derivatives, gradients, directional derivatives, and linear approximations.",
+    "Locate and classify unconstrained extrema and solve constrained optimization problems using Lagrange multipliers with appropriate geometric justification.",
+    "Set up and evaluate double and triple integrals in rectangular, polar, cylindrical, and spherical coordinates with correctly described bounds.",
+    "Evaluate line and surface integrals and connect circulation and flux through Green's, Stokes', and the divergence theorems.",
+    "Translate multivariable models into precise notation, verify orientations and domains, and communicate exact calculations and their geometric meanings."
+  ],
+  "units": [
+    {
+      "id": "calc-3-u01",
+      "week": "Week 1",
+      "title": "Three-Dimensional Coordinates and Vector Products",
+      "summary": "Locate points in three-dimensional coordinates and represent displacement with vectors, their components, magnitudes, and unit directions. Use the dot product for lengths, angles, and projections, and the right-handed cross product for normals and area; distinguish scalar outputs from vector outputs and check cross-product order carefully.",
+      "objectives": [
+        "Compute distances, vector magnitudes, and componentwise vector operations in three-dimensional coordinates.",
+        "Evaluate dot products and use them to determine angles, orthogonality, and scalar projections.",
+        "Evaluate cross products with correct right-hand orientation and interpret their magnitudes geometrically."
+      ],
+      "problems": [
+        {
+          "id": "c3-u01-01",
+          "subject": "calc-3",
+          "topic": "Three-Dimensional Coordinates and Vector Products",
+          "difficulty": 1,
+          "prompt": "\\mathbf{v}=\\langle 3,-4,12\\rangle",
+          "statement": "Compute the magnitude of the vector v.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "13"
+        },
+        {
+          "id": "c3-u01-02",
+          "subject": "calc-3",
+          "topic": "Three-Dimensional Coordinates and Vector Products",
+          "difficulty": 1,
+          "prompt": "\\mathbf{a}=\\langle 2,-1,3\\rangle,\\qquad \\mathbf{b}=\\langle 4,5,-2\\rangle",
+          "statement": "Compute the dot product a · b.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-3"
+        },
+        {
+          "id": "c3-u01-03",
+          "subject": "calc-3",
+          "topic": "Three-Dimensional Coordinates and Vector Products",
+          "difficulty": 2,
+          "prompt": "\\mathbf{a}=\\langle 1,2,3\\rangle,\\qquad \\mathbf{b}=\\langle 4,0,-1\\rangle",
+          "statement": "Find the first component of a × b, using the standard right-handed coordinate system.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-2"
+        },
+        {
+          "id": "c3-u01-04",
+          "subject": "calc-3",
+          "topic": "Three-Dimensional Coordinates and Vector Products",
+          "difficulty": 3,
+          "prompt": "\\mathbf{a}=\\langle 1,0,0\\rangle,\\qquad \\mathbf{b}=\\langle 1,1,\\sqrt{2}\\rangle",
+          "statement": "If θ is the angle between a and b, compute cos θ.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u02",
+      "week": "Week 2",
+      "title": "Lines, Planes, and Quadric Surfaces",
+      "summary": "Build parametric equations for lines from a point and direction, and scalar equations for planes from a point and normal vector. Relate intersections and distances to vector products, then recognize spheres, cylinders, paraboloids, ellipsoids, cones, and hyperboloids from their equations and traces without confusing axis orientation.",
+      "objectives": [
+        "Construct and evaluate parametric line equations and determine where lines meet planes.",
+        "Use normal vectors and point-normal equations to compute distances and describe planes.",
+        "Recognize standard quadric surfaces and use completing the square and coordinate traces to identify their geometry."
+      ],
+      "problems": [
+        {
+          "id": "c3-u02-01",
+          "subject": "calc-3",
+          "topic": "Lines, Planes, and Quadric Surfaces",
+          "difficulty": 1,
+          "prompt": "\\mathbf{r}(t)=\\langle 1,-1,2\\rangle+t\\langle 2,3,-1\\rangle",
+          "statement": "Find the z-coordinate of the point on this line when t = 2.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "0"
+        },
+        {
+          "id": "c3-u02-02",
+          "subject": "calc-3",
+          "topic": "Lines, Planes, and Quadric Surfaces",
+          "difficulty": 2,
+          "prompt": "2x-y+2z=5,\\qquad P=(2,-1,4)",
+          "statement": "Compute the perpendicular distance from P to the plane.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8/3"
+        },
+        {
+          "id": "c3-u02-03",
+          "subject": "calc-3",
+          "topic": "Lines, Planes, and Quadric Surfaces",
+          "difficulty": 2,
+          "prompt": "\\mathbf{r}(t)=\\langle 1+2t,t,-1+3t\\rangle,\\qquad x+y+z=4",
+          "statement": "Find the parameter t at which the line intersects the plane.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/3"
+        },
+        {
+          "id": "c3-u02-04",
+          "subject": "calc-3",
+          "topic": "Lines, Planes, and Quadric Surfaces",
+          "difficulty": 3,
+          "prompt": "x^2+y^2+z^2-2x+4y=11",
+          "statement": "Complete the square and determine the radius of this sphere.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u03",
+      "week": "Week 3",
+      "title": "Vector-Valued Motion and Arc Length",
+      "summary": "Treat a space curve as a vector-valued function and differentiate component by component to obtain velocity and acceleration. Interpret speed as the magnitude of velocity, and compute arc length by integrating speed; keep parameter intervals explicit and distinguish the position vector from its scalar derivative quantities.",
+      "objectives": [
+        "Differentiate vector-valued functions componentwise and evaluate velocity and acceleration at specified parameters.",
+        "Compute speed from velocity components and explain its relationship to the direction of motion.",
+        "Set up and evaluate arc-length integrals over stated parameter intervals, simplifying speed before integrating."
+      ],
+      "problems": [
+        {
+          "id": "c3-u03-01",
+          "subject": "calc-3",
+          "topic": "Vector-Valued Motion and Arc Length",
+          "difficulty": 1,
+          "prompt": "\\mathbf{r}(t)=\\langle t^3,e^t,\\sin t\\rangle",
+          "statement": "Find the x-component of the velocity vector at t = 2.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        },
+        {
+          "id": "c3-u03-02",
+          "subject": "calc-3",
+          "topic": "Vector-Valued Motion and Arc Length",
+          "difficulty": 2,
+          "prompt": "\\mathbf{r}(t)=\\langle 3\\cos t,3\\sin t,4t\\rangle",
+          "statement": "Compute the constant speed ||r′(t)||.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "c3-u03-03",
+          "subject": "calc-3",
+          "topic": "Vector-Valued Motion and Arc Length",
+          "difficulty": 2,
+          "prompt": "\\mathbf{r}(t)=\\langle t^4,\\sin(2t),3t^2-2t\\rangle",
+          "statement": "Find the z-component of acceleration at t = 1.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "c3-u03-04",
+          "subject": "calc-3",
+          "topic": "Vector-Valued Motion and Arc Length",
+          "difficulty": 3,
+          "prompt": "\\mathbf{r}(t)=\\left\\langle t,\\frac{t^2}{\\sqrt{2}},\\frac{t^3}{3}\\right\\rangle,\\qquad 0\\le t\\le 1",
+          "statement": "Compute the arc length by integrating ||r′(t)|| over the given interval.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u04",
+      "week": "Week 4",
+      "title": "Multivariable Functions, Limits, and Partial Derivatives",
+      "summary": "Describe domains and level sets of functions of several variables, then evaluate limits by substitution when continuity applies. Investigate questionable limits along different paths, remembering that one path never proves existence, and introduce partial derivatives by differentiating with respect to one variable while treating every other independent variable as constant.",
+      "objectives": [
+        "Determine domain restrictions and evaluate multivariable functions and continuous limits at specified points.",
+        "Use path-dependent values to demonstrate that a two-variable limit does not exist.",
+        "Compute first partial derivatives while correctly treating non-differentiation variables as constants."
+      ],
+      "problems": [
+        {
+          "id": "c3-u04-01",
+          "subject": "calc-3",
+          "topic": "Multivariable Functions, Limits, and Partial Derivatives",
+          "difficulty": 1,
+          "prompt": "f(x,y)=\\sqrt{9-x^2-y^2}",
+          "statement": "Find the maximum value of x² + y² for points in the domain of f.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9"
+        },
+        {
+          "id": "c3-u04-02",
+          "subject": "calc-3",
+          "topic": "Multivariable Functions, Limits, and Partial Derivatives",
+          "difficulty": 1,
+          "prompt": "\\lim_{(x,y)\\to(2,1)}\\frac{x^2+y^2}{1+xy}",
+          "statement": "Evaluate the limit using continuity at the indicated point.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5/3"
+        },
+        {
+          "id": "c3-u04-03",
+          "subject": "calc-3",
+          "topic": "Multivariable Functions, Limits, and Partial Derivatives",
+          "difficulty": 2,
+          "prompt": "g(x,y)=\\frac{xy}{x^2+y^2},\\qquad y=x,\\quad x\\ne0",
+          "statement": "Along y = 0 the limiting value is 0. Find the constant value along the displayed path y = x; the mismatch proves that the two-variable limit at (0,0) does not exist.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1/2"
+        },
+        {
+          "id": "c3-u04-04",
+          "subject": "calc-3",
+          "topic": "Multivariable Functions, Limits, and Partial Derivatives",
+          "difficulty": 3,
+          "prompt": "\\frac{\\partial}{\\partial x}\\left(x^2y+e^{xy}\\right)",
+          "statement": "Differentiate with respect to x, treating y as a constant.",
+          "kind": "partial",
+          "start": "x^2 y + e^(x y)",
+          "variable": "x",
+          "symbols": [
+            "y"
+          ],
+          "finalForm": "any",
+          "answer": "2x y + y e^(x y)"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u05",
+      "week": "Week 5",
+      "title": "Chain Rule, Linearization, and Differentials",
+      "summary": "Apply the multivariable chain rule by tracking every path through which the selected independent variable affects the output, including intermediate variables that depend on several parameters. Form tangent-plane linearizations and use differentials for nearby estimates, honoring the base point and signed increments rather than substituting into only one branch.",
+      "objectives": [
+        "Construct dependence diagrams and apply the chain rule for one or several independent variables.",
+        "Compute linearizations at a base point and use them to estimate nearby function values.",
+        "Evaluate total differentials with signed increments and interpret them as first-order changes."
+      ],
+      "problems": [
+        {
+          "id": "c3-u05-01",
+          "subject": "calc-3",
+          "topic": "Chain Rule, Linearization, and Differentials",
+          "difficulty": 2,
+          "prompt": "z=x^2y,\\qquad x=t^2,\\qquad y=3t",
+          "statement": "Use the chain rule to find dz/dt at t = 1.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "15"
+        },
+        {
+          "id": "c3-u05-02",
+          "subject": "calc-3",
+          "topic": "Chain Rule, Linearization, and Differentials",
+          "difficulty": 2,
+          "prompt": "z=(r+s)^2+(r-s)^2",
+          "statement": "Compute the partial derivative ∂z/∂r, treating s as constant.",
+          "kind": "partial",
+          "start": "(r+s)^2 + (r-s)^2",
+          "variable": "r",
+          "symbols": [
+            "s"
+          ],
+          "finalForm": "any",
+          "answer": "4r"
+        },
+        {
+          "id": "c3-u05-03",
+          "subject": "calc-3",
+          "topic": "Chain Rule, Linearization, and Differentials",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x^2+y^2,\\quad P=(3,4),\\quad \\Delta x=\\frac1{10},\\quad \\Delta y=-\\frac1{10}",
+          "statement": "Use the linearization at P to approximate f(3 + Δx, 4 + Δy).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "124/5"
+        },
+        {
+          "id": "c3-u05-04",
+          "subject": "calc-3",
+          "topic": "Chain Rule, Linearization, and Differentials",
+          "difficulty": 3,
+          "prompt": "f(x,y)=x^2y,\\quad (x,y)=(2,3),\\quad dx=\\frac1{10},\\quad dy=-\\frac1{5}",
+          "statement": "Evaluate the total differential df = fₓ dx + fᵧ dy at the given point and increments.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/5"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u06",
+      "week": "Week 6",
+      "title": "Gradients, Directional Derivatives, and Tangent Planes",
+      "summary": "Combine partial derivatives into the gradient and compute directional derivatives by dotting with a unit direction. Interpret the gradient as normal to a level surface and as the direction of steepest increase, then use that normal vector to write tangent planes and check orientation, scaling, and evaluation points.",
+      "objectives": [
+        "Evaluate gradient components and the magnitude of the gradient at specified points.",
+        "Compute directional derivatives using a given unit vector and interpret maximum rates of change.",
+        "Construct tangent planes to explicit and implicit surfaces using gradient normal vectors."
+      ],
+      "problems": [
+        {
+          "id": "c3-u06-01",
+          "subject": "calc-3",
+          "topic": "Gradients, Directional Derivatives, and Tangent Planes",
+          "difficulty": 1,
+          "prompt": "f(x,y,z)=x^2y+3z^2,\\qquad P=(1,2,1)",
+          "statement": "Find the x-component of ∇f(P).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c3-u06-02",
+          "subject": "calc-3",
+          "topic": "Gradients, Directional Derivatives, and Tangent Planes",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x^2+y^2,\\quad P=(1,2),\\quad \\mathbf{u}=\\left\\langle\\frac35,\\frac45\\right\\rangle",
+          "statement": "Compute the directional derivative Dᵤf(P); the displayed vector u is a unit vector.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "22/5"
+        },
+        {
+          "id": "c3-u06-03",
+          "subject": "calc-3",
+          "topic": "Gradients, Directional Derivatives, and Tangent Planes",
+          "difficulty": 2,
+          "prompt": "z=x^2+y^2,\\qquad P=(1,1,2)",
+          "statement": "On the tangent plane at P, find the z-value corresponding to x = 2 and y = 1.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c3-u06-04",
+          "subject": "calc-3",
+          "topic": "Gradients, Directional Derivatives, and Tangent Planes",
+          "difficulty": 3,
+          "prompt": "f(x,y,z)=x^2+y^2+z^2,\\qquad P=(3,4,12)",
+          "statement": "Find the maximum rate of increase of f at P, which equals ||∇f(P)||.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "26"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u07",
+      "week": "Week 7",
+      "title": "Unconstrained Optimization and Classification",
+      "summary": "Find interior critical points by solving the simultaneous zero-gradient equations and include points where derivatives fail to exist when relevant. Classify nondegenerate critical points with the second-derivative discriminant, while checking function values and global behavior separately; a positive discriminant alone does not distinguish a minimum from a maximum.",
+      "objectives": [
+        "Solve simultaneous partial-derivative equations to locate critical points of two-variable functions.",
+        "Compute the second-derivative discriminant and use it with the sign of fₓₓ to classify local extrema and saddles.",
+        "Evaluate candidate points and reason about quadratic global behavior when determining extreme values."
+      ],
+      "problems": [
+        {
+          "id": "c3-u07-01",
+          "subject": "calc-3",
+          "topic": "Unconstrained Optimization and Classification",
+          "difficulty": 1,
+          "prompt": "f(x,y)=x^2-4x+y^2+6y",
+          "statement": "Find the x-coordinate of the unique critical point.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c3-u07-02",
+          "subject": "calc-3",
+          "topic": "Unconstrained Optimization and Classification",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x^2+xy+3y^2",
+          "statement": "Compute D = fₓₓfᵧᵧ − (fₓᵧ)² at the critical point (0,0).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "11"
+        },
+        {
+          "id": "c3-u07-03",
+          "subject": "calc-3",
+          "topic": "Unconstrained Optimization and Classification",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x^2-4x+y^2+6y",
+          "statement": "Complete the square or use the critical point to find the global minimum value of f.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-13"
+        },
+        {
+          "id": "c3-u07-04",
+          "subject": "calc-3",
+          "topic": "Unconstrained Optimization and Classification",
+          "difficulty": 3,
+          "prompt": "f(x,y)=x^2-y^2+4xy",
+          "statement": "Compute D = fₓₓfᵧᵧ − (fₓᵧ)² at (0,0); its sign identifies the saddle classification.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-20"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u08",
+      "week": "Week 8",
+      "title": "Lagrange Multipliers and Constrained Optimization",
+      "summary": "Optimize a function subject to a smooth constraint by solving ∇f = λ∇g together with g = constant, then compare all candidate values and any boundary behavior. Interpret the multiplier through normal-vector alignment, avoid omitting the constraint equation, and use symmetry only after verifying that it follows from the system.",
+      "objectives": [
+        "Set up complete Lagrange systems including the original constraint and solve for all relevant candidates.",
+        "Compare candidate function values to determine constrained maxima and minima.",
+        "Interpret Lagrange normal-vector alignment and the role of λ in representative optimization problems."
+      ],
+      "problems": [
+        {
+          "id": "c3-u08-01",
+          "subject": "calc-3",
+          "topic": "Lagrange Multipliers and Constrained Optimization",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x+y,\\qquad x^2+y^2=2",
+          "statement": "Use Lagrange multipliers to find the maximum value of f on the constraint curve.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c3-u08-02",
+          "subject": "calc-3",
+          "topic": "Lagrange Multipliers and Constrained Optimization",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x^2+y^2,\\qquad x+y=4",
+          "statement": "Find the minimum value of f subject to the constraint.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "8"
+        },
+        {
+          "id": "c3-u08-03",
+          "subject": "calc-3",
+          "topic": "Lagrange Multipliers and Constrained Optimization",
+          "difficulty": 2,
+          "prompt": "f(x,y)=x^2+y^2,\\qquad g(x,y)=x+y=4",
+          "statement": "Using ∇f = λ∇g at the minimizing point, find λ.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c3-u08-04",
+          "subject": "calc-3",
+          "topic": "Lagrange Multipliers and Constrained Optimization",
+          "difficulty": 3,
+          "prompt": "V(x,y,z)=xyz,\\qquad x+y+z=12,\\qquad x,y,z>0",
+          "statement": "Use Lagrange multipliers to find the maximum value of V on the stated positive portion of the plane.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "64"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u09",
+      "week": "Week 9",
+      "title": "Double Integrals and Polar Coordinates",
+      "summary": "Interpret double integrals as accumulated signed volume or mass and evaluate them iteratively with limits matched to the differential order. Sketch regions before reversing integration, convert radially symmetric regions to polar coordinates with dA = r dr dθ, and use area or averaging to normalize angular factors when requested.",
+      "objectives": [
+        "Evaluate iterated double integrals while preserving the correct order of limits and differentials.",
+        "Describe two-dimensional regions and reverse integration order without changing their boundary inequalities.",
+        "Evaluate double integrals and average values using polar coordinates, including the Jacobian factor r."
+      ],
+      "problems": [
+        {
+          "id": "c3-u09-01",
+          "subject": "calc-3",
+          "topic": "Double Integrals and Polar Coordinates",
+          "difficulty": 1,
+          "prompt": "\\int_{0}^{2}\\!\\int_{0}^{1}(x+2y)\\,dy\\,dx",
+          "statement": "Evaluate the iterated integral, integrating first with respect to y.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c3-u09-02",
+          "subject": "calc-3",
+          "topic": "Double Integrals and Polar Coordinates",
+          "difficulty": 2,
+          "prompt": "\\int_{0}^{1}\\!\\int_{x}^{1}6y\\,dy\\,dx",
+          "statement": "Evaluate the integral; sketching the triangular region and reversing the order may simplify the setup.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c3-u09-03",
+          "subject": "calc-3",
+          "topic": "Double Integrals and Polar Coordinates",
+          "difficulty": 2,
+          "prompt": "\\int_{0}^{1}\\!\\int_{0}^{2}r^2\\,r\\,dr\\,d\\theta",
+          "statement": "Evaluate this polar-coordinate iterated integral over the sector 0 ≤ θ ≤ 1, 0 ≤ r ≤ 2.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "c3-u09-04",
+          "subject": "calc-3",
+          "topic": "Double Integrals and Polar Coordinates",
+          "difficulty": 3,
+          "prompt": "f(x,y)=x^2+y^2,\\qquad D=\\{(x,y):x^2+y^2\\le4\\}",
+          "statement": "Using polar coordinates, compute the average value of f over the disk D.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u10",
+      "week": "Week 10",
+      "title": "Triple Integrals in Rectangular, Cylindrical, and Spherical Coordinates",
+      "summary": "Build triple integrals from nested spatial inequalities, keeping projection regions and cross-sectional heights consistent with the chosen order. Convert cylindrical coordinates with dV = r dz dr dθ and spherical coordinates with dV = ρ² sin φ dρ dφ dθ, distinguishing polar angle φ from azimuth θ and using volume-normalized averages where appropriate.",
+      "objectives": [
+        "Evaluate triple integrals over boxes and regions bounded by planes with correct nested limits.",
+        "Set up cylindrical-coordinate integrals using consistent axial heights, radial bounds, and the Jacobian r.",
+        "Set up spherical-coordinate integrals with ρ² sin φ and compute volume-normalized average values."
+      ],
+      "problems": [
+        {
+          "id": "c3-u10-01",
+          "subject": "calc-3",
+          "topic": "Triple Integrals in Rectangular, Cylindrical, and Spherical Coordinates",
+          "difficulty": 2,
+          "prompt": "\\int_{0}^{1}\\!\\int_{0}^{2}\\!\\int_{0}^{3}xyz\\,dz\\,dy\\,dx",
+          "statement": "Evaluate the triple iterated integral over the rectangular box.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9/2"
+        },
+        {
+          "id": "c3-u10-02",
+          "subject": "calc-3",
+          "topic": "Triple Integrals in Rectangular, Cylindrical, and Spherical Coordinates",
+          "difficulty": 2,
+          "prompt": "E=\\{(x,y,z):x\\ge0,\\ y\\ge0,\\ z\\ge0,\\ x+y+z\\le2\\}",
+          "statement": "Set up a triple integral and compute the volume of the tetrahedron E.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4/3"
+        },
+        {
+          "id": "c3-u10-03",
+          "subject": "calc-3",
+          "topic": "Triple Integrals in Rectangular, Cylindrical, and Spherical Coordinates",
+          "difficulty": 3,
+          "prompt": "\\int_{0}^{1}\\!\\int_{0}^{1}\\!\\int_{r}^{2}r\\,dz\\,dr\\,d\\theta",
+          "statement": "Evaluate this cylindrical-coordinate integral over a sector of the region between z = r and z = 2.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2/3"
+        },
+        {
+          "id": "c3-u10-04",
+          "subject": "calc-3",
+          "topic": "Triple Integrals in Rectangular, Cylindrical, and Spherical Coordinates",
+          "difficulty": 3,
+          "prompt": "f(x,y,z)=x^2+y^2+z^2,\\qquad B=\\{(x,y,z):x^2+y^2+z^2\\le1\\}",
+          "statement": "Using f = ρ² and dV = ρ² sin φ dρ dφ dθ, compute the average value of f over the unit ball B.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3/5"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u11",
+      "week": "Week 11",
+      "title": "Vector Fields, Line Integrals, and Green's Theorem",
+      "summary": "Evaluate scalar line integrals with ds = ||r′(t)||dt and work or circulation integrals with dr = r′(t)dt, preserving the parameter's orientation for the latter. Recognize conservative fields through potentials, and apply Green's theorem only to positively oriented closed planar curves with the correct P, Q convention and enclosed region.",
+      "objectives": [
+        "Compute scalar and vector line integrals from explicit parametrizations with appropriate differential elements.",
+        "Use potential functions to evaluate path-independent work integrals between stated endpoints.",
+        "Apply Green's theorem to positively oriented closed curves and verify the sign from counterclockwise traversal."
+      ],
+      "problems": [
+        {
+          "id": "c3-u11-01",
+          "subject": "calc-3",
+          "topic": "Vector Fields, Line Integrals, and Green's Theorem",
+          "difficulty": 2,
+          "prompt": "\\mathbf{F}(x,y)=\\langle y,x\\rangle,\\qquad \\mathbf{r}(t)=\\langle t,t\\rangle,\\quad 0\\le t\\le1",
+          "statement": "Evaluate the oriented line integral ∫C F · dr from t = 0 to t = 1.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "1"
+        },
+        {
+          "id": "c3-u11-02",
+          "subject": "calc-3",
+          "topic": "Vector Fields, Line Integrals, and Green's Theorem",
+          "difficulty": 2,
+          "prompt": "\\mathbf{F}(x,y)=\\langle 2x,2y\\rangle",
+          "statement": "Use a potential function to evaluate ∫C F · dr along any piecewise-smooth path from (0,0) to (2,3).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "13"
+        },
+        {
+          "id": "c3-u11-03",
+          "subject": "calc-3",
+          "topic": "Vector Fields, Line Integrals, and Green's Theorem",
+          "difficulty": 2,
+          "prompt": "\\int_C(x+y)\\,ds,\\qquad C:\\ x=t,\\ y=0,\\quad 0\\le t\\le2",
+          "statement": "Evaluate the scalar line integral using the given parametrization.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c3-u11-04",
+          "subject": "calc-3",
+          "topic": "Vector Fields, Line Integrals, and Green's Theorem",
+          "difficulty": 3,
+          "prompt": "\\oint_C\\left(-\\frac{y}{2}\\,dx+\\frac{x}{2}\\,dy\\right)",
+          "statement": "C is the counterclockwise boundary of the rectangle 0 ≤ x ≤ 3, 0 ≤ y ≤ 2. Use Green's theorem to evaluate the integral.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        }
+      ]
+    },
+    {
+      "id": "calc-3-u12",
+      "week": "Week 12",
+      "title": "Curl, Divergence, Surface Integrals, Stokes', and Divergence Theorems",
+      "summary": "Compute curl and divergence as vector and scalar differential measures, then evaluate oriented surface integrals for circulation density and flux. Connect boundary circulation to surface curl through Stokes' theorem and outward closed-surface flux to integrated divergence, checking normal orientation, boundary compatibility, and the sign of every conversion.",
+      "objectives": [
+        "Compute components of curl and point values of divergence for three-dimensional vector fields.",
+        "Evaluate oriented surface flux by converting a closed-surface integral to a triple integral of divergence.",
+        "Apply Stokes' theorem with compatible curve and normal orientations and distinguish its role from the divergence theorem."
+      ],
+      "problems": [
+        {
+          "id": "c3-u12-01",
+          "subject": "calc-3",
+          "topic": "Curl, Divergence, Surface Integrals, Stokes', and Divergence Theorems",
+          "difficulty": 1,
+          "prompt": "\\mathbf{F}(x,y,z)=\\langle-y,x,z\\rangle",
+          "statement": "Find the z-component of curl F using the standard right-handed convention.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "c3-u12-02",
+          "subject": "calc-3",
+          "topic": "Curl, Divergence, Surface Integrals, Stokes', and Divergence Theorems",
+          "difficulty": 2,
+          "prompt": "\\mathbf{F}(x,y,z)=\\langle x^2,xy,z^2\\rangle,\\qquad P=(1,2,3)",
+          "statement": "Compute the scalar divergence div F at the point P.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9"
+        },
+        {
+          "id": "c3-u12-03",
+          "subject": "calc-3",
+          "topic": "Curl, Divergence, Surface Integrals, Stokes', and Divergence Theorems",
+          "difficulty": 2,
+          "prompt": "\\mathbf{F}=\\langle x,y,z\\rangle,\\qquad E=[0,1]\\times[0,2]\\times[0,1]",
+          "statement": "Use the divergence theorem to compute the outward flux ∬∂E F · n dS across the closed boundary of E.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        },
+        {
+          "id": "c3-u12-04",
+          "subject": "calc-3",
+          "topic": "Curl, Divergence, Surface Integrals, Stokes', and Divergence Theorems",
+          "difficulty": 3,
+          "prompt": "\\mathbf{F}=\\langle-y,x,0\\rangle,\\qquad C:\\ x^2+y^2=1,\\ z=0",
+          "statement": "C is counterclockwise when viewed from above. Apply Stokes' theorem to the upward unit disk and compute (1/π)∮C F · dr.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        }
+      ]
+    }
+  ]
+}

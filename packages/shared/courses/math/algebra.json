@@ -1,0 +1,1049 @@
+{
+  "slug": "algebra",
+  "title": "College Algebra",
+  "semester": "15-week semester · 12 instructional units",
+  "description": "A coherent College Algebra pathway from numerical and algebraic foundations through functions, equations, matrices, and discrete models; Weeks 13–15 are reserved for synthesis, cumulative review, and assessment.",
+  "outcomes": [
+    "Simplify algebraic expressions and solve linear, quadratic, polynomial, rational, radical, exponential, and logarithmic equations while checking domain restrictions and extraneous candidates.",
+    "Construct and interpret linear, quadratic, polynomial, exponential, and logarithmic models, connecting algebraic parameters to intercepts, rates, extrema, growth, and decay.",
+    "Analyze functions using notation, domain, average rates of change, arithmetic combinations, composition, and inverses, and justify conclusions with precise algebraic reasoning.",
+    "Represent and solve systems of linear equations with elimination and matrix methods, and interpret individual matrix entries and determinants in context.",
+    "Use graphical features and algebraic structure together to analyze zeros, factors, asymptotic restrictions, inequalities, and solution uniqueness without relying solely on numerical experimentation.",
+    "Evaluate arithmetic and geometric sequences and series, apply recursive definitions, and use the binomial theorem to determine specified terms and coefficients."
+  ],
+  "units": [
+    {
+      "id": "algebra-u01",
+      "week": "Week 1",
+      "title": "Real Numbers and Algebraic Foundations",
+      "summary": "Build fluency with order of operations, signed numbers, rational arithmetic, exponent rules, scientific notation, and equivalent algebraic expressions. Emphasize that parentheses and exponent scope matter, that canceling means dividing by a common nonzero factor, and that simplifying should preserve the original expression's value and restrictions.",
+      "objectives": [
+        "Evaluate numerical expressions involving integers, fractions, powers, and scientific notation using correct operation order.",
+        "Simplify polynomial expressions by distributing, combining like terms, and factoring out a greatest common factor.",
+        "Apply exponent laws to products, quotients, and powers while attending to nonzero denominators."
+      ],
+      "problems": [
+        {
+          "id": "alg-u01-01",
+          "subject": "algebra",
+          "topic": "Real Numbers and Algebraic Foundations",
+          "difficulty": 1,
+          "prompt": "\\left(-3\\right)^2-4\\cdot 2+\\frac{18}{3}",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "alg-u01-02",
+          "subject": "algebra",
+          "topic": "Real Numbers and Algebraic Foundations",
+          "difficulty": 1,
+          "prompt": "\\text{Simplify }4(2x-3)-5(x-6).",
+          "kind": "expression",
+          "start": "4*(2*x-3)-5*(x-6)",
+          "variable": "x",
+          "finalForm": "expanded",
+          "answer": "3*x+18"
+        },
+        {
+          "id": "alg-u01-03",
+          "subject": "algebra",
+          "topic": "Real Numbers and Algebraic Foundations",
+          "difficulty": 2,
+          "prompt": "\\text{Simplify }\\frac{x^3x^5}{x^2}\\text{ for }x\\ne 0.",
+          "kind": "expression",
+          "start": "(x^3*x^5)/x^2",
+          "variable": "x",
+          "finalForm": "polynomial",
+          "answer": "x^6"
+        },
+        {
+          "id": "alg-u01-04",
+          "subject": "algebra",
+          "topic": "Real Numbers and Algebraic Foundations",
+          "difficulty": 2,
+          "prompt": "\\frac{(6\\times10^5)(4\\times10^{-3})}{8\\times10^2}",
+          "statement": "Evaluate the expression and give the result as an ordinary integer.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "alg-u01-05",
+          "subject": "algebra",
+          "topic": "Real Numbers and Algebraic Foundations",
+          "difficulty": 3,
+          "prompt": "\\text{Factor out the greatest common factor: }6x^3-9x^2+12x.",
+          "kind": "expression",
+          "start": "6*x^3-9*x^2+12*x",
+          "variable": "x",
+          "finalForm": "factored",
+          "answer": "3*x*(2*x^2-3*x+4)"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u02",
+      "week": "Week 2",
+      "title": "Linear and Absolute-Value Equations and Inequalities",
+      "summary": "Solve linear equations by inverse operations and justify each transformation as an equivalence. Develop interval and integer reasoning for linear and absolute-value inequalities, reversing inequality signs when multiplying or dividing by a negative; interpret |x-a| as distance and distinguish equation solutions from inequality solution sets.",
+      "objectives": [
+        "Solve linear equations containing parentheses and fractions and report exact solutions.",
+        "Solve absolute-value equations by analyzing the two distance cases and combining all solutions.",
+        "Interpret linear and absolute-value inequalities to determine integer solutions and boundary behavior."
+      ],
+      "problems": [
+        {
+          "id": "alg-u02-01",
+          "subject": "algebra",
+          "topic": "Linear and Absolute-Value Equations and Inequalities",
+          "difficulty": 2,
+          "prompt": "5(2x-3)-4=3x+12",
+          "kind": "equation",
+          "start": "5*(2*x-3)-4=3*x+12",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 31/7"
+        },
+        {
+          "id": "alg-u02-02",
+          "subject": "algebra",
+          "topic": "Linear and Absolute-Value Equations and Inequalities",
+          "difficulty": 2,
+          "prompt": "\\frac{x+2}{3}-\\frac{x-4}{2}=5",
+          "kind": "equation",
+          "start": "(x+2)/3-(x-4)/2=5",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = -14"
+        },
+        {
+          "id": "alg-u02-03",
+          "subject": "algebra",
+          "topic": "Linear and Absolute-Value Equations and Inequalities",
+          "difficulty": 2,
+          "prompt": "|2x-3|=7",
+          "kind": "equation",
+          "start": "abs(2*x-3)=7",
+          "variable": "x",
+          "finalForm": "solutions",
+          "answer": "x = -2 or x = 5"
+        },
+        {
+          "id": "alg-u02-04",
+          "subject": "algebra",
+          "topic": "Linear and Absolute-Value Equations and Inequalities",
+          "difficulty": 2,
+          "prompt": "7-3x>16",
+          "statement": "The inequality above has infinitely many integer solutions. What is the largest integer value of x that satisfies it?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-4"
+        },
+        {
+          "id": "alg-u02-05",
+          "subject": "algebra",
+          "topic": "Linear and Absolute-Value Equations and Inequalities",
+          "difficulty": 3,
+          "prompt": "|2x-6|\\le 4",
+          "statement": "How many distinct integers x satisfy the absolute-value inequality shown, including both endpoints of its solution interval?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u03",
+      "week": "Week 3",
+      "title": "Coordinates, Lines, and Linear Modeling",
+      "summary": "Connect ordered pairs and the coordinate plane to slope, intercepts, and equations of lines. Move among point-slope, slope-intercept, and graphical information, then use constant-rate models in applications; keep slope as vertical change divided by horizontal change and verify that proposed points satisfy both equations at an intersection.",
+      "objectives": [
+        "Calculate slope and intercepts from coordinate pairs and linear equations.",
+        "Determine coordinates associated with lines and intersections by solving appropriate linear equations.",
+        "Build and interpret a linear model from a fixed amount and a constant unit rate."
+      ],
+      "problems": [
+        {
+          "id": "alg-u03-01",
+          "subject": "algebra",
+          "topic": "Coordinates, Lines, and Linear Modeling",
+          "difficulty": 1,
+          "prompt": "",
+          "statement": "A line passes through the points (-2, 5) and (4, -7). What is its slope?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-2"
+        },
+        {
+          "id": "alg-u03-02",
+          "subject": "algebra",
+          "topic": "Coordinates, Lines, and Linear Modeling",
+          "difficulty": 2,
+          "prompt": "",
+          "statement": "A line has slope 3 and passes through (-2, 5). What is its y-intercept b when the line is written as y = mx + b?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "11"
+        },
+        {
+          "id": "alg-u03-03",
+          "subject": "algebra",
+          "topic": "Coordinates, Lines, and Linear Modeling",
+          "difficulty": 2,
+          "prompt": "y=-\\frac{3}{4}x+9",
+          "statement": "For the line shown, what is the x-coordinate of its x-intercept?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        },
+        {
+          "id": "alg-u03-04",
+          "subject": "algebra",
+          "topic": "Coordinates, Lines, and Linear Modeling",
+          "difficulty": 2,
+          "prompt": "y=2x+5\\qquad\\text{and}\\qquad y=-x+17",
+          "statement": "The two lines shown intersect at exactly one point. What is the x-coordinate of that point?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "4"
+        },
+        {
+          "id": "alg-u03-05",
+          "subject": "algebra",
+          "topic": "Coordinates, Lines, and Linear Modeling",
+          "difficulty": 3,
+          "prompt": "",
+          "statement": "A ride costs a fixed fee of $6 plus $2.40 per mile, with no other charges. A passenger spends exactly $30. How many miles is the ride?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "10"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u04",
+      "week": "Week 4",
+      "title": "Functions, Domain, Rates, Composition, and Inverses",
+      "summary": "Treat a function as a single-valued input-output rule and connect notation to evaluation, tables, and graphs. Determine real domains before simplifying standard expressions, compute average rates using change in output over change in input, and distinguish (f+g)(x), f(g(x)), and inverse notation; an inverse reverses inputs and outputs rather than producing a reciprocal.",
+      "objectives": [
+        "Evaluate functions and average rates of change from explicit formulas over specified intervals.",
+        "Determine real domains and simplify arithmetic combinations of functions.",
+        "Compute compositions and inverse-function values by interpreting input-output order."
+      ],
+      "problems": [
+        {
+          "id": "alg-u04-01",
+          "subject": "algebra",
+          "topic": "Functions, Domain, Rates, Composition, and Inverses",
+          "difficulty": 1,
+          "prompt": "f(x)=x^2-3x+2",
+          "statement": "For the function shown, evaluate f(-2).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "12"
+        },
+        {
+          "id": "alg-u04-02",
+          "subject": "algebra",
+          "topic": "Functions, Domain, Rates, Composition, and Inverses",
+          "difficulty": 2,
+          "prompt": "f(x)=2x^2-x",
+          "statement": "What is the average rate of change of the function shown on the interval from x = 1 to x = 4?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9"
+        },
+        {
+          "id": "alg-u04-03",
+          "subject": "algebra",
+          "topic": "Functions, Domain, Rates, Composition, and Inverses",
+          "difficulty": 2,
+          "prompt": "f(x)=3x^2-x+4,\\qquad g(x)=x^2+5x-2",
+          "statement": "Using the functions shown, expand and simplify (f - 2g)(x). Enter only the resulting expression in x.",
+          "kind": "expression",
+          "start": "(3*x^2-x+4)-2*(x^2+5*x-2)",
+          "variable": "x",
+          "finalForm": "expanded",
+          "answer": "x^2-11*x+8"
+        },
+        {
+          "id": "alg-u04-04",
+          "subject": "algebra",
+          "topic": "Functions, Domain, Rates, Composition, and Inverses",
+          "difficulty": 2,
+          "prompt": "f(x)=2x-3,\\qquad g(x)=x^2+1",
+          "statement": "For the functions shown, evaluate the composition f(g(-2)).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "alg-u04-05",
+          "subject": "algebra",
+          "topic": "Functions, Domain, Rates, Composition, and Inverses",
+          "difficulty": 3,
+          "prompt": "f(x)=4x+7",
+          "statement": "The function shown is one-to-one and therefore has an inverse. Find the value f inverse of 15, meaning the input that f maps to 15.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "alg-u04-06",
+          "subject": "algebra",
+          "topic": "Functions, Domain, Rates, Composition, and Inverses",
+          "difficulty": 2,
+          "prompt": "f(x)=\\frac{x+1}{(x-2)(x+5)}",
+          "statement": "How many real numbers must be excluded from the domain of the function shown because they make its denominator zero?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u05",
+      "week": "Week 5",
+      "title": "Quadratic Equations and Models",
+      "summary": "Solve quadratics by factoring, taking square roots, completing the square, and using the quadratic formula, selecting a method that fits the structure. Interpret roots, vertex coordinates, and the discriminant in graphs and models; include every real root, retain exact radicals when requested, and check that applied answers respect time and other contextual restrictions.",
+      "objectives": [
+        "Solve quadratic equations over the real numbers by factoring, square roots, and the quadratic formula.",
+        "Use the discriminant and vertex formula to determine root structure and optimize quadratic models.",
+        "Translate projectile or revenue relationships into quadratic equations and interpret admissible solutions."
+      ],
+      "problems": [
+        {
+          "id": "alg-u05-01",
+          "subject": "algebra",
+          "topic": "Quadratic Equations and Models",
+          "difficulty": 1,
+          "prompt": "x^2-7x+12=0",
+          "kind": "equation",
+          "start": "x^2-7*x+12=0",
+          "variable": "x",
+          "finalForm": "solutions",
+          "answer": "x = 3 or x = 4"
+        },
+        {
+          "id": "alg-u05-02",
+          "subject": "algebra",
+          "topic": "Quadratic Equations and Models",
+          "difficulty": 2,
+          "prompt": "2x^2+5x-3=0",
+          "kind": "equation",
+          "start": "2*x^2+5*x-3=0",
+          "variable": "x",
+          "finalForm": "solutions",
+          "answer": "x = -3 or x = 1/2"
+        },
+        {
+          "id": "alg-u05-03",
+          "subject": "algebra",
+          "topic": "Quadratic Equations and Models",
+          "difficulty": 2,
+          "prompt": "(x-2)^2=25",
+          "kind": "equation",
+          "start": "(x-2)^2=25",
+          "variable": "x",
+          "finalForm": "solutions",
+          "answer": "x = -3 or x = 7"
+        },
+        {
+          "id": "alg-u05-04",
+          "subject": "algebra",
+          "topic": "Quadratic Equations and Models",
+          "difficulty": 2,
+          "prompt": "P(x)=-2x^2+24x-40",
+          "statement": "P(x) models profit in dollars when x units are sold. What is the maximum value of P(x), in dollars?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "32"
+        },
+        {
+          "id": "alg-u05-05",
+          "subject": "algebra",
+          "topic": "Quadratic Equations and Models",
+          "difficulty": 3,
+          "prompt": "h(t)=-16t^2+64t+80",
+          "statement": "The modeled height h(t) is measured in feet and time t in seconds. At what positive time t does the object reach the ground, where h(t) = 0?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "alg-u05-06",
+          "subject": "algebra",
+          "topic": "Quadratic Equations and Models",
+          "difficulty": 3,
+          "prompt": "x^2+4x-1=0",
+          "statement": "Solve over the real numbers. Give both solutions exactly using radicals.",
+          "kind": "equation",
+          "start": "x^2+4*x-1=0",
+          "variable": "x",
+          "finalForm": "exact",
+          "answer": "x = -2-sqrt(5) or x = -2+sqrt(5)"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u06",
+      "week": "Week 6",
+      "title": "Polynomial Functions and Division",
+      "summary": "Analyze polynomial degree, leading terms, zeros, factors, multiplicities, and possible turning points as connected features of one function. Use grouping and long or synthetic division to rewrite polynomials, and apply the Remainder Theorem for efficient evaluation; remember that a squared factor repeats a zero, while x squared plus a positive constant contributes no real zero.",
+      "objectives": [
+        "Expand and factor polynomial expressions using structure and grouping.",
+        "Divide polynomials and use the Remainder Theorem to connect quotients, remainders, and function values.",
+        "Infer distinct real zeros and bounds on turning points from factored form and degree."
+      ],
+      "problems": [
+        {
+          "id": "alg-u06-01",
+          "subject": "algebra",
+          "topic": "Polynomial Functions and Division",
+          "difficulty": 1,
+          "prompt": "\\text{Expand }(2x-3)(x^2+4x-5).",
+          "kind": "expression",
+          "start": "(2*x-3)*(x^2+4*x-5)",
+          "variable": "x",
+          "finalForm": "expanded",
+          "answer": "2*x^3+5*x^2-22*x+15"
+        },
+        {
+          "id": "alg-u06-02",
+          "subject": "algebra",
+          "topic": "Polynomial Functions and Division",
+          "difficulty": 2,
+          "prompt": "\\text{Factor completely over the integers: }x^3-4x^2-9x+36.",
+          "kind": "expression",
+          "start": "x^3-4*x^2-9*x+36",
+          "variable": "x",
+          "finalForm": "factored",
+          "answer": "(x-4)*(x-3)*(x+3)"
+        },
+        {
+          "id": "alg-u06-03",
+          "subject": "algebra",
+          "topic": "Polynomial Functions and Division",
+          "difficulty": 2,
+          "prompt": "P(x)=2x^3-5x^2+4x-7",
+          "statement": "Use the Remainder Theorem to find the remainder when the polynomial shown is divided by x - 3.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "14"
+        },
+        {
+          "id": "alg-u06-04",
+          "subject": "algebra",
+          "topic": "Polynomial Functions and Division",
+          "difficulty": 2,
+          "prompt": "\\frac{x^3-7x+6}{x-2}",
+          "statement": "The division is exact. Give the quotient as a simplified polynomial; do not include a remainder or denominator.",
+          "kind": "expression",
+          "start": "(x^3-7*x+6)/(x-2)",
+          "variable": "x",
+          "finalForm": "no_division",
+          "answer": "x^2+2*x-3"
+        },
+        {
+          "id": "alg-u06-05",
+          "subject": "algebra",
+          "topic": "Polynomial Functions and Division",
+          "difficulty": 2,
+          "prompt": "P(x)=(x-1)^2(x+4)(x^2+9)",
+          "statement": "Counting each different real zero once regardless of multiplicity, how many distinct real zeros does the polynomial shown have?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "alg-u06-06",
+          "subject": "algebra",
+          "topic": "Polynomial Functions and Division",
+          "difficulty": 3,
+          "prompt": "",
+          "statement": "A polynomial function has degree 7 and a nonzero leading coefficient. What is the greatest possible number of turning points its graph can have?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "6"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u07",
+      "week": "Week 7",
+      "title": "Rational Expressions, Equations, and Inequalities",
+      "summary": "Simplify and combine rational expressions by factoring first, finding common denominators, and recording values excluded by the original denominators. Clear denominators only with those restrictions in mind, test all equation candidates, and solve rational inequalities with sign charts rather than cross-multiplying by an expression whose sign is unknown; open and closed endpoints require separate attention.",
+      "objectives": [
+        "Simplify rational expressions and add rational expressions using factored common denominators.",
+        "Solve rational equations while rejecting candidates excluded by an original denominator.",
+        "Use sign analysis of rational inequalities to count specified integer solutions with correct endpoint treatment."
+      ],
+      "problems": [
+        {
+          "id": "alg-u07-01",
+          "subject": "algebra",
+          "topic": "Rational Expressions, Equations, and Inequalities",
+          "difficulty": 2,
+          "prompt": "\\frac{x^2-9}{x^2-x-6}",
+          "statement": "Simplify by canceling the common factor. Give an equivalent rational expression, retaining the necessary denominator.",
+          "kind": "expression",
+          "start": "(x^2-9)/(x^2-x-6)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "(x+3)/(x+2)"
+        },
+        {
+          "id": "alg-u07-02",
+          "subject": "algebra",
+          "topic": "Rational Expressions, Equations, and Inequalities",
+          "difficulty": 1,
+          "prompt": "\\frac{x^3-8}{x-2}",
+          "statement": "Simplify the expression to a polynomial. The restriction x is not 2 comes from the original expression.",
+          "kind": "expression",
+          "start": "(x^3-8)/(x-2)",
+          "variable": "x",
+          "finalForm": "no_division",
+          "answer": "x^2+2*x+4"
+        },
+        {
+          "id": "alg-u07-03",
+          "subject": "algebra",
+          "topic": "Rational Expressions, Equations, and Inequalities",
+          "difficulty": 2,
+          "prompt": "\\frac{3}{x-1}+\\frac{2}{x+2}",
+          "statement": "Combine into one rational expression. Simplify the numerator and leave the denominator in factored form.",
+          "kind": "expression",
+          "start": "3/(x-1)+2/(x+2)",
+          "variable": "x",
+          "finalForm": "any",
+          "answer": "(5*x+4)/((x-1)*(x+2))"
+        },
+        {
+          "id": "alg-u07-04",
+          "subject": "algebra",
+          "topic": "Rational Expressions, Equations, and Inequalities",
+          "difficulty": 2,
+          "prompt": "\\frac{2}{x-3}+1=\\frac{5}{x-3}",
+          "kind": "equation",
+          "start": "2/(x-3)+1=5/(x-3)",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 6"
+        },
+        {
+          "id": "alg-u07-05",
+          "subject": "algebra",
+          "topic": "Rational Expressions, Equations, and Inequalities",
+          "difficulty": 3,
+          "prompt": "\\frac{x^2+3}{x-1}=\\frac{4x}{x-1}",
+          "statement": "Solve and check the original domain. One algebraic candidate is excluded by the denominator; report only the valid solution.",
+          "kind": "equation",
+          "start": "(x^2+3)/(x-1)=(4*x)/(x-1)",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 3"
+        },
+        {
+          "id": "alg-u07-06",
+          "subject": "algebra",
+          "topic": "Rational Expressions, Equations, and Inequalities",
+          "difficulty": 3,
+          "prompt": "\\frac{x-2}{x-4}\\le 0",
+          "statement": "How many integers satisfy the inequality? Use the original domain and the non-strict numerator condition when deciding whether to include each endpoint.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u08",
+      "week": "Week 8",
+      "title": "Radical Expressions and Power Equations",
+      "summary": "Evaluate roots and rational exponents using the connection between radicals and powers, attending to even-root domains and principal-root signs. Isolate radicals before raising both sides to a power, then substitute every candidate into the original equation because squaring can introduce extraneous solutions; for even powers, include both real signs when both satisfy the original equation.",
+      "objectives": [
+        "Evaluate numerical expressions involving square roots, cube roots, and rational exponents.",
+        "Solve equations containing isolated radicals and verify candidates in the original equation.",
+        "Solve rational-exponent and integer-power equations with correct domain and sign decisions."
+      ],
+      "problems": [
+        {
+          "id": "alg-u08-01",
+          "subject": "algebra",
+          "topic": "Radical Expressions and Power Equations",
+          "difficulty": 1,
+          "prompt": "\\sqrt{3x+1}=5",
+          "kind": "equation",
+          "start": "sqrt(3*x+1)=5",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 8"
+        },
+        {
+          "id": "alg-u08-02",
+          "subject": "algebra",
+          "topic": "Radical Expressions and Power Equations",
+          "difficulty": 2,
+          "prompt": "\\sqrt{x+4}=x-2",
+          "statement": "Solve over the real numbers. Check the domain and the required nonnegative value of the principal square root.",
+          "kind": "equation",
+          "start": "sqrt(x+4)=x-2",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 5"
+        },
+        {
+          "id": "alg-u08-03",
+          "subject": "algebra",
+          "topic": "Radical Expressions and Power Equations",
+          "difficulty": 2,
+          "prompt": "\\sqrt{5x-1}-\\sqrt{x+7}=0",
+          "kind": "equation",
+          "start": "sqrt(5*x-1)-sqrt(x+7)=0",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 2"
+        },
+        {
+          "id": "alg-u08-04",
+          "subject": "algebra",
+          "topic": "Radical Expressions and Power Equations",
+          "difficulty": 2,
+          "prompt": "x^{3/2}=8",
+          "statement": "Solve over the real numbers, using the principal nonnegative square root implied by the denominator 2 in the rational exponent.",
+          "kind": "equation",
+          "start": "x^(3/2)=8",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 4"
+        },
+        {
+          "id": "alg-u08-05",
+          "subject": "algebra",
+          "topic": "Radical Expressions and Power Equations",
+          "difficulty": 2,
+          "prompt": "x^4=81",
+          "statement": "Find all real solutions, including every sign allowed by the even power.",
+          "kind": "equation",
+          "start": "x^4=81",
+          "variable": "x",
+          "finalForm": "solutions",
+          "answer": "x = -3 or x = 3"
+        },
+        {
+          "id": "alg-u08-06",
+          "subject": "algebra",
+          "topic": "Radical Expressions and Power Equations",
+          "difficulty": 3,
+          "prompt": "27^{2/3}+16^{1/2}",
+          "statement": "Evaluate using principal real roots.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "13"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u09",
+      "week": "Week 9",
+      "title": "Exponential Functions and Equations",
+      "summary": "Interpret f(x)=ab^x through its initial value and constant multiplicative factor, contrasting exponential growth with linear addition. Solve same-base equations by equating exponents and other bases with logarithms, and apply growth, compound-interest, and half-life models; distinguish the exponent's time unit from the number of compounding or decay periods.",
+      "objectives": [
+        "Evaluate exponential functions and solve exponential equations using common bases and logarithms.",
+        "Interpret initial values, growth factors, compound periods, and half-lives in exponential models.",
+        "Report exact exponential-equation solutions and contextually appropriate numerical model values."
+      ],
+      "problems": [
+        {
+          "id": "alg-u09-01",
+          "subject": "algebra",
+          "topic": "Exponential Functions and Equations",
+          "difficulty": 1,
+          "prompt": "f(x)=3\\cdot 2^{x-1}",
+          "statement": "Evaluate the exponential function shown at x = 4.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "24"
+        },
+        {
+          "id": "alg-u09-02",
+          "subject": "algebra",
+          "topic": "Exponential Functions and Equations",
+          "difficulty": 1,
+          "prompt": "5^{2x-1}=125",
+          "kind": "equation",
+          "start": "5^(2*x-1)=125",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 2"
+        },
+        {
+          "id": "alg-u09-03",
+          "subject": "algebra",
+          "topic": "Exponential Functions and Equations",
+          "difficulty": 2,
+          "prompt": "3^{x+2}=27^{x-1}",
+          "kind": "equation",
+          "start": "3^(x+2)=27^(x-1)",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 5/2"
+        },
+        {
+          "id": "alg-u09-04",
+          "subject": "algebra",
+          "topic": "Exponential Functions and Equations",
+          "difficulty": 3,
+          "prompt": "e^{4x-3}=11",
+          "statement": "Solve for x and give an exact answer using a natural logarithm denoted log.",
+          "kind": "equation",
+          "start": "e^(4*x-3)=11",
+          "variable": "x",
+          "finalForm": "exact",
+          "answer": "x = (log(11)+3)/4"
+        },
+        {
+          "id": "alg-u09-05",
+          "subject": "algebra",
+          "topic": "Exponential Functions and Equations",
+          "difficulty": 2,
+          "prompt": "",
+          "statement": "An account starts with $2500 and earns 4 percent interest compounded annually, with no other transactions. What is the balance in dollars immediately after 2 years?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2704"
+        },
+        {
+          "id": "alg-u09-06",
+          "subject": "algebra",
+          "topic": "Exponential Functions and Equations",
+          "difficulty": 2,
+          "prompt": "",
+          "statement": "A 640-gram radioactive sample has a half-life of 5 years. According to the half-life model, how many grams remain after 15 years?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "80"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u10",
+      "week": "Week 10",
+      "title": "Logarithms and Applications",
+      "summary": "Define logarithms as inverses of exponential functions and use that definition to evaluate and solve rather than memorizing isolated rules. Apply product, quotient, power, and change-of-base relationships only when logarithm arguments are positive; after solving logarithmic equations, enforce the original domain, and interpret logarithmic scales such as pH and seismic intensity as exponent-based comparisons.",
+      "objectives": [
+        "Evaluate logarithmic expressions using inverse-exponent and logarithm properties.",
+        "Solve logarithmic equations and reject any candidate outside the original arguments' domains.",
+        "Interpret pH and seismic-intensity models using common logarithms and powers of ten."
+      ],
+      "problems": [
+        {
+          "id": "alg-u10-01",
+          "subject": "algebra",
+          "topic": "Logarithms and Applications",
+          "difficulty": 1,
+          "prompt": "\\log_2 32+\\log_3 9",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "alg-u10-02",
+          "subject": "algebra",
+          "topic": "Logarithms and Applications",
+          "difficulty": 1,
+          "prompt": "\\log_{10}40+\\log_{10}25",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "alg-u10-03",
+          "subject": "algebra",
+          "topic": "Logarithms and Applications",
+          "difficulty": 3,
+          "prompt": "\\log_2(x-1)+\\log_2(x-3)=3",
+          "statement": "Solve and check both original logarithm arguments. Give only the solution in the original domain.",
+          "kind": "equation",
+          "start": "log2(x-1)+log2(x-3)=3",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 5"
+        },
+        {
+          "id": "alg-u10-04",
+          "subject": "algebra",
+          "topic": "Logarithms and Applications",
+          "difficulty": 2,
+          "prompt": "\\log_{10}(2x+5)=2",
+          "kind": "equation",
+          "start": "log10(2*x+5)=2",
+          "variable": "x",
+          "finalForm": "isolated",
+          "answer": "x = 95/2"
+        },
+        {
+          "id": "alg-u10-05",
+          "subject": "algebra",
+          "topic": "Logarithms and Applications",
+          "difficulty": 2,
+          "prompt": "M=\\log_{10}\\left(\\frac{I}{I_0}\\right)",
+          "statement": "In the seismic-intensity model shown, an earthquake has intensity I equal to 10^7 times the reference intensity I sub 0. What is its magnitude M?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "7"
+        },
+        {
+          "id": "alg-u10-06",
+          "subject": "algebra",
+          "topic": "Logarithms and Applications",
+          "difficulty": 2,
+          "prompt": "\\mathrm{pH}=-\\log_{10}[\\mathrm{H}^+]",
+          "statement": "For a solution whose hydrogen-ion concentration is 10^(-5) moles per liter, what is its pH according to the model shown?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u11",
+      "week": "Week 11",
+      "title": "Systems of Equations and Matrices",
+      "summary": "Solve two- and three-variable linear systems by substitution and elimination, interpreting a unique solution as simultaneous satisfaction of every equation. Organize coefficients in matrices, use matrix multiplication entry by entry, connect a nonzero two-by-two determinant to invertibility, and distinguish the position of an entry from its numerical value.",
+      "objectives": [
+        "Solve two-variable and three-variable linear systems and identify a requested coordinate.",
+        "Compute two-by-two determinants and entries of inverse matrices.",
+        "Multiply compatible matrices by combining rows and columns to determine individual entries."
+      ],
+      "problems": [
+        {
+          "id": "alg-u11-01",
+          "subject": "algebra",
+          "topic": "Systems of Equations and Matrices",
+          "difficulty": 1,
+          "prompt": "\\begin{cases}2x+3y=12\\\\x-y=1\\end{cases}",
+          "statement": "For the system shown, find the x-coordinate of its unique solution.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "3"
+        },
+        {
+          "id": "alg-u11-02",
+          "subject": "algebra",
+          "topic": "Systems of Equations and Matrices",
+          "difficulty": 2,
+          "prompt": "\\begin{cases}3x+2y=16\\\\4x-y=3\\end{cases}",
+          "statement": "For the system shown, find the y-coordinate of its unique solution.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "5"
+        },
+        {
+          "id": "alg-u11-03",
+          "subject": "algebra",
+          "topic": "Systems of Equations and Matrices",
+          "difficulty": 2,
+          "prompt": "\\begin{cases}x+y+z=6\\\\x-y+z=4\\\\x+y-z=2\\end{cases}",
+          "statement": "The linear system shown has a unique ordered triple solution. Find its z-coordinate.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "alg-u11-04",
+          "subject": "algebra",
+          "topic": "Systems of Equations and Matrices",
+          "difficulty": 2,
+          "prompt": "A=\\begin{bmatrix}4&7\\\\2&3\\end{bmatrix}",
+          "statement": "Compute the determinant of the matrix A shown.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-2"
+        },
+        {
+          "id": "alg-u11-05",
+          "subject": "algebra",
+          "topic": "Systems of Equations and Matrices",
+          "difficulty": 3,
+          "prompt": "A=\\begin{bmatrix}2&1\\\\1&1\\end{bmatrix}",
+          "statement": "The matrix A shown is invertible. Find the entry in row 2, column 2 of its inverse A^(-1).",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2"
+        },
+        {
+          "id": "alg-u11-06",
+          "subject": "algebra",
+          "topic": "Systems of Equations and Matrices",
+          "difficulty": 3,
+          "prompt": "A=\\begin{bmatrix}1&2\\\\0&3\\end{bmatrix},\\quad B=\\begin{bmatrix}4&-1\\\\2&5\\end{bmatrix}",
+          "statement": "Find the entry in row 1, column 2 of the product AB. Use A times B, not B times A.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "9"
+        }
+      ]
+    },
+    {
+      "id": "algebra-u12",
+      "week": "Week 12",
+      "title": "Sequences, Series, and Binomial Reasoning",
+      "summary": "Distinguish arithmetic sequences with constant differences from geometric sequences with constant ratios, and translate between recursive and explicit descriptions. Use term and partial-sum formulas with correct index counts, recognize convergence of an infinite geometric series only when |r|<1, and select binomial terms by accounting for both powers and signs in (a+b)^n.",
+      "objectives": [
+        "Find specified terms of arithmetic, geometric, and recursively defined sequences.",
+        "Evaluate finite arithmetic sums and convergent infinite geometric series using appropriate formulas.",
+        "Use the binomial theorem and combinatorial coefficients to determine a specified expansion coefficient."
+      ],
+      "problems": [
+        {
+          "id": "alg-u12-01",
+          "subject": "algebra",
+          "topic": "Sequences, Series, and Binomial Reasoning",
+          "difficulty": 1,
+          "prompt": "",
+          "statement": "An arithmetic sequence has first term 7 and common difference 6. What is its 20th term?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "121"
+        },
+        {
+          "id": "alg-u12-02",
+          "subject": "algebra",
+          "topic": "Sequences, Series, and Binomial Reasoning",
+          "difficulty": 1,
+          "prompt": "",
+          "statement": "A geometric sequence has first term 5 and common ratio -2. What is its 6th term?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "-160"
+        },
+        {
+          "id": "alg-u12-03",
+          "subject": "algebra",
+          "topic": "Sequences, Series, and Binomial Reasoning",
+          "difficulty": 2,
+          "prompt": "3+8+13+\\cdots",
+          "statement": "The arithmetic sequence shown continues with the same common difference. What is the sum of its first 30 terms?",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "2265"
+        },
+        {
+          "id": "alg-u12-04",
+          "subject": "algebra",
+          "topic": "Sequences, Series, and Binomial Reasoning",
+          "difficulty": 2,
+          "prompt": "\\sum_{k=0}^{\\infty}12\\left(\\frac13\\right)^k",
+          "statement": "Evaluate the convergent infinite geometric series shown.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "18"
+        },
+        {
+          "id": "alg-u12-05",
+          "subject": "algebra",
+          "topic": "Sequences, Series, and Binomial Reasoning",
+          "difficulty": 2,
+          "prompt": "a_1=2,\\qquad a_n=3a_{n-1}-1\\quad(n\\ge2)",
+          "statement": "For the recursively defined sequence shown, compute the fifth term a sub 5.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "122"
+        },
+        {
+          "id": "alg-u12-06",
+          "subject": "algebra",
+          "topic": "Sequences, Series, and Binomial Reasoning",
+          "difficulty": 3,
+          "prompt": "(2x-1)^5",
+          "statement": "Using the binomial theorem, determine the coefficient of x^3 in the expanded form of the expression shown.",
+          "kind": "value",
+          "start": "",
+          "variable": "x",
+          "finalForm": "number",
+          "answer": "80"
+        }
+      ]
+    }
+  ]
+}

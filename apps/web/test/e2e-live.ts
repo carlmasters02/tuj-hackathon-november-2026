@@ -12,6 +12,7 @@ import sharp from "sharp";
 import { chainHead, genesisHash, type DocEvent } from "@hm/shared/provenance/index";
 import { creationGenesis, creationHead, type CreationEvent } from "@hm/shared/creation";
 import { contentFingerprint } from "@hm/shared/contentFingerprint";
+import { MATH_COURSES } from "@hm/shared/math/courses";
 
 const BASE = (process.argv[2] ?? "https://humagination.vercel.app").replace(/\/$/, "");
 const jar = new Map<string, string>();
@@ -124,6 +125,16 @@ async function publicPage(path: string) {
   r = await req("/api/tutor/math/check", { method: "POST", json: { problemId: "lin-1", lines: ["x = 12 - 7", "x = 5"], activeSeconds: 30 } });
   m = await jsonOf(r);
   check("StepCheck solve awards Human Points", m.complete === true && m.points === 15, `points ${m.points}`);
+  for (const course of MATH_COURSES) {
+    const unit = course.units[0];
+    const example = unit.problems[0];
+    r = await req("/api/tutor/math/check", { method: "POST", json: { problemId: example.id, lines: [example.answer], activeSeconds: 30 } });
+    m = await jsonOf(r);
+    check(`${course.title} semester problem works through StepCheck`, m.complete === true, example.id);
+    r = await req(`/tutor/math/${course.slug}`);
+    const coursePage = await r.text();
+    check(`${course.title} renders its complete semester pathway`, r.status === 200 && (coursePage.match(/data-course-unit=/g) ?? []).length === 12 && coursePage.includes(unit.id) && coursePage.includes("By the end of this unit") && coursePage.includes("Extra practice"));
+  }
 
   // ── Code Dojo ────────────────────────────────────────────────────────────
   r = await req("/api/code/submit", { method: "POST", json: { exerciseId: "python-01-sum-two", source: "a, b = map(int, input().split())\nprint(a + b)\n", activeSeconds: 10 } });

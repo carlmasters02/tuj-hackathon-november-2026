@@ -1,4 +1,5 @@
 export * from "./types";
+export * from "./courses";
 export * from "./parse";
 export * from "./equivalence";
 export * from "./hints";
