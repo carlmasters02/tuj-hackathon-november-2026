@@ -6,7 +6,7 @@ import { postJson, ApiError } from "@/lib/client";
 export function PublishCertButton({ certId, publishedId }: { certId: string; publishedId: string | null }) {
   const [id, setId] = useState(publishedId);
   const [err, setErr] = useState<string | null>(null);
-  if (id) return <Link className="link text-sm" href={`/gallery/${id}`}>Published in the writing gallery ↗</Link>;
+  if (id) return <Link className="link text-sm" href={`/portfolio/work/${id}`}>Published in your writing portfolio ↗</Link>;
   return (
     <div className="flex items-center gap-3">
       <button

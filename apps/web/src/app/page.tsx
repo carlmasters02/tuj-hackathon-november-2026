@@ -10,7 +10,7 @@ const FEATURES: { icon: IconName; title: string; tag: string; body: string; href
   { icon: "pencil", title: "Written Here", tag: "Authentic editor", body: "Every keystroke goes into a hash-chained log. Finalize to get a signed certificate and a replay anyone can watch. Pasted text shows up — honestly.", href: "/write" },
   { icon: "pilcrow", title: "RedPen", tag: "Writing coach", body: "Flags passive voice, filler, clichés and 40-word sentences, and explains why. It never rewrites a word for you.", href: "/write" },
   { icon: "clock", title: "Reliance Tracker", tag: "Chrome extension", body: "Counts only active minutes on AI sites — no URLs, no prompts, no keystrokes. Think First asks for your own attempt before you ask a bot.", href: "/dashboard" },
-  { icon: "frame", title: "Protected Gallery", tag: "Art · writing · music", body: "AI crawlers get a 403. Originals are encrypted and never served. Every preview carries the viewer's name, so leaks are traceable.", href: "/gallery" },
+  { icon: "frame", title: "Protected Gallery", tag: "Art · writing · music", body: "AI crawlers get a 403. Originals are encrypted and never served. Every preview carries the viewer's name, so leaks are traceable.", href: "/portfolio" },
 ];
 
 export default async function Home() {

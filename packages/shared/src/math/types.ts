@@ -1,7 +1,10 @@
 export type FinalForm = "isolated" | "solutions" | "expanded" | "factored" | "fraction_lowest" | "no_division" | "polynomial";
 
+export type MathSubject = "algebra" | "precalculus" | "calc-1" | "calc-2" | "calc-3" | "prob-stats";
+
 export interface MathProblem {
   id: string;
+  subject: MathSubject;
   topic: string;
   difficulty: 1 | 2 | 3;
   /** LaTeX shown to the student */

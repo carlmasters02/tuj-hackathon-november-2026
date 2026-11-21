@@ -19,7 +19,7 @@ export function UploadForm() {
           const res = await fetch("/api/gallery/upload", { method: "POST", body: fd, credentials: "same-origin" });
           const data = await res.json().catch(() => ({}));
           if (!res.ok) throw new Error(data.error ?? `Upload failed (${res.status})`);
-          router.push(`/gallery/${data.id}`);
+          router.push(`/portfolio/work/${data.id}`);
         } catch (err) {
           setError((err as Error).message);
           setBusy(false);

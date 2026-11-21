@@ -7,9 +7,10 @@
  * through the public HTTP API exactly like the browser does, then deletes the account through the
  * app's own "delete account" flow. Prints PASS/FAIL per step; exits non-zero on any failure.
  */
-import { randomBytes } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { chainHead, genesisHash, type DocEvent } from "@hm/shared/provenance/index";
+import { creationGenesis, creationHead, type CreationEvent } from "@hm/shared/creation";
 
 const BASE = (process.argv[2] ?? "https://humagination.vercel.app").replace(/\/$/, "");
 const jar = new Map<string, string>();
@@ -51,6 +52,32 @@ async function req(path: string, init: RequestInit & { json?: unknown; cookies?:
   return res;
 }
 const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
+
+/**
+ * A public page as a signed-out visitor sees it. With demo mode on, signed-out page visits are first
+ * sent through the demo sign-in, so follow that like a browser would (in a separate cookie jar).
+ */
+async function publicPage(path: string) {
+  const saved = new Map(jar);
+  jar.clear();
+  try {
+    let r = await req(path);
+    const loc = r.headers.get("location") ?? "";
+    if (r.status === 307 && loc.includes("/auth/demo")) {
+      const u = new URL(loc, BASE);
+      for (let hop = await req(u.pathname + u.search), n = 0; hop.status >= 300 && hop.status < 400 && n < 3; n++) {
+        const next = new URL(hop.headers.get("location") ?? "/", BASE);
+        if (next.pathname === path) break;
+        hop = await req(next.pathname + next.search);
+      }
+      r = await req(path);
+    }
+    return r;
+  } finally {
+    jar.clear();
+    for (const [k, v] of saved) jar.set(k, v);
+  }
+}
 
 (async () => {
   const tag = randomBytes(3).toString("hex");
@@ -119,7 +146,7 @@ const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
   r = await req(`/api/docs/${docId}/finalize`, { method: "POST", json: {} });
   const fin = await jsonOf(r);
   check("finalize issues a signed certificate", r.status === 200 && !!fin.certId, `${fin.label}`);
-  r = await req(`/verify/${fin.certId}`, { cookies: false });
+  r = await publicPage(`/verify/${fin.certId}`);
   const vp = await r.text();
   check("public certificate page verifies signature, chain and replay", r.status === 200 && vp.includes("matches Humagination") && vp.includes("chain re-computed") && vp.includes("reproduces the certified text"));
 
@@ -142,7 +169,7 @@ const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
   r = await req("/api/gallery/upload", { method: "POST", body: fake });
   check("non-image disguised as PNG rejected by magic bytes", r.status === 415);
   if (up.id) {
-    r = await req(`/gallery/${up.id}`);
+    r = await req(`/portfolio/work/${up.id}`);
     const page = await r.text();
     // the URL appears in HTML (&amp;) and in the RSC payload (\u0026)
     const media = page.match(/\/api\/media\/[0-9a-f-]{36}\?exp=\d+(?:&amp;|\\u0026|&)sig=[0-9a-f]{64}/)?.[0]?.replace(/&amp;|\\u0026/, "&");
@@ -160,15 +187,75 @@ const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
     r = await req(`/api/gallery/${up.id}/comments`, { method: "POST", json: { body: "Lovely colours! <script>alert(1)</script>" } });
     const cm = await jsonOf(r);
     check("post a comment", r.status === 200 && !!cm.comment?.id);
-    r = await req(`/gallery/${up.id}`);
+    r = await req(`/portfolio/work/${up.id}`);
     const withComment = await r.text();
     check("comment shows on the work page, HTML-escaped", withComment.includes("Lovely colours!") && !withComment.includes("<script>alert(1)</script>"));
     r = await req(`/api/gallery/${up.id}/comments/${cm.comment?.id}`, { method: "DELETE" });
     check("delete own comment", r.status === 200);
     r = await req(`/api/gallery/${up.id}/like`, { method: "POST" });
     check("like a work", r.status === 200);
-    r = await req("/gallery", { headers: { "User-Agent": "GPTBot/1.2" }, cookies: false });
-    check("GPTBot blocked from gallery", r.status === 403);
+    r = await req("/portfolio/art", { headers: { "User-Agent": "GPTBot/1.2" }, cookies: false });
+    check("GPTBot blocked from the portfolio", r.status === 403);
+  }
+
+  // ── Drawing studio & composer: recorded, chained, server-rendered, certified ─
+  const mediaOf = (html: string) => html.match(/\/api\/media\/[0-9a-f-]{36}\?exp=\d+(?:&amp;|\\u0026|&)sig=[0-9a-f]{64}/)?.[0]?.replace(/&amp;|\\u0026/, "&");
+  for (const kind of ["art", "music"] as const) {
+    r = await req("/api/creations", { method: "POST", json: { kind, title: `E2E ${kind}` } });
+    const cid = (await jsonOf(r)).id as string;
+    check(`${kind}: start a new studio piece`, r.status === 200 && !!cid);
+    if (!cid) continue;
+    const sid = randomUUID();
+    const t0 = Date.now();
+    let head = creationGenesis(cid, sid);
+    let seq = 0;
+    const send = async (events: Omit<CreationEvent, "seq" | "t">[], tamper = false) => {
+      const evs = events.map((e) => ({ ...e, seq: seq + events.indexOf(e), t: Date.now() - t0 })) as CreationEvent[];
+      const h = creationHead(head, evs);
+      const res = await req(`/api/creations/${cid}/events`, { method: "POST", json: { sessionId: sid, events: evs, headHash: tamper ? "0".repeat(64) : h } });
+      if (res.ok) {
+        head = h;
+        seq += evs.length;
+      }
+      return res;
+    };
+    const stroke = (i: number) => ({ type: "stroke", tool: i % 3 === 0 ? "marker" : "pen", color: "#1b2b5e", size: 6 + i, pts: Array.from({ length: 30 }, (_, k) => [100 + i * 60 + k * 4, 200 + Math.round(Math.sin(k / 3) * 40) + i * 30]).flat(), dur: 450 });
+    for (let b = 0; b < 7; b++) {
+      const evs = kind === "art" ? [stroke(b * 2), stroke(b * 2 + 1)] : [{ type: "toggle", step: b * 2, row: b }, { type: "toggle", step: b * 2 + 1, row: (b + 4) % 12 }];
+      r = await send(evs as any);
+      if (!r.ok) break;
+      await new Promise((res) => setTimeout(res, 1000));
+    }
+    check(`${kind}: 7 batches of events accepted`, r.status === 200 && seq === 14, `seq ${seq}`);
+    if (kind === "music") await send([{ type: "tempo", bpm: 128 }] as any);
+    r = await send([kind === "art" ? { type: "undo" } : { type: "clear" }] as any, true);
+    check(`${kind}: tampered hash chain rejected`, r.status === 409);
+    seq += 5;
+    r = await send([kind === "art" ? { type: "undo" } : { type: "clear" }] as any);
+    check(`${kind}: sequence gap rejected`, r.status === 409);
+    seq -= 5;
+    r = await req(`/api/creations/${cid}/finalize`, { method: "POST", json: { title: `E2E ${kind} piece`, publish: true } });
+    const done = await jsonOf(r);
+    check(`${kind}: finish signs a certificate and publishes`, r.status === 200 && !!done.workId && !!done.certId, `verdict ${done.verdict} (too short for the seal by design)`);
+    check(`${kind}: short piece is not sealed`, done.verdict !== "human_verified");
+    r = await send([{ type: "clear" }] as any);
+    check(`${kind}: finished piece is locked`, r.status === 409);
+    r = await req(`/api/creations/${cid}/finalize`, { method: "POST", json: { title: "again" } });
+    check(`${kind}: can't finish twice`, r.status === 409);
+    if (!done.workId) continue;
+    r = await req(`/portfolio/work/${done.workId}`);
+    const html = await r.text();
+    check(`${kind}: work page renders with likes and comments`, r.status === 200 && html.includes("Comments") && html.includes("See the record"));
+    if (kind === "art") {
+      const m = mediaOf(html);
+      if (m) r = await req(m);
+      const img = m ? Buffer.from(await r.arrayBuffer()) : Buffer.alloc(0);
+      const meta = img.length ? await sharp(img).metadata().catch(() => null) : null;
+      check("art: server-rendered drawing served as a watermarked preview", !!m && r.status === 200 && meta?.format === "webp" && (meta?.width ?? 0) >= 800, `${meta?.width}x${meta?.height}`);
+    } else check("music: score player on the work page", html.includes("Watch it being written"));
+    r = await publicPage(`/verify/${done.certId}`);
+    const cert = await r.text();
+    check(`${kind}: public certificate re-verifies signature, chain and replay`, r.status === 200 && cert.includes("Ed25519 signature matches") && cert.includes("chain re-computed") && cert.includes("reproduces the certified"));
   }
 
   // ── Tracker extension flow ───────────────────────────────────────────────
@@ -201,7 +288,7 @@ const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
   jar.clear();
   r = await req("/api/auth/login", { method: "POST", json: { email, password } });
   check("deleted account can no longer log in", r.status === 401);
-  r = await req(`/verify/${fin.certId}`, { cookies: false });
+  r = await publicPage(`/verify/${fin.certId}`);
   check("deleted user's certificate is gone too", r.status === 404);
 
   console.log(`\n${results.length - failures}/${results.length} passed`);

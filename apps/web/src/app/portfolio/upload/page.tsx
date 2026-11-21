@@ -5,7 +5,7 @@ import { OwnershipChecker } from "@/components/gallery/OwnershipChecker";
 export const metadata = { title: "Upload" };
 
 export default async function UploadPage() {
-  await requireUserPage("/gallery/upload");
+  await requireUserPage("/portfolio/upload");
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <h1 className="h-page">Upload your work</h1>

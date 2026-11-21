@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { isAiCrawler } from "@hm/shared/crawlers";
 
-const PROTECTED_PREFIXES = ["/gallery", "/api/media", "/api/gallery", "/verify", "/u/", "/api/audio"];
+const PROTECTED_PREFIXES = ["/gallery", "/portfolio", "/api/media", "/api/gallery", "/verify", "/u/", "/api/audio"];
 
 function nonce(): string {
   const b = new Uint8Array(16);

@@ -71,7 +71,7 @@ export function OwnerControls({ id, published }: { id: string; published: boolea
             onClick={async () => {
               try {
                 await postJson(`/api/gallery/${id}`, {}, "DELETE");
-                router.push("/gallery");
+                router.push("/portfolio");
               } catch (e) {
                 setErr(e instanceof ApiError ? e.message : "Failed");
               }
