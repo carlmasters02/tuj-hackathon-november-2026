@@ -2,10 +2,12 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useHydrated } from "@/hooks/useHydrated";
 import { postJson, ApiError } from "@/lib/client";
 import { passwordProblem, MIN_PASSWORD_LENGTH } from "@hm/shared/passwords";
 
 export function SignupForm() {
+  const hydrated = useHydrated();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -23,7 +25,7 @@ export function SignupForm() {
     );
 
   return (
-    <form
+    <form method="post"
       className="space-y-4"
       onSubmit={async (e) => {
         e.preventDefault();
@@ -60,7 +62,7 @@ export function SignupForm() {
         <p className={`mt-1 text-xs ${pwIssue ? "text-warn" : "text-fg-faint"}`}>{pwIssue ?? `At least ${MIN_PASSWORD_LENGTH} characters. A short sentence works well.`}</p>
       </div>
       {error && <p role="alert" className="text-sm text-redpen">{error}</p>}
-      <button className="btn btn-primary w-full" disabled={busy || !!pwIssue}>{busy ? "Creating…" : "Sign up"}</button>
+      <button className="btn btn-primary w-full" disabled={!hydrated || busy || !!pwIssue}>{busy ? "Creating…" : "Sign up"}</button>
       <p className="text-sm text-fg-dim">Have an account? <Link className="link" href="/login">Log in</Link></p>
     </form>
   );

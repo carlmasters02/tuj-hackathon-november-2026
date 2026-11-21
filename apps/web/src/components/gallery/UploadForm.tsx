@@ -7,7 +7,7 @@ export function UploadForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   return (
-    <form
+    <form method="post"
       className="card space-y-4 p-5"
       onSubmit={async (e) => {
         e.preventDefault();

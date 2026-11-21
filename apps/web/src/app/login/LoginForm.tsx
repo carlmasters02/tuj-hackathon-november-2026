@@ -2,14 +2,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useHydrated } from "@/hooks/useHydrated";
 import { postJson, ApiError } from "@/lib/client";
 
 export function LoginForm({ next }: { next: string }) {
+  const hydrated = useHydrated();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   return (
-    <form
+    <form method="post"
       className="space-y-4"
       onSubmit={async (e) => {
         e.preventDefault();
@@ -36,7 +38,7 @@ export function LoginForm({ next }: { next: string }) {
         <input className="input" id="password" name="password" type="password" autoComplete="current-password" required maxLength={128} />
       </div>
       {error && <p role="alert" className="text-sm text-redpen">{error}</p>}
-      <button className="btn btn-primary w-full" disabled={busy}>{busy ? "Checking…" : "Log in"}</button>
+      <button className="btn btn-primary w-full" disabled={!hydrated || busy}>{busy ? "Checking…" : "Log in"}</button>
       <p className="text-sm text-fg-dim">No account? <Link className="link" href="/signup">Sign up</Link></p>
     </form>
   );

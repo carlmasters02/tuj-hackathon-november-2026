@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
 import { signedMediaUrl } from "@/lib/server/gallery";
 import { ProtectedImage } from "@/components/gallery/ProtectedImage";
 import { LikeButton, OwnerControls, ReportButton } from "@/components/gallery/WorkActions";
+import ArtworkComments, { type CommentView } from "@/components/gallery/ArtworkComments";
 
 export const metadata = { title: "Work", other: { robots: "noai, noimageai" } };
 
@@ -17,12 +18,23 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
   const sb = supabaseAdmin();
   const { data: w } = await sb.from("gallery_works").select("*").eq("id", id).maybeSingle();
   if (!w || (!w.published && w.owner_id !== user.id)) notFound();
-  const [owner, viewer, likes, mine] = await Promise.all([
+  const [owner, viewer, likes, mine, commentRows] = await Promise.all([
     profileOf(w.owner_id),
     profileOf(user.id),
     sb.from("likes").select("user_id", { count: "exact", head: true }).eq("work_id", id),
     sb.from("likes").select("user_id").eq("work_id", id).eq("user_id", user.id).maybeSingle(),
+    sb.from("comments").select("id, author_id, body, created_at").eq("work_id", id).order("created_at", { ascending: true }).limit(200),
   ]);
+  const authorIds = [...new Set((commentRows.data ?? []).map((c) => c.author_id))];
+  const { data: authors } = authorIds.length ? await sb.from("profiles").select("id, username").in("id", authorIds) : { data: [] };
+  const authorName = new Map((authors ?? []).map((a) => [a.id, a.username]));
+  const comments: CommentView[] = (commentRows.data ?? []).map((c) => ({
+    id: c.id,
+    author: authorName.get(c.author_id) ?? "deleted",
+    body: c.body,
+    createdAt: c.created_at,
+    mine: c.author_id === user.id,
+  }));
   const isOwner = w.owner_id === user.id;
 
   let writing: string | null = null;
@@ -65,6 +77,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
       )}
       {w.description && <p className="text-fg-dim">{w.description}</p>}
       {isOwner && <OwnerControls id={id} published={w.published} />}
+      <ArtworkComments workId={id} initial={comments} canModerate={isOwner} />
     </div>
   );
 }

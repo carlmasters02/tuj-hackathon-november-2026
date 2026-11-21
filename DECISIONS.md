@@ -50,6 +50,20 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
   - The demo account can't be deleted.
   - The `next` parameter only accepts same-site paths.
 
+## Team contributions
+- **`feature/art-gallery` (dasbristy997-ux, "Add artwork comments UI"):** the idea is adopted, but the commit isn't merged as-is.
+  - Its comments lived only in React state: never saved, invisible to others, author always "You".
+  - It was based on the pre-rebrand commit and used theme tokens that no longer exist.
+  - It reformatted the whole page, conflicting with every later change.
+
+  Instead, migration 6 adds a `comments` table with row-level security: read where the work is visible, post as yourself on visible works, delete as author or work owner, no edits. The API and component keep the original UI and copy, and the commit credits the author as co-author.
+- **`detection_api.py` (Marquine-Silva) is on `main` but not deployed**, because Vercel builds only `apps/web`. It needs authentication, upload limits and honest wording before it could be hosted.
+- **`his-feature-name`** contains nothing that isn't already on `main` (a stale branch).
+
+## Forms
+- **Every `<form>` uses `method="post"`.** Login, signup and username submit buttons are disabled until React has hydrated. Without this, pressing Enter before the JavaScript loaded made the browser do a native GET, putting the email and password in the URL (and so in history and server logs).
+- **StepCheck inputs are disabled until hydration** (placeholder "Loading…"), so lines typed early aren't silently discarded.
+
 ## Google sign-in
 - **Server-initiated PKCE flow:** `/api/auth/oauth` calls `signInWithOAuth({ skipBrowserRedirect: true })`. The verifier lives in an httpOnly cookie, and the route refuses to return any URL whose host isn't our Supabase project.
 - **Same-site redirects only:** `/auth/callback` and `/welcome` accept `next` only as a same-site relative path (`safeNext`), which blocks open redirects.

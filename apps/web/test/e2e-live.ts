@@ -153,6 +153,14 @@ const jsonOf = async (r: Response) => r.json().catch(() => ({}) as any);
       r = await req(media.replace(/sig=[0-9a-f]{4}/, "sig=0000"));
       check("tampered media signature refused", r.status === 403);
     }
+    r = await req(`/api/gallery/${up.id}/comments`, { method: "POST", json: { body: "Lovely colours! <script>alert(1)</script>" } });
+    const cm = await jsonOf(r);
+    check("post a comment", r.status === 200 && !!cm.comment?.id);
+    r = await req(`/gallery/${up.id}`);
+    const withComment = await r.text();
+    check("comment shows on the work page, HTML-escaped", withComment.includes("Lovely colours!") && !withComment.includes("<script>alert(1)</script>"));
+    r = await req(`/api/gallery/${up.id}/comments/${cm.comment?.id}`, { method: "DELETE" });
+    check("delete own comment", r.status === 200);
     r = await req(`/api/gallery/${up.id}/like`, { method: "POST" });
     check("like a work", r.status === 200);
     r = await req("/gallery", { headers: { "User-Agent": "GPTBot/1.2" }, cookies: false });
