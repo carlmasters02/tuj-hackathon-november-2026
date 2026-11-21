@@ -88,3 +88,13 @@ export function lastNDates(today: string, n: number): string[] {
 export function utcDate(d = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
+
+/** Levels grow by 50 more points each time: 0, 50, 150, 300, 500, 750 … Named after the logo's light. */
+export const LEVEL_NAMES = ["Spark", "Glow", "Lamp", "Lantern", "Beacon", "Lighthouse"] as const;
+export const levelThreshold = (level: number) => (50 * (level - 1) * level) / 2;
+
+export function levelFor(totalPoints: number): { level: number; name: string; floor: number; next: number } {
+  let level = 1;
+  while (levelThreshold(level + 1) <= Math.max(0, totalPoints)) level++;
+  return { level, name: LEVEL_NAMES[Math.min(level, LEVEL_NAMES.length) - 1], floor: levelThreshold(level), next: levelThreshold(level + 1) };
+}

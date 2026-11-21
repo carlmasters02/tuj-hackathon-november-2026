@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { z } from "zod";
-import { checkSteps, getMathProblem, publicProblem, MAX_LINES } from "@hm/shared/math/index";
+import { checkSteps, getMathProblem, MAX_LINES } from "@hm/shared/math/index";
 import { pointsFor } from "@hm/shared/scoring";
 import { api, assertSameOrigin, HttpError, json, parseJson, rateLimit } from "@/lib/http";
 import { requireUser } from "@/lib/auth";
@@ -26,7 +26,7 @@ export const POST = api(async (req: NextRequest) => {
   if (!problem) throw new HttpError(404, "Unknown problem");
 
   const prog = await getProgress(user.id, problem.id);
-  const result = checkSteps(publicProblem(problem), body.lines, 1);
+  const result = checkSteps(problem, body.lines, 1);
   const failed = result.firstError !== null;
   const failedAttempts = prog.failed_attempts + (failed ? 1 : 0);
   // tier 1 now; tier 2 after the 2nd failed attempt; tier 3 after the 3rd

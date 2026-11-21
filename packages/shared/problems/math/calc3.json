@@ -1,0 +1,86 @@
+[
+  {
+    "id": "par-1",
+    "subject": "calc-3",
+    "topic": "Partial derivatives",
+    "difficulty": 1,
+    "prompt": "\\frac{\\partial}{\\partial x}\\left(x^2 y + 3xy^2\\right)",
+    "kind": "partial",
+    "start": "x^2 y + 3x y^2",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "2x y + 3y^2",
+    "symbols": [
+      "y"
+    ]
+  },
+  {
+    "id": "par-2",
+    "subject": "calc-3",
+    "topic": "Partial derivatives",
+    "difficulty": 1,
+    "prompt": "\\frac{\\partial}{\\partial y}\\left(x^2 y + 3xy^2\\right)",
+    "kind": "partial",
+    "start": "x^2 y + 3x y^2",
+    "variable": "y",
+    "finalForm": "any",
+    "answer": "x^2 + 6x y",
+    "symbols": [
+      "x"
+    ]
+  },
+  {
+    "id": "par-3",
+    "subject": "calc-3",
+    "topic": "Partial derivatives",
+    "difficulty": 2,
+    "prompt": "\\frac{\\partial}{\\partial x}\\,\\sin(xy)",
+    "kind": "partial",
+    "start": "sin(x y)",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "y cos(x y)",
+    "symbols": [
+      "y"
+    ]
+  },
+  {
+    "id": "par-4",
+    "subject": "calc-3",
+    "topic": "Partial derivatives",
+    "difficulty": 3,
+    "prompt": "\\frac{\\partial}{\\partial x}\\,e^{x^2 + y^2}",
+    "kind": "partial",
+    "start": "e^(x^2 + y^2)",
+    "variable": "x",
+    "finalForm": "any",
+    "answer": "2x e^(x^2 + y^2)",
+    "symbols": [
+      "y"
+    ]
+  },
+  {
+    "id": "dbl-1",
+    "subject": "calc-3",
+    "topic": "Double integrals",
+    "difficulty": 2,
+    "prompt": "\\int_0^1\\!\\int_0^2 xy\\,dy\\,dx",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "1"
+  },
+  {
+    "id": "dbl-2",
+    "subject": "calc-3",
+    "topic": "Double integrals",
+    "difficulty": 3,
+    "prompt": "\\int_0^1\\!\\int_0^1 (x + y)\\,dy\\,dx",
+    "kind": "value",
+    "start": "",
+    "variable": "x",
+    "finalForm": "number",
+    "answer": "1"
+  }
+]

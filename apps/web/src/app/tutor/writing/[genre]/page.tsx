@@ -25,7 +25,7 @@ export default async function GenrePage({ params }: { params: Promise<{ genre: s
   return (
     <div>
       <HubHeader title={g.label} intro={g.promise} back={{ href: "/tutor/writing", label: "Writing" }}>
-        <NewDocButton genre={g.slug} title={g.starterTitle} label={`Start a new ${g.label.toLowerCase().replace(/s$/, "")}`} />
+        <NewDocButton genre={g.slug} title={g.starterTitle} label={`Start a new ${g.noun}`} />
       </HubHeader>
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">

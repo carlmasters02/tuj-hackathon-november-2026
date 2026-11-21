@@ -13,9 +13,9 @@ export const metadata = { title: "Math" };
 
 const INSTRUCTIONS: Record<string, string> = {
   derivative: "Find the derivative. Every line must equal the derivative.",
-  antiderivative: "Find an antiderivative (add + C if you like). Every line must differentiate back to the integrand.",
-  partial: "Find the partial derivative. Treat the other variable as a constant.",
-  value: "Work it out step by step. Every line must equal the exact answer; finish with the simplest form.",
+  antiderivative: "Find the antiderivative. Every line must differentiate back to the integrand; finish with + C.",
+  partial: "Find the partial derivative. Treat the other letters as constants.",
+  value: "Write the setup, then simplify one step per line. Every line must equal the answer; finish with a single number or a fraction in lowest terms.",
 };
 
 export default async function MathSlugPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -67,13 +67,20 @@ export default async function MathSlugPage({ params }: { params: Promise<{ slug:
     (p.finalForm === "factored" ? "Factor completely. Each line must stay equal to the expression." :
      p.finalForm === "expanded" ? "Multiply out and combine like terms." :
      p.finalForm === "fraction_lowest" || p.finalForm === "no_division" ? "Simplify fully." :
-     p.finalForm === "solutions" ? "Solve for x. Finish with every solution, e.g. x = 2 or x = -3." : "Solve for x. Finish with x = (a number).");
+     p.finalForm === "solutions" ? "Solve for x. Finish with every solution, e.g. x = 2 or x = -3." :
+     p.finalForm === "exact" ? "Solve for x and keep it exact. Finish with x = …, e.g. x = 2 + sqrt(3) or x = ln(7)/2." : "Solve for x. Finish with x = (a number).");
+  const syntax =
+    p.subject === "prob-stats" ? "Type C(n, k) for combinations, P(n, k) for permutations, and n! for factorials." :
+    p.subject === "precalculus" ? "Type ln(x), log10(x), log(x, 2) for log base 2, sqrt(x), sin(x), and pi." :
+    p.subject === "calc-2" ? "Type e^x, ln(x), sin(x), cos(x), and C for the constant of integration." :
+    p.subject === "calc-3" ? "Type products with a space or *, e.g. 2x y or 2*x*y." : null;
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <Link href={`/tutor/math/${p.subject}`} className="inline-flex items-center gap-1 text-sm font-semibold text-fg-dim hover:text-fg"><span aria-hidden>←</span> {subj?.label ?? "Math"} · {p.topic}</Link>
       <div className="rounded-3xl border border-line bg-surface px-6 py-8 text-center shadow-[var(--shadow-soft)]">
         <div className="text-3xl"><TexServer tex={p.prompt} display /></div>
         <p className="mt-3 text-sm text-fg-dim">{instruction}</p>
+        {syntax && <p className="mt-1 text-xs text-fg-faint">{syntax}</p>}
       </div>
       <StepCheck problem={pub} solved={!!prog.solved_at} />
     </div>

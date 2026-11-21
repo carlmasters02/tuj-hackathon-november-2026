@@ -4,6 +4,8 @@ export type Genre = "free" | "research-paper" | "argumentative" | "poetry";
 export interface GenreGuide {
   slug: Exclude<Genre, "free">;
   label: string;
+  /** singular, lowercase: "a new poem" */
+  noun: string;
   starterTitle: string;
   promise: string;
   principles: { title: string; body: string }[];
@@ -13,6 +15,7 @@ export const GENRES: GenreGuide[] = [
   {
     slug: "research-paper",
     label: "Research papers",
+    noun: "research paper",
     starterTitle: "Untitled research paper",
     promise: "A clear question, claims tied to sources, and a voice that shows its working.",
     principles: [
@@ -25,6 +28,7 @@ export const GENRES: GenreGuide[] = [
   {
     slug: "argumentative",
     label: "Argumentative essays",
+    noun: "argumentative essay",
     starterTitle: "Untitled argumentative essay",
     promise: "Take a position, earn it with evidence, and answer the strongest objection.",
     principles: [
@@ -37,6 +41,7 @@ export const GENRES: GenreGuide[] = [
   {
     slug: "poetry",
     label: "Poetry",
+    noun: "poem",
     starterTitle: "Untitled poem",
     promise: "Line by line: rhythm, sound and image. The coach counts what you can hear.",
     principles: [
@@ -49,3 +54,6 @@ export const GENRES: GenreGuide[] = [
 ];
 
 export const genreGuide = (g: string) => GENRES.find((x) => x.slug === g);
+
+/** True while a title is still the one we filled in ("Untitled", "Untitled poem", …) or empty. */
+export const isDefaultTitle = (t: string) => !t.trim() || /^untitled\b/i.test(t.trim());

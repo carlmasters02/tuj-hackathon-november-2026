@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { isDefaultTitle } from "@hm/shared/genres";
+import { DefaultTitleWarning, TitleField } from "@/components/TitleField";
 import { useRouter } from "next/navigation";
 import { postJson } from "@/lib/client";
 import { HumanSeal } from "@/components/HumanSeal";
@@ -44,6 +46,8 @@ export function FinishPanel({ id, kind, title, setTitle, effort, drain, onClose 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const ready = effort.done >= effort.need && effort.seconds >= effort.needSeconds;
+  const titleRef = useRef<HTMLInputElement>(null);
+  const untitled = isDefaultTitle(title);
   const finish = async () => {
     setBusy(true);
     setErr(null);
@@ -63,10 +67,8 @@ export function FinishPanel({ id, kind, title, setTitle, effort, drain, onClose 
           <h2 id="finish-h" className="text-2xl font-extrabold tracking-tight">Finish this {kind === "art" ? "drawing" : "piece"}</h2>
           <p className="mt-1 text-sm text-fg-dim">Finishing locks it. The server replays every {kind === "art" ? "stroke" : "note"}, checks the record and signs a certificate.</p>
         </div>
-        <label className="block">
-          <span className="label">Title</span>
-          <input className="input" value={title} maxLength={120} onChange={(e) => setTitle(e.target.value)} autoFocus />
-        </label>
+        <TitleField value={title} onChange={setTitle} inputRef={titleRef} id="finish-title" />
+        {untitled && <DefaultTitleWarning title={title} onChange={() => { titleRef.current?.focus(); titleRef.current?.select(); }} />}
         <SealProgress e={effort} />
         {!ready && <p className="text-sm text-warn">You can finish now, but it won&apos;t carry the seal. Keep going a little longer to earn it.</p>}
         <label className="flex items-center gap-2 text-sm font-semibold">
@@ -76,7 +78,7 @@ export function FinishPanel({ id, kind, title, setTitle, effort, drain, onClose 
         {err && <p role="alert" className="text-sm text-redpen">{err}</p>}
         <div className="flex justify-end gap-2">
           <button className="btn btn-ghost" onClick={onClose} disabled={busy}>Keep working</button>
-          <button className="btn btn-primary px-5" onClick={finish} disabled={busy}>{busy ? "Signing…" : "Finish and sign"}</button>
+          <button className="btn btn-primary px-5" onClick={finish} disabled={busy}>{busy ? "Signing…" : untitled ? "Publish anyway" : "Finish and sign"}</button>
         </div>
       </div>
     </div>

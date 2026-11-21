@@ -6,14 +6,14 @@
 
 Humagination is a hackathon project on an *anti-AI* theme. It helps people stop leaning on AI chatbots, and it uses **zero AI itself**. Every feature is plain, deterministic code: parsers, equation solvers, regular expressions, hash chains, digital signatures and image maths. A script enforces this on every lint run.
 
-The app has four parts:
+The app has three tabs, plus a browser extension:
 
-| Part | What it does for the user |
+| Tab | What it does for the user |
 |---|---|
-| **Tutor** — StepCheck, Code Dojo, RedPen | Checks your work line by line and tells you *where* and *what kind* of mistake you made. It never gives the answer. |
-| **Written Here** — authentic editor | Records how a text was written, keystroke by keystroke, and issues a signed certificate plus a public replay that proves it was typed here. |
-| **Reliance Tracker** — Chrome extension + dashboard | Measures your active time on AI sites and compares it with time you spent thinking for yourself. |
-| **Protected Gallery** — art, writing, music | Shares human-made work while refusing AI crawlers. Originals are encrypted, and every view is watermarked with the viewer's name. |
+| **Dashboard** | Your share of the thinking this week (your own minutes vs time on AI sites), Human Points and levels, streak, progress, and where you left off. |
+| **Tutor** — Math, Code, Writing | Math (Algebra, Precalculus, Calculus 1–3, Probability & Statistics), Code (Python, C, Java) and Writing (research papers, argumentative essays, poetry). It checks your work and says *where* and *what kind* of mistake you made. It never gives the answer. |
+| **Portfolio** — Art, Writing, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and only pieces whose record passes the checks get the **Human-made seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
+| **Reliance Tracker** — Chrome extension | Measures your active time on AI sites so the dashboard can compare it with time you spent thinking for yourself. |
 
 ---
 
@@ -37,14 +37,19 @@ Students solve a problem one step per line. Each line renders live as math (KaTe
 - **The first wrong line turns red.** Lines after it grey out until it's fixed.
   - *Expressions* are equivalent if `simplify(a − b) = 0` (mathjs), or, as a fallback, if they agree numerically at 8 seeded random points.
   - *Equations* are equivalent if they have the same real solution set (nerdamer, with every root checked by plugging it back in).
-- **Finishing requires the right final form:** `x` isolated, fully expanded, factored, a fraction in lowest terms, and so on.
+- **Finishing requires the right final form:** `x` isolated, fully expanded, factored, a fraction in lowest terms, an exact value like `x = 2 + sqrt(3)`, `+ C` on an antiderivative, and so on.
+- **Problem types beyond algebra:**
+  - *Derivatives* (Calc 1) and *partial derivatives* (Calc 3, other letters held constant): every line must equal the derivative.
+  - *Antiderivatives* (Calc 2): every line must differentiate back to the integrand.
+  - *Values* (definite and double integrals, series, probability, statistics, trig values): every line must equal the answer, which stays on the server.
+  - Students can type `ln`, `log(x, 2)`, `e^x`, `sin`, `sqrt`, `n!`, `C(n, k)` and `P(n, k)`.
 - **Tiered hints, all hand-written rules:**
   1. Tier 1 names the line.
   2. Tier 2 names the mistake: sign error, operation on only one side, partial distribution, dividing only one term, or arithmetic slip.
   3. Tier 3 points at the exact term.
 
   Each tier unlocks only after another failed attempt. Each rule rebuilds what the line *would* be if the student had made that mistake, and checks whether that matches.
-- 20 problems: linear and two-step equations, factoring quadratics, expanding, simplifying fractions, and derivatives of polynomials (`packages/shared/problems/math/`).
+- 59 problems across six subjects: **Algebra** (linear and two-step equations, factoring, expanding, fractions), **Precalculus** (exponential, log and radical equations, exact irrational roots, rational expressions, trig values), **Calculus 1** (power, product, quotient and chain rules), **Calculus 2** (antiderivatives, substitution, by parts, definite integrals, series), **Calculus 3** (partial derivatives, double integrals) and **Probability & Statistics** (counting, probability, binomial, mean, expected value). They live in `packages/shared/problems/math/`, and a test solves every one from its answer.
 - Checking runs **on the server**, so the answer never reaches the browser.
 
 ### 2. Code Dojo — Python, C, Java (`/tutor/code`)
@@ -58,6 +63,11 @@ Students solve a problem one step per line. Each line renders live as math (KaTe
 
 ### 3. RedPen — writing coach (inside the editor)
 Flags passive voice, filler and weasel words, hedges and intensifiers, sentences over 30 words, repeated words, clichés, complex words, possibly insensitive wording and wordy phrases. It also shows Flesch reading-ease and grade-level scores. Each flag explains *why* it matters and gives a generic example. **RedPen never rewrites text and offers no one-click fixes.**
+
+**Genre coach** (Tutor → Writing). Pieces started from a genre get a checklist beside the editor. Like RedPen, it only reports what it sees:
+- *Research papers:* states a question; in-text citations like (Author, 2020) or [1]; paragraphs with figures or findings that cite nothing; a References / Works Cited list; first-person opinion in findings.
+- *Argumentative essays:* a position in the first paragraph; intro, body and conclusion; evidence in the body paragraphs; a counterargument that gets answered; a concluding paragraph.
+- *Poetry:* lines and stanzas, syllables per line, the rhyme scheme (ABAB, AABB…), abstract emotion words, and very long lines. Prose-only RedPen rules are hidden for poems.
 
 ### 4. Written Here — authentic editor + certificates (`/write`, `/verify`)
 1. Every edit (insert, delete, paste, cut, undo, redo, focus, blur) becomes an event in a **SHA-256 hash chain**. Events go to the server every 2 seconds.
@@ -79,21 +89,32 @@ Flags passive voice, filler and weasel words, hedges and intensifiers, sentences
 - Counts **active** time only: an AI site's tab is focused, its window is focused, and the user isn't idle. The extension tracks 13 sites (ChatGPT, Claude, Gemini, Copilot, Perplexity…) plus any custom domains you add.
 - **Privacy:** it stores and sends only `{date, domain, seconds}`. It never sees URLs, page content, prompts or keystrokes. The popup shows the exact JSON it will send.
 - **Think First mode** (optional): before an AI site opens, it shows a "write your own attempt first" page with a 2-minute timer and links to non-AI tools. You can always continue.
-- **The dashboard** shows a weekly chart of AI vs human minutes, the **Reliance Score** (`100 × AI ÷ (AI + human + 1)`, lower is better), a streak, **Human Points** (capped daily) and a per-site breakdown.
+- **The dashboard** leads with your **share of the thinking** this week (your minutes vs minutes on AI sites), then the **Reliance Score** (`100 × AI ÷ (AI + human + 1)`, lower is better), a streak, **Human Points** (capped daily, with levels: Spark, Glow, Lamp, Lantern, Beacon, Lighthouse, and a breakdown of where they came from), a day-by-day chart, a per-site breakdown, Tutor and Portfolio progress, and "pick up where you left off".
 - **Weekly leaderboard:** opt-in only, with friends by username invite, and labelled *"Self-reported via extension — for motivation, not proof."*
 
-### 6. Protected Gallery (`/gallery`)
-- **Art upload pipeline:**
+### 6. Portfolio (`/portfolio`): Art, Writing, Music
+Every work has **likes and comments**. **Only authentic work gets the Human-made seal**, and "authentic" means the app holds a record of how the piece was made that passes every check:
+
+| Section | Sealed when… | Uploads |
+|---|---|---|
+| **Writing** | made in the editor and certified **Human-Verified** (see section 4) | — |
+| **Art** | drawn in the **drawing studio** (`/portfolio/art/studio`) | allowed, never sealed |
+| **Music** | composed in the **composer** (`/portfolio/music/composer`) | allowed (MP3/OGG/WAV), never sealed |
+
+**Drawing studio and composer.** These use the same protocol as the writing editor. Every stroke, undo and clear (studio) or note placed and removed (composer) is an event in a **SHA-256 hash chain**, sent every 2 seconds and stamped with the server's receipt time. **Finish** replays the whole log on the server, recomputes the chain and the stats, and signs an **Ed25519 certificate**:
+- Studio art is **rendered by the server from the strokes**, so the published image is exactly what the log describes. It then goes through the art pipeline below.
+- The seal needs at least 12 strokes or note edits and 45 seconds of active time, with no flags. Flags include strokes laid down faster than a hand can move, edits faster than a person can click, and a client timeline that disagrees with the server's clock.
+- The certificate page re-verifies the signature, chain and replay on every load, and plays the piece back: a stroke-by-stroke redraw, or the score played and re-written note by note.
+
+**Art pipeline (uploads and studio pieces):**
   1. The file type is checked by its bytes, not its name.
   2. The image is re-encoded, which strips EXIF and GPS data and anything hidden in the file.
   3. A SHA-256 and a hand-written **perceptual hash (dHash)** block re-uploads of someone else's work.
   4. An **invisible, HMAC-signed ownership watermark** is hidden in the image's pixels.
   5. The original is **encrypted** and never served.
 - **Viewing:** images are served only to logged-in users through 5-minute signed links tied to that viewer. Each copy is stamped with the **viewer's username and date** in a near-invisible pattern, so leaks are traceable. Images are drawn on a canvas with right-click and drag disabled.
-- **AI crawlers** (GPTBot, ClaudeBot, CCBot, Google-Extended and ~25 more) get **403 Forbidden**. Gallery responses also send `robots.txt` rules, `X-Robots-Tag: noai, noimageai`, a `noai` meta tag and `tdm-reservation: 1`.
-- **Writing gallery:** only Human-Verified certificates can be published there.
-- **Music gallery:** a basic version. MP3/OGG/WAV uploads with an encrypted original and a 64 kbps preview.
-- **Social:** profiles, follow, like, report. Owners can unpublish or delete at any time, which deletes the files.
+- **AI crawlers** (GPTBot, ClaudeBot, CCBot, Google-Extended and ~25 more) get **403 Forbidden**. Portfolio responses also send `robots.txt` rules, `X-Robots-Tag: noai, noimageai`, a `noai` meta tag and `tdm-reservation: 1`. Old `/gallery` links redirect to `/portfolio`.
+- **Social:** profiles, follow, like, comment, report. Owners can unpublish or delete at any time, which deletes the files.
 
 ---
 
@@ -331,7 +352,7 @@ $ pnpm test
 - The Pyodide worker is served with its own CSP.
 
 ### Not yet verified end-to-end
-- The full user journey (sign-up → write → certify → gallery → dashboard) has **not yet been run against a live Supabase project**. The schema is written but hasn't been applied to one yet, and `pnpm test:authz` needs it.
+- `pnpm e2e:live <url>` runs the full user journey against a deployed site: sign-up, StepCheck, the editor and certificate, uploads, the drawing studio and composer (tampered chains and sequence gaps rejected, finished pieces locked), comments, likes, the extension, and account deletion. Code Dojo **Submit** still needs a hosted code sandbox in production.
 - The Chrome extension builds, and its accounting logic is unit-tested, but it hasn't been exercised in Chrome yet.
 - Judge0 configuration is provided but untested. It needs a cgroup v1 host, and our dev machine uses v2.
 
@@ -360,7 +381,7 @@ $ pnpm test
 1. **A chatbot's math mistake gets caught.** On `/tutor/math/lin-3` (`3(x − 2) = 2x + 4`), enter `3x - 6 = 2x + 4`, then `x = 4 - 6`, then `x = -2`. Line 2 turns red. Check again to unlock the hint: *"a term moved to the other side of the = sign but kept its sign."*
 2. **A paste shows up.** In `/write`, type a paragraph, paste a block of text from elsewhere (it's highlighted), then click **Finalize**. The certificate shows a lower typed %, and the replay flashes the paste.
 3. **Tampering is caught.** Edit one character of the certificate's stored log in the Supabase table editor, then reload `/verify/<id>`. The hash-chain and replay checks turn red.
-4. **AI crawlers are blocked.** Upload art, then run `curl -i -A "GPTBot" http://localhost:3000/gallery` and get a **403**. Open the art as another user and take a screenshot: their username is faintly tiled across it.
+4. **AI crawlers are blocked.** Upload art, then run `curl -i -A "GPTBot" http://localhost:3000/portfolio/art` and get a **403**. Open the art as another user and take a screenshot: their username is faintly tiled across it.
 5. **The score responds.** After a StepCheck or Code Dojo session, `/dashboard` shows more human minutes and a lower reliance score.
 
 ---

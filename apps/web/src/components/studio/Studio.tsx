@@ -4,6 +4,7 @@ import { CANVAS_H, CANVAS_W, MAX_STROKE_POINTS, MIN_EFFORT, replayArt, type ArtE
 import { CreationRecorder, STATUS_TEXT, type SaveStatus } from "./recorder";
 import { paintAll, paintStroke } from "./ArtReplay";
 import { FinishPanel, SealProgress } from "./FinishPanel";
+import { TitleField } from "@/components/TitleField";
 
 type Tool = Stroke["tool"];
 const PALETTE = ["#1b2b5e", "#2b2142", "#3f6fb5", "#5aa9c9", "#2a7247", "#8cbf4a", "#fbcb3d", "#ff9f1c", "#c0392b", "#e88aa6", "#8e5bb5", "#7a5230", "#9aa3b5", "#ffffff"];
@@ -170,13 +171,13 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <input aria-label="Title" className="min-w-0 flex-1 bg-transparent text-[1.9rem] leading-tight font-extrabold tracking-[-0.03em] outline-none placeholder:text-fg-faint focus:underline focus:decoration-sun focus:decoration-4 focus:underline-offset-8" value={title} maxLength={120} onChange={(e) => setTitle(e.target.value)} placeholder="Untitled" />
-        <span className={`chip ${status === "conflict" ? "border-redpen/40 text-redpen" : status === "offline" ? "text-warn" : ""}`} aria-live="polite">
+      <div className="flex flex-wrap items-end gap-3">
+        <TitleField value={title} onChange={setTitle} />
+        <span className={`chip mb-3 ${status === "conflict" ? "border-redpen/40 text-redpen" : status === "offline" ? "text-warn" : ""}`} aria-live="polite">
           <span className={`h-2 w-2 rounded-full ${status === "conflict" ? "bg-redpen" : status === "saving" ? "bg-flame animate-pulse" : "bg-ok"}`} />
           {STATUS_TEXT[status]}
         </span>
-        <button className="btn btn-primary px-5" onClick={() => setFinishing(true)} disabled={count === 0 || status === "conflict"}>Finish</button>
+        <button className="btn btn-primary h-[3.4rem] px-5" onClick={() => setFinishing(true)} disabled={count === 0 || status === "conflict"}>Finish</button>
       </div>
       {err && <p role="alert" className="rounded-xl bg-redpen-dim p-3 text-sm text-redpen">{err}</p>}
 
