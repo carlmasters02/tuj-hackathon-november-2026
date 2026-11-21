@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { SignupForm } from "./SignupForm";
 import { GoogleButton, OrDivider } from "@/components/GoogleButton";
 
@@ -7,6 +8,7 @@ const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === "true";
 export const metadata = { title: "Sign up" };
 
 export default function SignupPage() {
+  if (process.env.HM_DEMO_MODE === "true") redirect("/dashboard"); // sign-up is off in demo mode
   return (
     <div className="mx-auto max-w-sm space-y-6 pt-8">
       <div>

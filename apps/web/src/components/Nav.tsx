@@ -16,7 +16,9 @@ export async function Nav() {
         </Link>
         {user && <NavLinks />}
         <div className="ml-auto flex shrink-0 items-center gap-2">
-          {user ? (
+          {process.env.HM_DEMO_MODE === "true" ? (
+            <span className="chip chip-sun" title="Login is turned off (HM_DEMO_MODE=true)">Demo mode · @{profile?.username ?? "demo"}</span>
+          ) : user ? (
             <>
               <Link href="/settings" className="rounded-full px-3 py-1.5 text-sm font-semibold text-fg-dim hover:bg-muted hover:text-fg">
                 @{profile?.username ?? "me"}

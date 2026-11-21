@@ -68,7 +68,15 @@ export async function middleware(req: NextRequest) {
       },
     });
     // getUser() revalidates the token with Supabase Auth and rotates it when needed.
-    await supabase.auth.getUser().catch(() => null);
+    const { data } = (await supabase.auth.getUser().catch(() => ({ data: { user: null } }))) as { data: { user: unknown } };
+    // DEMO MODE: login is off — any signed-out page visit goes straight to the demo sign-in.
+    const isPage = req.method === "GET" && !pathname.startsWith("/api/") && !pathname.startsWith("/auth/") && !/\.[a-z0-9]+$/i.test(pathname);
+    if (process.env.HM_DEMO_MODE === "true" && !data.user && isPage) {
+      const to = req.nextUrl.clone();
+      to.pathname = "/auth/demo";
+      to.search = `?next=${encodeURIComponent(pathname === "/login" || pathname === "/signup" ? "/dashboard" : pathname + req.nextUrl.search)}`;
+      return NextResponse.redirect(to);
+    }
   }
 
   // 4. Security headers.

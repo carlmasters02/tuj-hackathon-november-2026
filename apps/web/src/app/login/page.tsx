@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { LoginForm } from "./LoginForm";
 import { GoogleButton, OrDivider } from "@/components/GoogleButton";
 
@@ -7,6 +8,7 @@ const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === "true";
 export const metadata = { title: "Log in" };
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; confirmed?: string; error?: string }> }) {
+  if (process.env.HM_DEMO_MODE === "true") redirect("/dashboard"); // login is off in demo mode
   const sp = await searchParams;
   const next = sp.next && sp.next.startsWith("/") && !sp.next.startsWith("//") ? sp.next : "/dashboard";
   return (
