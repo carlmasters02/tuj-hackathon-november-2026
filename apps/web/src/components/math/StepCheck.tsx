@@ -39,12 +39,12 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
       lines.map((l) => {
         if (!l.trim()) return null;
         try {
-          return toTex(l, problem.variable);
+          return toTex(l, problem.variable, problem.kind === "antiderivative" ? [...(problem.symbols ?? []), "C"] : problem.symbols ?? []);
         } catch {
           return null;
         }
       }),
-    [lines, problem.variable],
+    [lines, problem.variable, problem.kind, problem.symbols],
   );
 
   const edit = (i: number, v: string) => {

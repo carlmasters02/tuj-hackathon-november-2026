@@ -9,11 +9,11 @@ export interface Section {
 
 export const MATH_SUBJECTS = [
   { slug: "algebra", label: "Algebra", note: "Equations, factoring, expanding, fractions" },
-  { slug: "precalculus", label: "Precalculus", note: "Exponents, logarithms, rational and quadratic equations" },
-  { slug: "calc-1", label: "Calculus 1", note: "Derivatives: power, product and chain rules" },
-  { slug: "calc-2", label: "Calculus 2", note: "Antiderivatives and integrals" },
-  { slug: "calc-3", label: "Calculus 3", note: "Partial derivatives of two-variable functions" },
-  { slug: "prob-stats", label: "Probability & statistics", note: "Counting, probability, averages, expected value" },
+  { slug: "precalculus", label: "Precalculus", note: "Exponential and log equations, radicals, exact roots, trig values" },
+  { slug: "calc-1", label: "Calculus 1", note: "Derivatives: power, product, quotient and chain rules" },
+  { slug: "calc-2", label: "Calculus 2", note: "Antiderivatives, substitution, by parts, definite integrals, series" },
+  { slug: "calc-3", label: "Calculus 3", note: "Partial derivatives and double integrals" },
+  { slug: "prob-stats", label: "Probability & statistics", note: "Counting, probability, the binomial distribution, mean and expected value" },
 ] as const;
 
 export const CODE_LANGS = [

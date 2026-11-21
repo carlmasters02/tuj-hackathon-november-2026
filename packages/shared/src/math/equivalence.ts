@@ -19,9 +19,9 @@ function mulberry32(seed: number) {
   };
 }
 
-function evalAt(node: MathNode, variable: string, x: number): number | null {
+function evalAt(node: MathNode, variable: string, x: number, extra: Record<string, number> = {}): number | null {
   try {
-    const v = node.evaluate({ [variable]: x });
+    const v = node.evaluate({ ...extra, [variable]: x });
     return typeof v === "number" && Number.isFinite(v) ? v : null;
   } catch {
     return null;
@@ -30,14 +30,18 @@ function evalAt(node: MathNode, variable: string, x: number): number | null {
 
 const close = (a: number, b: number, tol = REL_TOL) => Math.abs(a - b) <= tol * Math.max(1, Math.abs(a), Math.abs(b));
 
-/** Numeric equivalence at 8 random points (points where either side is undefined are skipped). */
-export function numericallyEqual(a: MathNode, b: MathNode, variable = "x", points = 8): boolean {
+/**
+ * Numeric equivalence at 8 random points (points where either side is undefined are skipped).
+ * Extra constants (e.g. y in a partial derivative) get their own random value at each point.
+ */
+export function numericallyEqual(a: MathNode, b: MathNode, variable = "x", points = 8, symbols: readonly string[] = []): boolean {
   const rnd = mulberry32(0x5eed);
   let tested = 0;
   for (let tries = 0; tries < points * 6 && tested < points; tries++) {
     const x = (rnd() * 2 - 1) * 10;
-    const fa = evalAt(a, variable, x);
-    const fb = evalAt(b, variable, x);
+    const extra = Object.fromEntries(symbols.map((s) => [s, (rnd() * 2 - 1) * 5]));
+    const fa = evalAt(a, variable, x, extra);
+    const fb = evalAt(b, variable, x, extra);
     if (fa === null || fb === null) continue;
     if (!close(fa, fb)) return false;
     tested++;
@@ -46,13 +50,25 @@ export function numericallyEqual(a: MathNode, b: MathNode, variable = "x", point
 }
 
 /** Expressions equivalent ⇔ simplify(a − b) = 0, or (fallback) numerically equal. */
-export function exprEquivalent(a: MathNode, b: MathNode, variable = "x"): boolean {
+export function exprEquivalent(a: MathNode, b: MathNode, variable = "x", symbols: readonly string[] = []): boolean {
   try {
     const diff = math.simplify(new math.OperatorNode("-", "subtract", [new math.ParenthesisNode(a), new math.ParenthesisNode(b)]));
     if ((diff as any).isConstantNode && (diff as any).value === 0) return true;
   } catch {}
-  return numericallyEqual(a, b, variable);
+  return numericallyEqual(a, b, variable, 8, symbols);
 }
+
+/** Value of a constant expression (no variable), or null if it isn't a finite real number. */
+export function constValue(node: MathNode): number | null {
+  try {
+    const v = node.evaluate({});
+    return typeof v === "number" && Number.isFinite(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+export const sameValue = (a: number, b: number) => close(a, b, 1e-9);
 
 export type SolutionSet = { type: "all" } | { type: "none" } | { type: "finite"; values: number[] };
 
