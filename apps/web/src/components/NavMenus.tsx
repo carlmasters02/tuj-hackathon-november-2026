@@ -152,7 +152,7 @@ export function NavMenus({ signedIn, username, displayName, demo }: { signedIn: 
       </div>
 
       {/* mobile */}
-      <button type="button" className="ml-2 grid h-10 w-10 place-items-center rounded-full border border-line bg-surface md:hidden" aria-label="Open menu" aria-expanded={mobile} onClick={() => setMobile(!mobile)}>
+      <button type="button" className="ml-1 grid h-10 w-10 place-items-center rounded-full border border-line bg-surface sm:ml-2 md:hidden" aria-label="Open menu" aria-expanded={mobile} onClick={() => setMobile(!mobile)}>
         <svg viewBox="0 0 20 20" className="h-5 w-5" aria-hidden><path d={mobile ? "M5 5l10 10M15 5 5 15" : "M3 6h14M3 10h14M3 14h14"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
       </button>
       {mobile && (

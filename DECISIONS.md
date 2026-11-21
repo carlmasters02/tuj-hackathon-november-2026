@@ -63,6 +63,8 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
   - Its image check reads metadata and pixel smoothness, which can be removed or faked in seconds.
   - It duplicates, without the safeguards, what the app already does: the tracker extension, the hash-chained studio and editor records, and points awarded by the server.
   The history is in git if parts of it are reworked into the main app later.
+- **`feature/portfolio-words` (BristyRDas):** its custom literary-journal presentation is adopted for Words. Duplicated routing/navigation is resolved in favour of the existing central redirect and Tutor workflow; the integrated page uses one main landmark, the real publication count, wrapping labels, and Tutor drafting links.
+- **`ai-detection-portfolio` is not merged.** Its only file is a CRLF re-upload of the standalone detector removed above, with no security or quality rework. The unauthenticated state, arbitrary points, unreliable verdicts, missing integration and unbounded inputs remain unacceptable.
 - **`his-feature-name`** contains nothing that isn't already on `main` (a stale branch).
 
 ## Login & sign-up diagnostics
