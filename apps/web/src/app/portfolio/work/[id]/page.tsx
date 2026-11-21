@@ -144,7 +144,22 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
             <LikeButton id={id} liked={!!mine.data} count={likes.count ?? 0} />
             {!isOwner && <ReportButton id={id} />}
           </div>
-          {w.description && <p className="leading-relaxed text-fg-dim">{w.description}</p>}
+          {w.kind === "art" && w.description?.trim() && (
+            <section aria-labelledby="behind-creation-heading" className="relative overflow-hidden rounded-2xl border border-line bg-surface p-5 shadow-sm">
+              <div aria-hidden="true" className="pointer-events-none absolute right-4 top-1 font-serif text-7xl leading-none text-flame/20">“</div>
+              <p className="relative text-xs font-bold uppercase tracking-[0.16em] text-fg-dim">From the artist</p>
+              <h2 id="behind-creation-heading" className="relative mt-2 font-serif text-2xl font-semibold leading-tight text-fg">
+                Behind the Creation
+              </h2>
+              <p className="relative mt-4 whitespace-pre-wrap break-words text-base leading-relaxed text-fg-dim">
+                {w.description}
+              </p>
+              <p className="relative mt-4 border-t border-line pt-3 text-xs text-fg-faint">
+                A story shared by the creator; not evidence for a Human-made seal.
+              </p>
+            </section>
+          )}
+          {w.kind !== "art" && w.description && <p className="leading-relaxed text-fg-dim">{w.description}</p>}
           {isOwner && <OwnerControls id={id} published={w.published} />}
         </aside>
       </div>

@@ -224,6 +224,7 @@ async function publicPage(path: string) {
   const fd = new FormData();
   fd.set("file", new Blob([new Uint8Array(png)], { type: "image/png" }), "art.png");
   fd.set("title", "E2E artwork");
+  fd.set("description", "E2E artist story: a window after rain.\nSecond line <b>stays text</b>");
   fd.set("publish", "true");
   r = await req("/api/gallery/upload", { method: "POST", body: fd });
   const up = await jsonOf(r);
@@ -240,6 +241,7 @@ async function publicPage(path: string) {
     // the URL appears in HTML (&amp;) and in the RSC payload (\u0026)
     const media = page.match(/\/api\/media\/[0-9a-f-]{36}\?exp=\d+(?:&amp;|\\u0026|&)sig=[0-9a-f]{64}/)?.[0]?.replace(/&amp;|\\u0026/, "&");
     check("work page renders with a signed media URL", r.status === 200 && !!media);
+    check("artist story is formatted, escaped and explicitly not verification evidence", page.includes("Behind the Creation") && page.includes("E2E artist story: a window after rain.") && page.includes("&lt;b&gt;stays text&lt;/b&gt;") && !page.includes("<b>stays text</b>") && page.includes("not evidence for a Human-made seal"));
     if (media) {
       r = await req(media);
       const ct = r.headers.get("content-type");

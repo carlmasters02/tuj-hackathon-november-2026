@@ -36,8 +36,13 @@ export function UploadForm() {
         <input id="title" name="title" className="input" required maxLength={120} />
       </div>
       <div>
-        <label className="label" htmlFor="description">Description</label>
-        <textarea id="description" name="description" className="input" rows={3} maxLength={1000} />
+        <label className="label" htmlFor="description">Description / Behind the Creation (optional)</label>
+        <p id="creation-description-hint" className="mb-2 text-sm leading-relaxed text-fg-dim">
+          For artwork, share the memory, feeling, or moment that inspired you.
+          Your words will be shown with your artwork when published. For music, use this as a description.
+        </p>
+        <textarea id="description" name="description" className="input" rows={4} maxLength={1000} placeholder="Add a description or the story behind your work…" aria-describedby="creation-description-hint creation-hint" />
+        <p id="creation-hint" className="mt-1 text-xs text-fg-faint">Maximum 1,000 characters. This field does not grant a human-made verification seal.</p>
       </div>
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="publish" defaultChecked /> Publish to the gallery now</label>
       {error && <p className="text-sm text-redpen">{error}</p>}
