@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUserPage } from "@/lib/auth";
 import { portfolioFeed } from "@/lib/server/portfolio";
-import { WritingList, EmptyFeed } from "@/components/portfolio/Feed";
+import { WritingList } from "@/components/portfolio/Feed";
 
 export const metadata = { title: "Words", other: { robots: "noai, noimageai" } };
 
