@@ -1,5 +1,10 @@
 import type { Transaction } from "@tiptap/pm/state";
+import type { Node as PMNode } from "@tiptap/pm/model";
 import { chainHead, diffRange, genesisHash, pmDocToText, type DocEvent } from "@hm/shared/provenance/index";
+import { APP_EDIT_MAX_CHARS } from "@hm/shared/provenance/types";
+
+/** Transaction meta for edits the app makes on the writer's behalf (Find & Replace). */
+export const APP_EDIT = "hmAppEdit";
 
 export type RecorderStatus = "idle" | "saving" | "saved" | "offline" | "conflict";
 
@@ -15,6 +20,8 @@ export class ProvenanceRecorder {
   private confirmedHead: string;
   private inflight = false;
   private timer: ReturnType<typeof setInterval> | null = null;
+  /** the text as of the last recorded event; every new event is diffed against this */
+  private lastText: string;
   status: RecorderStatus = "idle";
   error: string | null = null;
 
@@ -24,7 +31,9 @@ export class ProvenanceRecorder {
     headHash: string | null,
     private getContent: () => unknown,
     private onStatus: (s: RecorderStatus, err: string | null) => void,
+    initialText = "",
   ) {
+    this.lastText = initialText;
     this.nextSeq = lastSeq + 1;
     this.confirmedHead = headHash ?? genesisHash(docId, this.sessionId);
   }
@@ -42,13 +51,18 @@ export class ProvenanceRecorder {
     this.push({ type: kind, from: 0, to: 0, len: 0 });
   }
 
-  /** Records one transaction. Returns true when it was an external paste of >40 chars. */
-  record(tr: Transaction): { externalPaste: boolean } {
-    if (!tr.docChanged) return { externalPaste: false };
-    const before = pmDocToText(tr.before);
-    const after = pmDocToText(tr.doc);
+  /**
+   * Records the change a transaction made. The diff is taken against the last *recorded* text
+   * and the editor's final document, so edits appended by plugins (tables, lists) are never
+   * missed and the log can't drift from the content.
+   */
+  record(tr: Transaction, docAfter: PMNode = tr.doc): { externalPaste: boolean; text: string } {
+    const before = this.lastText;
+    const after = pmDocToText(docAfter);
+    if (after === before) return { externalPaste: false, text: after };
     const d = diffRange(before, after);
-    if (!d) return { externalPaste: false }; // formatting-only change (bold etc.)
+    this.lastText = after;
+    if (!d) return { externalPaste: false, text: after };
     const ui = tr.getMeta("uiEvent") as string | undefined;
     const meta = (tr as any).meta ?? {};
     const historyKey = Object.keys(meta).find((k) => k.startsWith("history") || k.startsWith("undoRedo"));
@@ -62,11 +76,12 @@ export class ProvenanceRecorder {
     } else if (ui === "cut") type = "cut";
     else if (hist && typeof hist === "object" && "redo" in hist) type = hist.redo ? "redo" : "undo";
     else type = d.from === d.to ? "insert" : text.length === 0 ? "delete" : "replace";
+    if (tr.getMeta(APP_EDIT) && type !== "paste" && text.length <= APP_EDIT_MAX_CHARS && (type === "insert" || type === "replace" || type === "delete")) src = "app";
     const ev: Omit<DocEvent, "seq" | "t"> = { type, from: d.from, to: d.to, len: text.length };
     if (text.length) (ev as DocEvent).text = text;
     if (src) (ev as DocEvent).src = src;
     this.push(ev);
-    return { externalPaste: type === "paste" && src === "external" && text.length > 40 };
+    return { externalPaste: type === "paste" && src === "external" && text.length > 40, text: after };
   }
 
   start() {

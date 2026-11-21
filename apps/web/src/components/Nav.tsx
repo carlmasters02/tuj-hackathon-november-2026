@@ -9,7 +9,7 @@ export async function Nav() {
   const profile = user ? await profileOf(user.id).catch(() => null) : null;
   const demo = process.env.HM_DEMO_MODE === "true";
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b print:hidden border-line bg-canvas/85 backdrop-blur-md">
       <nav className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-2.5 sm:px-6" aria-label="Main">
         <Link href={user ? "/dashboard" : "/"} className="mr-2 flex shrink-0 items-center" aria-label="Humagination home">
           <Image src={logo} alt="Humagination" priority className="h-10 w-auto" sizes="140px" />

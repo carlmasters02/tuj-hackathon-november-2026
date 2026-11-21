@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+/** Longest single edit the app may make on the writer's behalf (one Find & Replace hit). */
+export const APP_EDIT_MAX_CHARS = 200;
+
 export const EVENT_TYPES = ["insert", "delete", "replace", "paste", "cut", "undo", "redo", "focus", "blur"] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
 
@@ -9,7 +12,9 @@ export type EventType = (typeof EVENT_TYPES)[number];
  *  - from/to: replaced range in the text *before* the event
  *  - text:    inserted text (absent for pure deletes / focus / blur)
  *  - len:     length of `text` (0 when absent)
- *  - src:     for paste/drop only: was the pasted text already in this document?
+ *  - src:     paste/drop: was the pasted text already in this document ("internal") or not?
+ *             insert/replace: "app" when the app made the edit for the writer (Find & Replace).
+ *             App edits count as *not typed*, are capped in size, and are reported in the stats.
  */
 export const DocEventSchema = z
   .object({
@@ -20,9 +25,11 @@ export const DocEventSchema = z
     to: z.number().int().nonnegative(),
     text: z.string().max(200_000).optional(),
     len: z.number().int().nonnegative(),
-    src: z.enum(["internal", "external"]).optional(),
+    src: z.enum(["internal", "external", "app"]).optional(),
   })
   .strict()
+  .refine((e) => e.src !== "app" || ((e.type === "insert" || e.type === "replace" || e.type === "delete") && e.len <= APP_EDIT_MAX_CHARS), "invalid app edit")
+  .refine((e) => !(e.type === "paste" && e.src === "app"), "a paste can't be an app edit")
   .refine((e) => e.to >= e.from, "to < from")
   .refine((e) => (e.text?.length ?? 0) === e.len, "len mismatch");
 

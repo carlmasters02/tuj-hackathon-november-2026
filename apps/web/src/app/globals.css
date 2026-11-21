@@ -166,3 +166,68 @@ body {
 /* menus answer the click/hover that opened them */
 @keyframes hm-pop { from { opacity: 0; transform: translateY(-4px) scale(0.985); } to { opacity: 1; transform: none; } }
 .hm-pop { animation: hm-pop 140ms cubic-bezier(.2,.8,.2,1); transform-origin: top center; }
+
+/* ── Word-style writer (feature/writer-v2) ─────────────────────────────────
+ * Pages are white sheets on a darker desk. The editor flows over them; the pagination plugin
+ * inserts .hm-page-gap spacers so blocks start at the top of the next sheet. Sizes come from
+ * CSS variables set by <Paper> (--m margin, --fs font size, --lh line height, --font family). */
+.hm-desk-wrap { background: #e9dfc9; overflow: hidden; }
+.hm-desk { position: relative; padding: 24px 0; display: flex; justify-content: center; }
+.hm-paper { position: relative; transform-origin: top center; flex-shrink: 0; }
+.hm-sheet { position: absolute; left: 0; right: 0; background: #fff; box-shadow: 0 1px 3px rgb(27 43 94 / 0.12), 0 10px 30px -12px rgb(27 43 94 / 0.25); border-radius: 2px; }
+.hm-title-sheet, .hm-refs-sheet { position: absolute; left: 0; right: 0; z-index: 1; }
+.hm-page-content { position: relative; z-index: 1; }
+.hm-doc { font-family: var(--font); font-size: var(--fs); line-height: var(--lh); color: #111827; }
+.hm-doc .ProseMirror { outline: none; min-height: 40px; }
+.hm-doc .ProseMirror > * { margin-top: 0; }
+.hm-doc p { margin: 0 0 0.6em; }
+.hm-paper[data-template="mla"] .hm-doc .ProseMirror p,
+.hm-paper[data-template="apa"] .hm-doc .ProseMirror p { margin: 0; text-indent: 0.5in; }
+.hm-doc h1 { font-size: 1.9em; font-weight: 800; margin: 0 0 0.4em; line-height: 1.2; }
+.hm-doc h2 { font-size: 1.45em; font-weight: 750; margin: 0 0 0.35em; line-height: 1.25; }
+.hm-doc h3 { font-size: 1.2em; font-weight: 700; margin: 0 0 0.3em; }
+.hm-doc h4 { font-size: 1.05em; font-weight: 700; font-style: italic; margin: 0 0 0.3em; }
+.hm-doc ul { list-style: disc; padding-left: 1.5em; margin: 0 0 0.6em; }
+.hm-doc ol { list-style: decimal; padding-left: 1.5em; margin: 0 0 0.6em; }
+.hm-doc li p { margin: 0; text-indent: 0 !important; }
+.hm-doc blockquote { border-left: 3px solid var(--color-line); padding-left: 1em; margin: 0 0 0.6em 0.5in; color: #374151; }
+.hm-doc a { color: #1f4e9a; text-decoration: underline; }
+.hm-doc ul[data-type="taskList"] { list-style: none; padding-left: 0.2em; }
+.hm-doc ul[data-type="taskList"] li { display: flex; gap: 0.5em; align-items: flex-start; }
+.hm-doc ul[data-type="taskList"] li > label { margin-top: 0.2em; }
+.hm-doc table { border-collapse: collapse; width: 100%; margin: 0 0 0.8em; table-layout: fixed; }
+.hm-doc td, .hm-doc th { border: 1px solid #c9c2b0; padding: 4px 8px; vertical-align: top; }
+.hm-doc th { background: var(--color-muted); font-weight: 700; text-align: left; }
+.hm-doc .selectedCell { background: var(--color-sun-soft); }
+.hm-mla-head p { margin: 0; text-indent: 0 !important; }
+.hm-refs-title { text-align: center; margin: 0 0 0.6em; }
+.hm-ref { margin: 0; padding-left: 0.5in; text-indent: -0.5in; }
+.hm-page-gap { pointer-events: none; user-select: none; }
+.hm-page-break { height: 0; border-top: 1px dashed #c9c2b0; margin: 0.4em 0; }
+.hm-citation { color: #1b2b5e; background: #eef2fb; border-radius: 3px; padding: 0 2px; cursor: default; }
+.hm-citation-missing { color: var(--color-redpen); background: var(--color-redpen-dim); }
+.hm-doc .ProseMirror { counter-reset: fnref; }
+.hm-fn-ref { counter-increment: fnref; font-size: 0.7em; vertical-align: super; line-height: 0; color: #1f4e9a; }
+.hm-fn-ref::after { content: counter(fnref); }
+.hm-footnotes { counter-reset: fn; border-top: 1px solid #c9c2b0; margin-top: 1.2em; padding-top: 0.6em; font-size: 0.9em; }
+.hm-footnotes::before { content: "Notes"; display: block; font-weight: 700; margin-bottom: 0.3em; }
+.hm-footnote { counter-increment: fn; display: flex; gap: 0.4em; }
+.hm-footnote::before { content: counter(fn) "."; flex-shrink: 0; }
+.hm-footnote p { margin: 0; text-indent: 0 !important; }
+.hm-comment { background: rgb(251 203 61 / 0.35); border-bottom: 2px solid var(--color-sun); }
+.hm-find { background: rgb(255 159 28 / 0.3); border-radius: 2px; }
+.hm-find-current { background: var(--color-flame); color: #111827; }
+
+@media print {
+  body { background: #fff !important; }
+  .hm-desk-wrap { background: none; border: 0; overflow: visible; }
+  .hm-desk { padding: 0; display: block; height: auto !important; }
+  .hm-paper { transform: none !important; width: auto !important; height: auto !important; }
+  .hm-sheet, .hm-page-gap, .hm-page-break { display: none !important; }
+  .hm-page-content { padding: 0 !important; }
+  .hm-title-sheet { position: static; height: auto !important; padding: 0 !important; break-after: page; }
+  .hm-refs-sheet { position: static; min-height: 0 !important; padding: 0 !important; break-before: page; }
+  [data-type="page-break"] + * { break-before: page; }
+  .hm-comment { background: none; border: 0; }
+  .hm-citation { background: none; color: inherit; }
+}

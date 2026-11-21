@@ -156,3 +156,31 @@ describe("certificate signatures", () => {
     expect(await verifyCertificateSignature(other, cert.publicKey)).toBe(false);
   });
 });
+
+describe("app edits (Find & Replace)", () => {
+  it("count as not typed, never as bursts, and are flagged when large", async () => {
+    const { computeStats } = await import("@hm/shared/provenance/stats");
+    const { DocEventSchema } = await import("@hm/shared/provenance/types");
+    const typed = "the cat sat on the mat and the cat was happy";
+    const evs: any[] = [];
+    let t = 0;
+    for (let i = 0; i < typed.length; i++) evs.push({ seq: evs.length, t: (t += 150), type: "insert", from: i, to: i, text: typed[i], len: 1 });
+    // replace both "cat" with "dog" via Find & Replace, within one millisecond
+    for (const at of [4, 31]) evs.push({ seq: evs.length, t: (t += 0), type: "replace", from: at, to: at + 3, text: "dog", len: 3, src: "app" });
+    for (const e of evs) expect(DocEventSchema.safeParse(e).success).toBe(true);
+    const batch = { sessionId: "00000000-0000-4000-8000-000000000000", seqStart: 0, seqEnd: evs.length - 1, events: evs, headHash: "x", receivedAt: new Date(t).toISOString() };
+    const { text, stats } = computeStats([batch]);
+    expect(text).toBe("the dog sat on the mat and the dog was happy");
+    expect(stats.appEditChars).toBe(6);
+    expect(stats.injectionBursts).toHaveLength(0);
+    expect(stats.typedPct).toBeLessThan(100);
+    expect(stats.flags.join(" ")).not.toMatch(/Find & Replace/); // small: not flagged
+    const big = { ...batch, events: [...evs, { seq: evs.length, t: t + 10, type: "insert", from: text.length, to: text.length, text: " " + "x".repeat(150), len: 151, src: "app" }], seqEnd: evs.length };
+    expect(computeStats([big]).stats.flags.join(" ")).toMatch(/Find & Replace/);
+  });
+  it("can't be used to label a paste, or to insert a large block", async () => {
+    const { DocEventSchema } = await import("@hm/shared/provenance/types");
+    expect(DocEventSchema.safeParse({ seq: 0, t: 0, type: "paste", from: 0, to: 0, text: "hi", len: 2, src: "app" }).success).toBe(false);
+    expect(DocEventSchema.safeParse({ seq: 0, t: 0, type: "insert", from: 0, to: 0, text: "x".repeat(201), len: 201, src: "app" }).success).toBe(false);
+  });
+});

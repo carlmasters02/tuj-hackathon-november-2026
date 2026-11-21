@@ -15,6 +15,10 @@ export const DELAYED_UPLOAD_MS = 120_000;
 /** Character origin tags tracked through replay. */
 const TYPED = 0;
 const EXTERNAL = 1;
+const APP = 2; // inserted by the app on the writer's behalf (Find & Replace): not typed, not pasted
+
+/** App edits above this share of the final text are flagged. */
+export const APP_EDIT_FLAG_SHARE = 0.05;
 
 export interface DocStats {
   finalChars: number;
@@ -23,6 +27,8 @@ export interface DocStats {
   typedPct: number;
   externalPasteChars: number;
   externalPasteCount: number;
+  /** characters the app inserted for the writer (Find & Replace); counted as not typed */
+  appEditChars: number;
   largePastes: { seq: number; len: number }[];
   internalPasteChars: number;
   activeSeconds: number;
@@ -63,6 +69,7 @@ export function computeStats(batches: StoredBatch[]): { text: string; stats: Doc
   let externalPasteChars = 0;
   let externalPasteCount = 0;
   let internalPasteChars = 0;
+  let appEditChars = 0;
   let insertedChars = 0;
   let deletedChars = 0;
   const largePastes: { seq: number; len: number }[] = [];
@@ -129,7 +136,12 @@ export function computeStats(batches: StoredBatch[]): { text: string; stats: Doc
 
       const isPaste = e.type === "paste";
       const isHistory = e.type === "undo" || e.type === "redo";
-      const isTyping = e.type === "insert" || e.type === "replace" || e.type === "delete" || e.type === "cut";
+      const isApp = e.src === "app";
+      const isTyping = !isApp && (e.type === "insert" || e.type === "replace" || e.type === "delete" || e.type === "cut");
+      if (isApp) {
+        insOrigin.fill(APP);
+        appEditChars += ins.length;
+      }
 
       if (isPaste && e.src === "external") {
         insOrigin.fill(EXTERNAL);
@@ -219,6 +231,9 @@ export function computeStats(batches: StoredBatch[]): { text: string; stats: Doc
   if (finalWords >= TRANSCRIPTION_MIN_WORDS && revisionRatio < TRANSCRIPTION_MAX_REVISION_RATIO)
     flags.push(`Almost no revisions over ${finalWords} words (ratio ${revisionRatio}) — possible transcription`);
   if (!timeOk) flags.push("Event timeline is inconsistent with server receipt times");
+  let appFinal = 0;
+  for (let i = 0; i < origin.length; i++) if (origin[i] === APP && !/\s/.test(text[i])) appFinal++;
+  if (appFinal > Math.max(40, nonSpace * APP_EDIT_FLAG_SHARE)) flags.push(`${appFinal} characters of the final text were inserted by Find & Replace rather than typed`);
 
   return {
     text,
@@ -228,6 +243,7 @@ export function computeStats(batches: StoredBatch[]): { text: string; stats: Doc
       typedPct,
       externalPasteChars,
       externalPasteCount,
+      appEditChars,
       largePastes,
       internalPasteChars,
       activeSeconds,
