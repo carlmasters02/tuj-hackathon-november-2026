@@ -16,18 +16,36 @@ function Meta({ item }: { item: FeedItem }) {
 
 export function ArtWall({ items, viewerId }: { items: FeedItem[]; viewerId: string }) {
   return (
-    <ul className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>li]:mb-5">
+    <ul className="columns-1 gap-6 sm:columns-2 xl:columns-3 [&>li]:mb-6">
       {items.map((w) => (
         <li key={w.id} className="break-inside-avoid">
-          <Link href={`/portfolio/work/${w.id}`} className="group block overflow-hidden rounded-2xl border border-line bg-surface transition hover:border-fg/30">
-            <div className="relative">
-              <ProtectedImage src={signedMediaUrl(w.id, viewerId)} width={w.width ?? 4} height={w.height ?? 3} alt={w.title} />
-              {w.verified && <div className="absolute right-3 top-3"><HumanSeal size={54} /></div>}
+          <Link
+            href={`/portfolio/work/${w.id}`}
+            className="group block overflow-hidden rounded-[1.6rem] border border-line bg-surface shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-fg/20 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fg"
+          >
+            <div className="relative overflow-hidden bg-muted">
+              <div className="transition-transform duration-500 group-hover:scale-[1.03]">
+                <ProtectedImage src={signedMediaUrl(w.id, viewerId)} width={w.width ?? 4} height={w.height ?? 3} alt={w.title} />
+              </div>
+              {w.verified && (
+                <div className="absolute right-3 top-3 rounded-full bg-surface/95 p-1 shadow-sm">
+                  <HumanSeal size={48} />
+                </div>
+              )}
+              <span className="absolute bottom-3 right-3 translate-y-2 rounded-full bg-fg px-3 py-1.5 text-xs font-bold text-surface opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                View artwork ↗
+              </span>
             </div>
-            <div className="flex items-start justify-between gap-3 px-4 py-3">
-              <span className="text-lg font-bold leading-tight">{w.title}</span>
+            <div className="px-5 pb-5 pt-4">
+              <div className="mb-3 flex items-start justify-between gap-3">
+                <h3 className="min-w-0 text-xl font-extrabold leading-snug tracking-tight text-fg transition-colors group-hover:text-fg-dim">{w.title}</h3>
+                <span aria-hidden="true" className="mt-1 text-lg text-fg-faint transition-transform group-hover:translate-x-1">↗</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3">
+                <Meta item={w} />
+                {w.verified && <span className="text-[0.65rem] font-bold uppercase tracking-wider text-fg-dim">Studio verified</span>}
+              </div>
             </div>
-            <div className="px-4 pb-4"><Meta item={w} /></div>
           </Link>
         </li>
       ))}
