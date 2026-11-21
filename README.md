@@ -4,6 +4,8 @@
 
 **Learn and create with your own mind — checked by code, never by AI.**
 
+> **Contributors and coding agents:** start with [`ARCHITECTURE.md`](ARCHITECTURE.md) for the single-file implementation map, security invariants, compatibility rules and common review pitfalls.
+
 Humagination is a hackathon project on an *anti-AI* theme. It helps people stop leaning on AI chatbots, and it uses **zero AI itself**. Every feature is plain, deterministic code: parsers, equation solvers, regular expressions, hash chains, digital signatures and image maths. A script enforces this on every lint run.
 
 The app has three tabs, plus a browser extension:
