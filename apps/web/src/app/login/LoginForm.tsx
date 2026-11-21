@@ -37,7 +37,7 @@ export function LoginForm({ next }: { next: string }) {
       </div>
       {error && <p role="alert" className="text-sm text-redpen">{error}</p>}
       <button className="btn btn-primary w-full" disabled={busy}>{busy ? "Checking…" : "Log in"}</button>
-      <p className="text-sm text-paper-dim">No account? <Link className="link" href="/signup">Sign up</Link></p>
+      <p className="text-sm text-fg-dim">No account? <Link className="link" href="/signup">Sign up</Link></p>
     </form>
   );
 }

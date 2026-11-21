@@ -45,12 +45,12 @@ export default async function CertificatePage({ params }: { params: Promise<{ ce
   return (
     <div className="space-y-8">
       <header className="space-y-3">
-        <div className="text-xs uppercase tracking-wide text-paper-faint">Humagination certificate</div>
+        <div className="text-xs uppercase tracking-wide text-fg-faint">Humagination certificate</div>
         <h1 className="h-page">{cert.payload.title}</h1>
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <span className={`rounded-full border px-3 py-1 font-medium ${VERDICT_STYLE[v]}`}>{VERDICT_LABEL[v]}</span>
-          <span className="text-paper-dim">by <Link className="link" href={`/u/${cert.payload.author}`}>@{cert.payload.author}</Link></span>
-          <span className="text-paper-faint">issued {new Date(cert.payload.issuedAt).toLocaleString()}</span>
+          <span className="text-fg-dim">by <Link className="link" href={`/u/${cert.payload.author}`}>@{cert.payload.author}</Link></span>
+          <span className="text-fg-faint">issued {new Date(cert.payload.issuedAt).toLocaleString()}</span>
         </div>
         {isOwner && v === "human_verified" && <PublishCertButton certId={certId} publishedId={published?.id ?? null} />}
       </header>
@@ -81,10 +81,10 @@ export default async function CertificatePage({ params }: { params: Promise<{ ce
 
       <ReplayPlayer batches={batches} />
 
-      <section className="card space-y-2 p-5 text-sm text-paper-dim">
-        <h2 className="font-serif text-lg text-paper">What this proves</h2>
+      <section className="card space-y-2 p-5 text-sm text-fg-dim">
+        <h2 className="text-lg font-extrabold text-fg">What this proves</h2>
         <p>It proves the text was produced in the Humagination editor and exactly how — every insertion, deletion and paste, in order, timestamped and checked by the server as it happened.</p>
-        <p><strong className="text-paper">It cannot prove the author didn&apos;t copy by hand from another source.</strong> That&apos;s why the revision ratio and typing cadence are shown: transcription tends to have almost no revisions and a very even rhythm. Judge accordingly.</p>
+        <p><strong className="text-fg">It cannot prove the author didn&apos;t copy by hand from another source.</strong> That&apos;s why the revision ratio and typing cadence are shown: transcription tends to have almost no revisions and a very even rhythm. Judge accordingly.</p>
       </section>
 
       <CertJson cert={cert} />
@@ -96,7 +96,7 @@ function Check({ ok, label, detail }: { ok: boolean; label: string; detail: stri
   return (
     <div className={`rounded-xl border p-4 ${ok ? "border-ok/40" : "border-redpen/50 bg-redpen-dim"}`}>
       <div className="flex items-center gap-2 text-sm font-medium"><span className={ok ? "text-ok" : "text-redpen"}>{ok ? "✓" : "✗"}</span>{label}</div>
-      <p className="mt-1 text-xs text-paper-dim">{detail}</p>
+      <p className="mt-1 text-xs text-fg-dim">{detail}</p>
     </div>
   );
 }
@@ -105,8 +105,8 @@ function Stat({ label, value, hint }: { label: string; value: string; hint: stri
   return (
     <div className="card p-4">
       <div className="text-2xl">{value}</div>
-      <div className="text-xs uppercase tracking-wide text-paper-faint">{label}</div>
-      <div className="mt-1 text-xs text-paper-dim">{hint}</div>
+      <div className="text-xs uppercase tracking-wide text-fg-faint">{label}</div>
+      <div className="mt-1 text-xs text-fg-dim">{hint}</div>
     </div>
   );
 }

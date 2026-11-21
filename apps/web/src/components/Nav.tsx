@@ -1,36 +1,24 @@
 import Link from "next/link";
+import Image from "next/image";
 import { currentUser, profileOf } from "@/lib/auth";
+import logo from "@/assets/logo.png";
 import { LogoutButton } from "./LogoutButton";
-
-const LINKS = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/tutor/math", label: "StepCheck" },
-  { href: "/tutor/code", label: "Code Dojo" },
-  { href: "/write", label: "Write" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/leaderboard", label: "Leaderboard" },
-];
+import { NavLinks } from "./NavLinks";
 
 export async function Nav() {
   const user = await currentUser();
   const profile = user ? await profileOf(user.id).catch(() => null) : null;
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-ink/90 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-4 py-3 sm:px-6">
-        <Link href="/" className="mr-3 flex shrink-0 items-center gap-2 font-serif text-lg">
-          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-redpen" />
-          Humagination
+    <header className="sticky top-0 z-30 border-b border-line bg-canvas/85 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-4 py-2.5 sm:px-6">
+        <Link href="/" className="mr-4 flex shrink-0 items-center" aria-label="Humagination home">
+          <Image src={logo} alt="Humagination" priority className="h-10 w-auto" sizes="140px" />
         </Link>
-        {user &&
-          LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="shrink-0 rounded-md px-2.5 py-1.5 text-sm text-paper-dim hover:bg-ink-3 hover:text-paper">
-              {l.label}
-            </Link>
-          ))}
+        {user && <NavLinks />}
         <div className="ml-auto flex shrink-0 items-center gap-2">
           {user ? (
             <>
-              <Link href="/settings" className="rounded-md px-2.5 py-1.5 text-sm text-paper-dim hover:bg-ink-3 hover:text-paper">
+              <Link href="/settings" className="rounded-full px-3 py-1.5 text-sm font-semibold text-fg-dim hover:bg-muted hover:text-fg">
                 @{profile?.username ?? "me"}
               </Link>
               <LogoutButton />

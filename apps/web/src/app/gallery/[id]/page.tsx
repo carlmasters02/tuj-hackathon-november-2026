@@ -34,11 +34,11 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <Link href={`/gallery?tab=${w.kind}`} className="text-sm text-paper-dim hover:text-paper">← Gallery</Link>
+      <Link href={`/gallery?tab=${w.kind}`} className="text-sm text-fg-dim hover:text-fg">← Gallery</Link>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="h-page">{w.title}</h1>
-          <p className="text-sm text-paper-dim">by <Link className="link" href={`/u/${owner?.username}`}>@{owner?.username}</Link> · {new Date(w.created_at).toLocaleDateString()} {!w.published && <span className="chip ml-2">unpublished</span>}</p>
+          <p className="text-sm text-fg-dim">by <Link className="link" href={`/u/${owner?.username}`}>@{owner?.username}</Link> · {new Date(w.created_at).toLocaleDateString()} {!w.published && <span className="chip ml-2">unpublished</span>}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <LikeButton id={id} liked={!!mine.data} count={likes.count ?? 0} />
@@ -50,11 +50,11 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
       {w.kind === "music" && (
         <div className="card space-y-2 p-5">
           <audio controls controlsList="nodownload noplaybackrate" preload="none" src={signedMediaUrl(id, user.id, "music")} className="w-full" />
-          <p className="text-xs text-paper-faint">64 kbps preview. The original is encrypted and never served. Link expires in 5 minutes — reload to play again.</p>
+          <p className="text-xs text-fg-faint">64 kbps preview. The original is encrypted and never served. Link expires in 5 minutes — reload to play again.</p>
         </div>
       )}
       {w.kind === "writing" && writing !== null && (
-        <article className="hm-protected relative overflow-hidden rounded-xl border border-line bg-ink-2 p-8">
+        <article className="hm-protected relative overflow-hidden rounded-xl border border-line bg-surface p-8">
           {/* per-viewer watermark in a background layer */}
           <div aria-hidden className="pointer-events-none absolute inset-0 flex flex-wrap content-start gap-x-16 gap-y-12 p-4 text-xs opacity-[0.05]" style={{ transform: "rotate(-20deg) scale(1.4)" }}>
             {Array.from({ length: 120 }, (_, i) => <span key={i}>{stamp}</span>)}
@@ -63,7 +63,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
           <Link href={`/verify/${w.cert_id}`} className="relative mt-6 inline-flex chip border-ok/50 text-ok">✓ Human-Verified — see certificate & replay</Link>
         </article>
       )}
-      {w.description && <p className="text-paper-dim">{w.description}</p>}
+      {w.description && <p className="text-fg-dim">{w.description}</p>}
       {isOwner && <OwnerControls id={id} published={w.published} />}
     </div>
   );

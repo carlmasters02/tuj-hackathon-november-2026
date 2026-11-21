@@ -9,6 +9,16 @@ Where the spec was ambiguous, or the environment forced a choice, this file reco
 - **ESLint 9 + typescript-eslint**, in a flat config at the repo root. `pnpm lint` runs the AI check, then the service-role check, ESLint and per-package `tsc`.
 - **Tailwind v4** with CSS-first tokens and system font stacks. The CSP is `font-src 'self'`, so no Google Fonts.
 
+## Theme & brand
+- **Light theme only, derived from the logo:** parchment, navy, sun and flame. Theme tokens have semantic names (`canvas`, `surface`, `muted`, `fg`, `fg-dim`, `fg-faint`) so they still read correctly if a dark variant is added later.
+- **Nunito comes from `@fontsource-variable/nunito`** (npm), because the CSP's `font-src 'self'` rules out Google Fonts. Long-form writing keeps a system book serif.
+- **Logo transparency:** the source logo has an opaque white background. `scripts/brand-assets.mjs` converts white to alpha with colour unmixing, so anti-aliased edges don't leave a white halo on parchment.
+- **App icons:**
+  - iPhone needs an opaque icon, so the bulb sits on parchment.
+  - Android maskable icons keep the bulb inside the central 80 % safe zone.
+  - Favicon and extension icons are transparent.
+- **Chart colours:** human minutes are navy and AI minutes are flame orange. Red is reserved for errors and RedPen, so AI use isn't shown as an error.
+
 ## Security
 - **Login and signup go through route handlers**, not the browser Supabase client. That way rate limits, lockout and the common-password check are enforced on the server. The app has **no browser Supabase client at all**: every data access goes through route handlers or server components, which shrinks the attack surface.
 - **Lockout** state lives in `login_attempts`, keyed by `sha256(email)`, so the table never stores emails. After 10 failures the account is locked for 15 minutes and the counter resets.

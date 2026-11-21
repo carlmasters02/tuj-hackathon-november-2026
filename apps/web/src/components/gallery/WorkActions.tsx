@@ -31,8 +31,8 @@ export function ReportButton({ id }: { id: string }) {
   const [reason, setReason] = useState("stolen");
   const [details, setDetails] = useState("");
   const [done, setDone] = useState(false);
-  if (done) return <span className="text-xs text-paper-faint">Reported — thank you.</span>;
-  if (!open) return <button className="btn btn-ghost text-paper-faint" onClick={() => setOpen(true)}>Report</button>;
+  if (done) return <span className="text-xs text-fg-faint">Reported — thank you.</span>;
+  if (!open) return <button className="btn btn-ghost text-fg-faint" onClick={() => setOpen(true)}>Report</button>;
   return (
     <div className="card w-full space-y-2 p-3">
       <select className="input" value={reason} onChange={(e) => setReason(e.target.value)}>
@@ -65,7 +65,7 @@ export function OwnerControls({ id, published }: { id: string; published: boolea
         <button className="btn btn-danger" onClick={() => setConfirm(true)}>Delete</button>
       ) : (
         <>
-          <span className="text-xs text-paper-dim">Deletes the original and preview permanently.</span>
+          <span className="text-xs text-fg-dim">Deletes the original and preview permanently.</span>
           <button
             className="btn btn-danger"
             onClick={async () => {

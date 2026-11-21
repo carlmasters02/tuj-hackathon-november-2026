@@ -6,7 +6,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 
 function inline(s: string): string {
   return esc(s)
-    .replace(/`([^`]+)`/g, '<code class="rounded bg-ink-3 px-1 py-0.5 font-mono text-[0.9em]">$1</code>')
+    .replace(/`([^`]+)`/g, '<code class="rounded bg-muted px-1 py-0.5 font-mono text-[0.9em]">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/(^|\W)\*([^*]+)\*(?=\W|$)/g, "$1<em>$2</em>")
     .replace(/ {2}$/gm, "<br/>");
@@ -18,7 +18,7 @@ export function renderMarkdown(md: string): string {
   blocks.forEach((block, i) => {
     if (i % 2 === 1) {
       const body = block.replace(/^\w*\n/, "");
-      out.push(`<pre class="overflow-x-auto rounded-lg bg-ink p-3 font-mono text-xs leading-relaxed">${esc(body.replace(/\n$/, ""))}</pre>`);
+      out.push(`<pre class="overflow-x-auto rounded-lg bg-canvas p-3 font-mono text-xs leading-relaxed">${esc(body.replace(/\n$/, ""))}</pre>`);
       return;
     }
     for (const para of block.split(/\n{2,}/)) {

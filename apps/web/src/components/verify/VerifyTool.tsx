@@ -42,8 +42,8 @@ export function VerifyTool() {
         <div className="card space-y-2 p-4 text-sm">
           <p className={result.sig && result.pinned ? "text-ok" : "text-redpen"}>{result.sig && result.pinned ? "✓ Signature valid — issued by Humagination." : "✗ Signature invalid or signed by a different key."}</p>
           <p className={result.content ? "text-ok" : "text-redpen"}>{result.content ? "✓ Text matches the certified content exactly." : "✗ Text does not match the certified content (even one character changes the hash)."}</p>
-          <p className="text-paper-dim">Verdict in certificate: <strong className="text-paper">{VERDICT_LABEL[result.cert.payload.verdict]}</strong> · @{result.cert.payload.author} · {new Date(result.cert.payload.issuedAt).toLocaleString()}</p>
-          <a className="link text-paper-dim" href={`/verify/${result.cert.payload.certId}`}>Open the full certificate and replay ↗</a>
+          <p className="text-fg-dim">Verdict in certificate: <strong className="text-fg">{VERDICT_LABEL[result.cert.payload.verdict]}</strong> · @{result.cert.payload.author} · {new Date(result.cert.payload.issuedAt).toLocaleString()}</p>
+          <a className="link text-fg-dim" href={`/verify/${result.cert.payload.certId}`}>Open the full certificate and replay ↗</a>
         </div>
       )}
     </div>

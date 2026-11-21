@@ -23,11 +23,11 @@ export default async function MathProblemPage({ params }: { params: Promise<{ id
     p.finalForm === "solutions" ? "Solve for x. Finish with every solution, e.g. x = 2 or x = -3." : "Solve for x. Finish with x = (a number).";
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <Link href="/tutor/math" className="text-sm text-paper-dim hover:text-paper">← All problems</Link>
+      <Link href="/tutor/math" className="text-sm text-fg-dim hover:text-fg">← All problems</Link>
       <div className="card space-y-2 p-6">
-        <div className="text-xs uppercase tracking-wide text-paper-faint">{p.topic}</div>
+        <div className="text-xs uppercase tracking-wide text-fg-faint">{p.topic}</div>
         <div className="text-2xl"><TexServer tex={p.prompt} display /></div>
-        <p className="text-sm text-paper-dim">{instruction}</p>
+        <p className="text-sm text-fg-dim">{instruction}</p>
       </div>
       <StepCheck problem={pub} solved={!!prog.solved_at} />
     </div>

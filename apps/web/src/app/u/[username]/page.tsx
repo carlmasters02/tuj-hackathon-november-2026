@@ -27,26 +27,26 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="h-page">{p.display_name || p.username}</h1>
-          <p className="text-sm text-paper-dim">@{p.username} · {followers.count ?? 0} followers · {following.count ?? 0} following</p>
-          {p.bio && <p className="mt-2 max-w-xl text-paper-dim">{p.bio}</p>}
+          <p className="text-sm text-fg-dim">@{p.username} · {followers.count ?? 0} followers · {following.count ?? 0} following</p>
+          {p.bio && <p className="mt-2 max-w-xl text-fg-dim">{p.bio}</p>}
         </div>
         {viewer && viewer.id !== p.id && <FollowButton username={p.username} following={!!amFollowing.data} />}
       </header>
       <section className="space-y-2">
-        <h2 className="text-xs uppercase tracking-wide text-paper-faint">Published work</h2>
+        <h2 className="text-xs uppercase tracking-wide text-fg-faint">Published work</h2>
         <ul className="divide-y divide-line rounded-xl border border-line">
-          {(works.data ?? []).length === 0 && <li className="p-4 text-sm text-paper-faint">Nothing published yet.</li>}
+          {(works.data ?? []).length === 0 && <li className="p-4 text-sm text-fg-faint">Nothing published yet.</li>}
           {(works.data ?? []).map((w) => (
-            <li key={w.id}><Link href={`/gallery/${w.id}`} className="flex justify-between px-4 py-3 hover:bg-ink-2"><span className="font-serif">{w.title}</span><span className="chip">{w.kind}</span></Link></li>
+            <li key={w.id}><Link href={`/gallery/${w.id}`} className="flex justify-between px-4 py-3 hover:bg-surface"><span className="font-bold">{w.title}</span><span className="chip">{w.kind}</span></Link></li>
           ))}
         </ul>
       </section>
       <section className="space-y-2">
-        <h2 className="text-xs uppercase tracking-wide text-paper-faint">Certificates</h2>
+        <h2 className="text-xs uppercase tracking-wide text-fg-faint">Certificates</h2>
         <ul className="divide-y divide-line rounded-xl border border-line">
-          {(certs.data ?? []).length === 0 && <li className="p-4 text-sm text-paper-faint">No certificates yet.</li>}
+          {(certs.data ?? []).length === 0 && <li className="p-4 text-sm text-fg-faint">No certificates yet.</li>}
           {(certs.data ?? []).map((c) => (
-            <li key={c.id}><Link href={`/verify/${c.id}`} className="flex justify-between px-4 py-3 hover:bg-ink-2"><span className="font-serif">{c.title}</span><span className="chip">{VERDICT_LABEL[c.verdict as Verdict]}</span></Link></li>
+            <li key={c.id}><Link href={`/verify/${c.id}`} className="flex justify-between px-4 py-3 hover:bg-surface"><span className="font-bold">{c.title}</span><span className="chip">{VERDICT_LABEL[c.verdict as Verdict]}</span></Link></li>
           ))}
         </ul>
       </section>

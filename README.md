@@ -1,3 +1,5 @@
+<p align="center"><img src="apps/web/src/assets/logo.png" alt="Humagination" width="460"></p>
+
 # Humagination
 
 **Learn and create with your own mind — checked by code, never by AI.**
@@ -95,6 +97,40 @@ Flags passive voice, filler and weasel words, hedges and intensifiers, sentences
 
 ---
 
+## Brand & theme
+
+The whole UI takes its colors from the logo: soft **parchment** backgrounds, **navy** text and primary buttons, and the bulb's **sun yellow** and **orange** for happy accents (highlights, active nav, focus rings, chart bars).
+
+| Token | Hex | Used for |
+|---|---|---|
+| `canvas` | `#F7F0E1` | Parchment page background (with a faint paper grain) |
+| `surface` / `muted` / `line` | `#FFFBF2` / `#F1E7D2` / `#E5D8BC` | Cream cards and inputs, hover fills, borders |
+| `fg` (navy) | `#1B2B5E` | Body text, headings, primary buttons |
+| `fg-dim` / `fg-faint` | `#48537A` / `#646985` | Secondary text / captions |
+| `sun` / `sun-soft` | `#FBCB3D` / `#FDF1C7` | Highlighter accents, active nav, focus rings |
+| `flame` | `#FF9F1C` | AI minutes in charts, paste highlights |
+| `redpen` / `ok` / `warn` | `#C0392B` / `#2A7247` / `#9A5A00` | Errors and RedPen, success, warnings |
+
+All text colors meet WCAG AA contrast (≥ 4.5:1) on both parchment and cream. Tokens live in `apps/web/src/app/globals.css`, and the extension mirrors them in `apps/extension/src/ui.css`.
+
+**Type:**
+- **Nunito** (self-hosted from npm, because the CSP allows same-origin fonts only) for the friendly, rounded UI.
+- A book serif for long-form writing: the editor, the replay player and published pieces.
+
+**Logo and app icons** are generated from one source file, `apps/web/brand/humagination-logo.png`, by `pnpm --filter web brand`. The script turns the white background into transparency without white halos.
+
+| Asset | What it is |
+|---|---|
+| `src/assets/logo.png` | Full logo for the header |
+| `src/app/icon.png` | Favicon: light bulb only |
+| `src/app/apple-icon.png` | iPhone home-screen icon: bulb on parchment |
+| `public/icons/icon-*.png`, `public/icons/maskable-*.png` | Android / PWA icons, declared in `src/app/manifest.ts` |
+| `apps/extension/public/icon*.png` | Chrome toolbar icons |
+
+On phones the app icon is **just the light bulb**.
+
+---
+
 ## How it's built
 
 ```mermaid
@@ -141,6 +177,7 @@ flowchart LR
 apps/
   web/              Next.js app — pages in src/app, API route handlers in src/app/api,
                     server-only helpers in src/lib (auth, crypto, rate limits, storage, runners)
+    brand/          source logo; scripts/brand-assets.mjs generates all logos & icons from it
   extension/        Chrome Manifest V3 extension (Vite build → apps/extension/dist)
 packages/
   shared/           Pure, unit-tested logic used by browser and server:
@@ -208,6 +245,7 @@ pnpm dev      # http://localhost:3000
 | `pnpm gen:exercises` | Regenerate the 36 exercise files from `scripts/gen-exercises.mjs` |
 | `pnpm gen:types` | Generate database types (needs the Supabase CLI and `SUPABASE_PROJECT_REF`) |
 | `pnpm seed` | Load demo data |
+| `pnpm --filter web brand` | Regenerate the logo, favicon, iPhone/Android and extension icons from `apps/web/brand/humagination-logo.png` |
 
 ### Environment variables
 All are listed in `.env.example`.

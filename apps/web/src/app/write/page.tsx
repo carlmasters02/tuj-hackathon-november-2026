@@ -22,19 +22,19 @@ export default async function WritePage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="h-page">Written here</h1>
-          <p className="mt-1 max-w-2xl text-sm text-paper-dim">Drafts are encrypted at rest. Every edit is hash-chained and checked by the server as you type; finalize to get a signed certificate with a public replay.</p>
+          <p className="mt-1 max-w-2xl text-sm text-fg-dim">Drafts are encrypted at rest. Every edit is hash-chained and checked by the server as you type; finalize to get a signed certificate with a public replay.</p>
         </div>
         <NewDocButton />
       </div>
       <ul className="divide-y divide-line rounded-xl border border-line">
-        {(docs ?? []).length === 0 && <li className="p-6 text-sm text-paper-faint">No documents yet.</li>}
+        {(docs ?? []).length === 0 && <li className="p-6 text-sm text-fg-faint">No documents yet.</li>}
         {(docs ?? []).map((d) => {
           const cert = latestCert.get(d.id);
           return (
             <li key={d.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-              <Link href={`/write/${d.id}`} className="font-serif text-lg hover:underline">{dec(d.id, "title", d.title_enc)}</Link>
-              <div className="flex items-center gap-3 text-xs text-paper-faint">
-                {cert && <Link href={`/verify/${cert.id}`} className="chip hover:text-paper">{VERDICT_LABEL[cert.verdict]} ↗</Link>}
+              <Link href={`/write/${d.id}`} className="text-lg font-bold hover:underline">{dec(d.id, "title", d.title_enc)}</Link>
+              <div className="flex items-center gap-3 text-xs text-fg-faint">
+                {cert && <Link href={`/verify/${cert.id}`} className="chip hover:text-fg">{VERDICT_LABEL[cert.verdict]} ↗</Link>}
                 <span>edited {new Date(d.updated_at).toLocaleString()}</span>
               </div>
             </li>

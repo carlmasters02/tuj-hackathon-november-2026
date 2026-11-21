@@ -108,7 +108,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
       <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-3">
           <input
-            className="min-w-0 flex-1 bg-transparent font-serif text-3xl tracking-tight outline-none placeholder:text-paper-faint"
+            className="min-w-0 flex-1 bg-transparent text-3xl font-extrabold tracking-tight outline-none placeholder:text-fg-faint"
             value={title}
             maxLength={200}
             onChange={(e) => setTitle(e.target.value)}
@@ -121,13 +121,13 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
             </button>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-paper-dim">This publishes the text and its replay at a public link.</span>
+              <span className="text-xs text-fg-dim">This publishes the text and its replay at a public link.</span>
               <button className="btn btn-primary" disabled={finalizing} onClick={finalize}>{finalizing ? "Verifying…" : "Confirm"}</button>
               <button className="btn btn-ghost" onClick={() => setConfirmFinalize(false)}>Cancel</button>
             </div>
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-2 text-xs text-paper-faint">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-fg-faint">
           <span className={`inline-block h-2 w-2 rounded-full ${status === "conflict" ? "bg-redpen" : status === "offline" ? "bg-warn" : "bg-ok"}`} />
           <span>{STATUS_TEXT[status]}</span>
           {pasteWarnings > 0 && (
@@ -150,13 +150,13 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash 
 function Toolbar({ editor }: { editor: ReturnType<typeof useEditor> | null }) {
   if (!editor) return null;
   const b = (label: string, active: boolean, run: () => void, title: string) => (
-    <button type="button" title={title} aria-pressed={active} onMouseDown={(e) => e.preventDefault()} onClick={run} className={`rounded px-2 py-1 text-sm ${active ? "bg-ink-3 text-paper" : "text-paper-dim hover:bg-ink-3"}`}>
+    <button type="button" title={title} aria-pressed={active} onMouseDown={(e) => e.preventDefault()} onClick={run} className={`rounded px-2 py-1 text-sm ${active ? "bg-muted text-fg" : "text-fg-dim hover:bg-muted"}`}>
       {label}
     </button>
   );
   const c = () => editor.chain().focus();
   return (
-    <div className="flex flex-wrap gap-1 rounded-lg border border-line bg-ink-2 p-1">
+    <div className="flex flex-wrap gap-1 rounded-lg border border-line bg-surface p-1">
       {b("H1", editor.isActive("heading", { level: 1 }), () => c().toggleHeading({ level: 1 }).run(), "Heading 1")}
       {b("H2", editor.isActive("heading", { level: 2 }), () => c().toggleHeading({ level: 2 }).run(), "Heading 2")}
       {b("H3", editor.isActive("heading", { level: 3 }), () => c().toggleHeading({ level: 3 }).run(), "Heading 3")}

@@ -112,12 +112,12 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
           return (
             <li key={i} className={`rounded-lg border ${tone} transition`}>
               <div className="flex items-center gap-3 px-3 py-2">
-                <span className="w-5 text-right font-mono text-xs text-paper-faint">{i + 1}</span>
+                <span className="w-5 text-right font-mono text-xs text-fg-faint">{i + 1}</span>
                 <input
                   ref={(el) => {
                     inputs.current[i] = el;
                   }}
-                  className="min-w-0 flex-1 bg-transparent font-mono text-base outline-none placeholder:text-paper-faint"
+                  className="min-w-0 flex-1 bg-transparent font-mono text-base outline-none placeholder:text-fg-faint"
                   value={l}
                   placeholder={i === 0 ? (problem.kind === "equation" ? "e.g. 2x = 11 - 3" : "your first step") : "next step"}
                   maxLength={300}
@@ -141,7 +141,7 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
                 />
                 <span className="w-5 text-center text-sm">{s === "ok" ? <span className="text-ok">✓</span> : s === "error" || s === "parse_error" ? <span className="text-redpen">✗</span> : null}</span>
               </div>
-              {previews[i] && <div className="border-t border-line/60 px-11 py-1.5 text-paper-dim"><Tex tex={previews[i]!} /></div>}
+              {previews[i] && <div className="border-t border-line/60 px-11 py-1.5 text-fg-dim"><Tex tex={previews[i]!} /></div>}
               {messages[i] && (s === "error" || s === "parse_error") && <div className="px-11 pb-2 text-sm text-redpen">{messages[i]}</div>}
             </li>
           );
@@ -151,7 +151,7 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
       <div className="flex flex-wrap items-center gap-3">
         <button className="btn btn-primary" onClick={check} disabled={busy}>{busy ? "Checking…" : "Check my steps"}</button>
         <button className="btn btn-ghost" onClick={() => addLine(lines.length - 1)}>+ Line</button>
-        <span className="text-xs text-paper-faint">Enter = new line · Ctrl/⌘+Enter = check · use * for times, ^ for powers, / for fractions</span>
+        <span className="text-xs text-fg-faint">Enter = new line · Ctrl/⌘+Enter = check · use * for times, ^ for powers, / for fractions</span>
       </div>
 
       {error && <p className="text-sm text-redpen">{error}</p>}
@@ -159,7 +159,7 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
       {result?.complete && (
         <div className="rounded-xl border border-ok/50 bg-ok-dim p-4">
           <p className="font-medium text-ok">Solved — every step checks out.</p>
-          {result.points > 0 && <p className="text-sm text-paper-dim">+{result.points} Human Points</p>}
+          {result.points > 0 && <p className="text-sm text-fg-dim">+{result.points} Human Points</p>}
         </div>
       )}
       {result && result.firstError === null && !result.complete && result.finalFormMessage && (
@@ -172,14 +172,14 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
         <div className="card space-y-3 p-4">
           {hints.map((h) => (
             <div key={h.tier} className="text-sm">
-              <div className="text-xs uppercase tracking-wide text-paper-faint">Hint {h.tier} · {TIER_LABEL[h.tier]}</div>
+              <div className="text-xs uppercase tracking-wide text-fg-faint">Hint {h.tier} · {TIER_LABEL[h.tier]}</div>
               <p className="mt-0.5">{h.text}</p>
             </div>
           ))}
           {tierAvailable > highestShown && (
             <button className="btn" onClick={revealHint}>Show hint {highestShown + 1} {highestShown + 1 >= 2 && "(forfeits the no-hint bonus)"}</button>
           )}
-          {tierAvailable <= highestShown && highestShown < 3 && result?.firstError !== null && <p className="text-xs text-paper-faint">Try again — the next hint unlocks after another attempt.</p>}
+          {tierAvailable <= highestShown && highestShown < 3 && result?.firstError !== null && <p className="text-xs text-fg-faint">Try again — the next hint unlocks after another attempt.</p>}
         </div>
       )}
       {solved && !result?.complete && <p className="text-xs text-ok">You&apos;ve solved this one before. Practice is still welcome.</p>}

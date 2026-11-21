@@ -10,8 +10,8 @@ function Section({ title, desc, children }: { title: string; desc?: string; chil
   return (
     <section className="card space-y-4 p-5">
       <div>
-        <h2 className="font-serif text-xl">{title}</h2>
-        {desc && <p className="mt-1 text-sm text-paper-dim">{desc}</p>}
+        <h2 className="text-xl font-extrabold">{title}</h2>
+        {desc && <p className="mt-1 text-sm text-fg-dim">{desc}</p>}
       </div>
       {children}
     </section>
@@ -46,7 +46,7 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
 
   return (
     <div className="space-y-6">
-      {msg && <p className="fixed bottom-4 right-4 z-50 rounded-md border border-line bg-ink-3 px-3 py-2 text-sm">{msg}</p>}
+      {msg && <p className="fixed bottom-4 right-4 z-50 rounded-md border border-line bg-muted px-3 py-2 text-sm">{msg}</p>}
 
       <Section title="Profile" desc={`@${profile.username} · ${email}`}>
         <div>
@@ -62,11 +62,11 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
       <Section title="Privacy">
         <label className="flex items-start gap-3 text-sm">
           <input type="checkbox" className="mt-1" checked={p.isPublic} onChange={(e) => save({ isPublic: e.target.checked })} />
-          <span><strong>Public profile.</strong> <span className="text-paper-dim">Others can see your profile page and published works.</span></span>
+          <span><strong>Public profile.</strong> <span className="text-fg-dim">Others can see your profile page and published works.</span></span>
         </label>
         <label className="flex items-start gap-3 text-sm">
           <input type="checkbox" className="mt-1" checked={p.leaderboardOptIn} onChange={(e) => save({ leaderboardOptIn: e.target.checked })} />
-          <span><strong>Show me on the weekly leaderboard.</strong> <span className="text-paper-dim">Off by default. Shares your username, reliance score and streak — never per-site minutes.</span></span>
+          <span><strong>Show me on the weekly leaderboard.</strong> <span className="text-fg-dim">Off by default. Shares your username, reliance score and streak — never per-site minutes.</span></span>
         </label>
       </Section>
 
@@ -74,7 +74,7 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
         {newToken && (
           <div className="rounded-md border border-warn/50 bg-warn-dim p-3 text-sm">
             <p className="mb-2">Copy this into the extension&apos;s options page now — it won&apos;t be shown again.</p>
-            <code className="block break-all rounded bg-ink p-2 font-mono text-xs">{newToken}</code>
+            <code className="block break-all rounded bg-canvas p-2 font-mono text-xs">{newToken}</code>
           </div>
         )}
         <button
@@ -95,7 +95,7 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
           {tokens.map((t) => (
             <li key={t.id} className="flex items-center justify-between gap-3 py-2">
               <span>
-                {t.label} <span className="text-paper-faint">· created {new Date(t.created_at).toLocaleDateString()}{t.last_used_at ? ` · last used ${new Date(t.last_used_at).toLocaleDateString()}` : ""}</span>
+                {t.label} <span className="text-fg-faint">· created {new Date(t.created_at).toLocaleDateString()}{t.last_used_at ? ` · last used ${new Date(t.last_used_at).toLocaleDateString()}` : ""}</span>
               </span>
               {t.revoked_at ? (
                 <span className="chip">revoked</span>

@@ -26,22 +26,22 @@ export default async function GalleryPage({ searchParams }: { searchParams: Prom
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="h-page">Gallery</h1>
-          <p className="mt-1 max-w-2xl text-sm text-paper-dim">Human-made work only. AI crawlers are refused, originals are encrypted and never served, and every image you see is stamped with your username — screenshot-deterred and traceable.</p>
+          <p className="mt-1 max-w-2xl text-sm text-fg-dim">Human-made work only. AI crawlers are refused, originals are encrypted and never served, and every image you see is stamped with your username — screenshot-deterred and traceable.</p>
         </div>
         <Link href="/gallery/upload" className="btn btn-primary">Upload</Link>
       </div>
       <nav className="flex gap-1 border-b border-line">
         {TABS.map((t) => (
-          <Link key={t.id} href={`/gallery?tab=${t.id}`} className={`-mb-px border-b-2 px-3 py-2 text-sm ${tab === t.id ? "border-paper text-paper" : "border-transparent text-paper-dim hover:text-paper"}`}>{t.label}</Link>
+          <Link key={t.id} href={`/gallery?tab=${t.id}`} className={`-mb-px border-b-2 px-3 py-2 text-sm ${tab === t.id ? "border-fg text-fg" : "border-transparent text-fg-dim hover:text-fg"}`}>{t.label}</Link>
         ))}
       </nav>
-      {(works ?? []).length === 0 && <p className="text-sm text-paper-faint">Nothing published here yet.</p>}
+      {(works ?? []).length === 0 && <p className="text-sm text-fg-faint">Nothing published here yet.</p>}
       {tab === "art" && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {(works ?? []).map((w) => (
-            <Link key={w.id} href={`/gallery/${w.id}`} className="card overflow-hidden hover:border-paper-faint">
+            <Link key={w.id} href={`/gallery/${w.id}`} className="card overflow-hidden hover:border-fg-faint">
               <ProtectedImage src={signedMediaUrl(w.id, user.id)} width={w.width ?? 4} height={w.height ?? 3} alt={w.title} />
-              <div className="p-3"><div className="font-serif">{w.title}</div><div className="text-xs text-paper-faint">@{name.get(w.owner_id)}</div></div>
+              <div className="p-3"><div className="font-bold">{w.title}</div><div className="text-xs text-fg-faint">@{name.get(w.owner_id)}</div></div>
             </Link>
           ))}
         </div>
@@ -50,9 +50,9 @@ export default async function GalleryPage({ searchParams }: { searchParams: Prom
         <ul className="divide-y divide-line rounded-xl border border-line">
           {(works ?? []).map((w) => (
             <li key={w.id}>
-              <Link href={`/gallery/${w.id}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-ink-2">
-                <span className="font-serif text-lg">{w.title}</span>
-                <span className="flex items-center gap-2 text-xs text-paper-faint">{tab === "writing" && <span className="chip border-ok/50 text-ok">Human-Verified</span>}@{name.get(w.owner_id)}</span>
+              <Link href={`/gallery/${w.id}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-surface">
+                <span className="text-lg font-extrabold">{w.title}</span>
+                <span className="flex items-center gap-2 text-xs text-fg-faint">{tab === "writing" && <span className="chip border-ok/50 text-ok">Human-Verified</span>}@{name.get(w.owner_id)}</span>
               </Link>
             </li>
           ))}

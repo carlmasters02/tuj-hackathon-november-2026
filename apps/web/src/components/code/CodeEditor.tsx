@@ -17,7 +17,7 @@ const errorLineField = StateField.define<DecorationSet>({
     for (const e of tr.effects) {
       if (e.is(setErrorLine)) {
         if (e.value === null || e.value < 1 || e.value > tr.state.doc.lines) deco = Decoration.none;
-        else deco = Decoration.set([Decoration.line({ attributes: { style: "background: rgba(229,83,61,0.18)" } }).range(tr.state.doc.line(e.value).from)]);
+        else deco = Decoration.set([Decoration.line({ attributes: { style: "background: rgba(192,57,43,0.12)" } }).range(tr.state.doc.line(e.value).from)]);
       }
     }
     return deco;
@@ -27,15 +27,15 @@ const errorLineField = StateField.define<DecorationSet>({
 
 const theme = EditorView.theme(
   {
-    "&": { backgroundColor: "var(--color-ink-2)", color: "var(--color-paper)", borderRadius: "0.75rem", border: "1px solid var(--color-line)" },
-    ".cm-content": { fontFamily: "var(--font-mono)", caretColor: "var(--color-paper)", padding: "12px 0" },
-    ".cm-gutters": { backgroundColor: "transparent", color: "var(--color-paper-faint)", border: "none" },
-    ".cm-activeLine": { backgroundColor: "rgba(255,255,255,0.03)" },
-    ".cm-activeLineGutter": { backgroundColor: "transparent", color: "var(--color-paper)" },
-    "&.cm-focused .cm-selectionBackground, .cm-selectionBackground": { backgroundColor: "rgba(143,163,184,0.25) !important" },
+    "&": { backgroundColor: "var(--color-surface)", color: "var(--color-fg)", borderRadius: "1rem", border: "1px solid var(--color-line)" },
+    ".cm-content": { fontFamily: "var(--font-mono)", caretColor: "var(--color-fg)", padding: "12px 0" },
+    ".cm-gutters": { backgroundColor: "transparent", color: "var(--color-fg-faint)", border: "none" },
+    ".cm-activeLine": { backgroundColor: "rgba(251,203,61,0.14)" },
+    ".cm-activeLineGutter": { backgroundColor: "transparent", color: "var(--color-fg)" },
+    "&.cm-focused .cm-selectionBackground, .cm-selectionBackground": { backgroundColor: "rgba(27,43,94,0.14) !important" },
     "&.cm-focused": { outline: "none" },
   },
-  { dark: true },
+  { dark: false },
 );
 
 const LANG_EXT = { python: () => python(), c: () => cpp(), java: () => java() };
