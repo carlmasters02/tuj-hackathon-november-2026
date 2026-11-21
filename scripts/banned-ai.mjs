@@ -18,6 +18,22 @@ export const BANNED_HOSTS = [
   "api.perplexity.ai", "api.x.ai", "inference.ai.azure.com", "openai.azure.com"
 ];
 
+// Python distributions/modules (PyPI names, lower-case; "-" and "_" are treated alike).
+export const BANNED_PY_PACKAGES = [
+  "openai", "anthropic", "google-generativeai", "google-genai", "google-cloud-aiplatform", "vertexai", "cohere",
+  "mistralai", "replicate", "huggingface-hub", "huggingface_hub", "transformers", "diffusers", "accelerate",
+  "sentence-transformers", "torch", "torchvision", "torchaudio", "tensorflow", "tensorflow-cpu", "keras", "jax",
+  "flax", "onnx", "onnxruntime", "scikit-learn", "sklearn", "xgboost", "lightgbm", "catboost", "spacy", "nltk",
+  "gensim", "langchain", "langchain-core", "langchain-openai", "llama-index", "llama-cpp-python", "ollama",
+  "groq", "together", "tiktoken", "ultralytics", "opencv-contrib-python", "mediapipe", "easyocr", "pytesseract",
+  "fastai", "timm", "litellm", "instructor", "dspy-ai", "vllm", "ctransformers", "gpt4all",
+];
+
+export function isBannedPyPackage(name) {
+  const n = name.toLowerCase().replace(/_/g, "-");
+  return BANNED_PY_PACKAGES.some((b) => b.replace(/_/g, "-") === n);
+}
+
 export function isBannedPackage(name) {
   return BANNED_PACKAGES.some((b) => (b.endsWith("/") ? name.startsWith(b) : name === b));
 }

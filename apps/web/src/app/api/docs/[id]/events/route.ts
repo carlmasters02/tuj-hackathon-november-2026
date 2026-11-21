@@ -21,7 +21,7 @@ const Body = EventBatchSchema.extend({ content: z.unknown() });
 export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: string }> }) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const id = UUID.parse((await ctx.params).id);
   const body = await parseJson(req, Body, 1_500_000);
   const doc = await ownedDoc(id, user.id);

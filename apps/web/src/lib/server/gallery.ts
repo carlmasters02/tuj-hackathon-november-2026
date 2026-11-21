@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import "server-only";
 import { mediaUrl } from "@hm/shared/gallery/signedUrl";
 import { keyBytes } from "../env";
@@ -46,15 +47,19 @@ export async function deleteWorkFiles(w: WorkRow) {
   }
 }
 
-// in-memory bulk-download detector: >300 media fetches in 10 minutes flags the account
-const hits = new Map<string, number[]>();
+/**
+ * Bulk-download detector: more than 300 media fetches in 10 minutes flags the account. Uses the
+ * shared Postgres token bucket, so it works across serverless instances.
+ */
 export async function noteMediaFetch(userId: string) {
-  const now = Date.now();
-  const arr = (hits.get(userId) ?? []).filter((t) => now - t < 600_000);
-  arr.push(now);
-  hits.set(userId, arr);
-  if (arr.length === 301) {
+  const sb = supabaseAdmin();
+  const { data } = await sb.rpc("hm_take_token", {
+    p_key: createHash("sha256").update(`bulk|${userId}`).digest("hex"),
+    p_capacity: 300,
+    p_window_seconds: 600,
+  });
+  if (typeof data === "number" && data > 0) {
     console.warn("[media] bulk download pattern; flagging account");
-    await supabaseAdmin().from("profiles").update({ flagged_bulk: true }).eq("id", userId);
+    await sb.from("profiles").update({ flagged_bulk: true }).eq("id", userId).eq("flagged_bulk", false);
   }
 }

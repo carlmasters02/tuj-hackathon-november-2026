@@ -10,7 +10,7 @@ const Body = z.object({ certId: z.string().uuid() }).strict();
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const { certId } = await parseJson(req, Body, 1_000);
   const sb = supabaseAdmin();
   const { data: cert } = await sb.from("certificates").select("id, owner_id, verdict, title").eq("id", certId).maybeSingle();

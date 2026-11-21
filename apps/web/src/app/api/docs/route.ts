@@ -19,7 +19,7 @@ const Body = z.object({ title: z.string().trim().max(200).default("Untitled") })
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const { title } = await parseJson(req, Body, 2_000);
   const id = randomUUID();
   const { error } = await supabaseAdmin().from("documents").insert({

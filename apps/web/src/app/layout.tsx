@@ -20,6 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="flex min-h-dvh flex-col">
+        {process.env.HM_DEMO_MODE === "true" && (
+          <div role="status" className="bg-sun px-4 py-1.5 text-center text-xs font-bold text-fg">
+            Demo mode — login is off and everyone shares one demo account. Don&apos;t enter anything private.
+          </div>
+        )}
         <Nav />
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-8 sm:px-6">{children}</main>
         <footer className="border-t border-line bg-surface/60">

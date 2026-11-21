@@ -10,7 +10,7 @@ type Ctx = { params: Promise<{ id: string }> };
 export const POST = api(async (req: NextRequest, ctx: Ctx) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("api", user.id);
+  await rateLimit("api", user.id);
   const id = UUID.parse((await ctx.params).id);
   await viewableWork(id, user.id);
   const { error } = await (await supabaseServer()).from("likes").upsert({ user_id: user.id, work_id: id }, { ignoreDuplicates: true });

@@ -12,6 +12,8 @@ export interface Profile {
   bio: string | null;
   is_public: boolean;
   leaderboard_opt_in: boolean;
+  /** false for Google sign-ups until they pick a username on /welcome */
+  username_chosen: boolean;
 }
 
 /**
@@ -36,14 +38,19 @@ export async function requireUser(): Promise<User> {
   return u;
 }
 
-/** For pages: redirects to /login when signed out. */
+/**
+ * For pages: redirects to /login when signed out, and to /welcome until a Google sign-up has
+ * chosen its username.
+ */
 export async function requireUserPage(next = "/dashboard"): Promise<User> {
   const u = await currentUser();
-  if (!u) redirect(`/login?next=${encodeURIComponent(next)}`);
+  if (!u) redirect(process.env.HM_DEMO_MODE === "true" ? `/auth/demo?next=${encodeURIComponent(next)}` : `/login?next=${encodeURIComponent(next)}`);
+  const p = await profileOf(u.id);
+  if (p && !p.username_chosen) redirect(`/welcome?next=${encodeURIComponent(next)}`);
   return u;
 }
 
 export async function profileOf(userId: string): Promise<Profile | null> {
-  const { data } = await supabaseAdmin().from("profiles").select("id, username, display_name, bio, is_public, leaderboard_opt_in").eq("id", userId).maybeSingle();
+  const { data } = await supabaseAdmin().from("profiles").select("id, username, display_name, bio, is_public, leaderboard_opt_in, username_chosen").eq("id", userId).maybeSingle();
   return (data as Profile) ?? null;
 }

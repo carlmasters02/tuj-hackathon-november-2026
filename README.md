@@ -205,21 +205,28 @@ git clone https://github.com/carlmasters02/tuj-hackathon-november-2026.git
 cd tuj-hackathon-november-2026
 pnpm install                              # also copies the Pyodide runtime into apps/web/public
 
-cp .env.example apps/web/.env.local       # then fill it in:
-pnpm gen:keys                             #   prints the five HM_* secrets to paste in
-                                          #   + Supabase URL, anon key, service-role key
+# writes apps/web/.env.local with fresh secrets (never printed) + your project's public URL/key
+node scripts/setup-env.mjs --url https://<ref>.supabase.co --anon <publishable-key>
+# then paste SUPABASE_SERVICE_ROLE_KEY (Supabase → Project Settings → API keys → secret) into it
 ```
 
 **Database.**
-1. Apply `supabase/migrations/*.sql`, either with `supabase db push` or by pasting the files, in order, into the Supabase SQL editor.
+1. Apply the five files in `supabase/migrations/`, in order, either with `supabase db push` or by pasting them into the SQL editor. When creating the project, turn **"Grant API access to new tables automatically" off** and **"Enable RLS on new tables automatically" on**. Migration 4 then grants each role exactly the access it needs.
 2. In the Supabase dashboard (these settings can't be set from SQL):
    - Authentication → Email: turn **Confirm email** on, set minimum password length to **12**, and turn **Leaked password protection** on.
-   - Authentication → URL configuration: add `http://localhost:3000/auth/callback` to the redirect URLs.
+   - Authentication → URL configuration: set the Site URL to your production URL, and add `http://localhost:3000/auth/callback` plus `https://<your-domain>/auth/callback` to the redirect URLs.
+3. **Google sign-in** (optional):
+   1. In Google Cloud Console → APIs & Services, set up the OAuth consent screen as **External**.
+   2. Go to Credentials → OAuth client ID → **Web application**. Add the redirect URI `https://<ref>.supabase.co/auth/v1/callback`.
+   3. Paste the client ID and secret into Supabase → Authentication → Providers → **Google**.
+   4. New Google users pick a username once, on `/welcome`.
 
 **Code sandbox** (needed for Code Dojo submissions):
 ```bash
 cd infra/piston && docker compose up -d && ./install-runtimes.sh   # Python 3.12, GCC 10.2, Java 15
 ```
+
+**Demo mode (testing only):** set `HM_DEMO_MODE=true` to skip login. Every visitor is signed in to one shared, pre-confirmed `demo` account, and a yellow banner says so. Sessions, row-level security and rate limits still apply. It needs **"Enable magic links and email OTP"** left on in Supabase, because the server mints a one-time token for the sign-in. Turn it **off** before real users sign up.
 
 **Run it:**
 ```bash
@@ -245,6 +252,7 @@ pnpm dev      # http://localhost:3000
 | `pnpm gen:exercises` | Regenerate the 36 exercise files from `scripts/gen-exercises.mjs` |
 | `pnpm gen:types` | Generate database types (needs the Supabase CLI and `SUPABASE_PROJECT_REF`) |
 | `pnpm seed` | Load demo data |
+| `node scripts/setup-env.mjs` | Create `apps/web/.env.local` with freshly generated secrets |
 | `pnpm --filter web brand` | Regenerate the logo, favicon, iPhone/Android and extension icons from `apps/web/brand/humagination-logo.png` |
 
 ### Environment variables
@@ -267,11 +275,11 @@ All are listed in `.env.example`.
 | Concern | What we do |
 |---|---|
 | **No AI anywhere** | `scripts/no-ai-check.mjs` fails the build if any AI SDK, ML library or model-API hostname appears in a `package.json`, the lockfile (including packages installed indirectly) or source code. |
-| **Accounts** | Supabase Auth with email confirmation. Passwords are ≥ 12 characters, checked against the 10,000 most common passwords (in browser and on server) and Supabase's leaked-password check. 10 failed logins lock the account for 15 minutes. |
-| **Who can see what** | **Row Level Security on every table, deny by default.** Users read only their own rows. The only public data is published gallery works, public profiles, certificates and opted-in leaderboard rows. |
+| **Accounts** | Supabase Auth: email + password (with confirmation) or **Sign in with Google**. Google uses PKCE, the verifier is kept in an httpOnly cookie, and redirects can only go to our own Supabase project and same-site paths. Passwords are ≥ 12 characters, checked against the 10,000 most common passwords (in browser and on server) and Supabase's leaked-password check. 10 failed logins lock the account for 15 minutes. |
+| **Who can see what** | **Row Level Security on every table, deny by default**, plus **explicit, least-privilege table grants** (migration 4): signed-out visitors can't even query private tables, and storage paths, file hashes and token hashes are hidden column by column. Users read only their own rows. The only public data is published gallery works, public profiles, certificates and opted-in leaderboard rows. |
 | **Anti-tampering** | Provenance logs, certificates, points, tracker data and tutor progress **can't be written by clients at all**. Only server routes write them, after checking the user. |
 | **Secret keys** | The service-role key is server-only. `scripts/no-service-role-in-client.mjs` fails the build if it shows up in browser code, the extension or a built bundle. |
-| **Requests** | Every input is validated with zod and size-capped. State-changing requests must come from our own origin (CSRF). Rate limits: login 5/min, signup 3/min, uploads 10/min, API 120/min, media 60/min, code 20/min. |
+| **Requests** | Every input is validated with zod and size-capped. State-changing requests must come from our own origin (CSRF). Rate limits: login 5/min, signup 3/min, uploads 10/min, API 120/min, media 60/min, code 20/min. They're stored in Postgres (`hm_take_token`), so every serverless instance shares them; keys are hashed, so no raw IPs or emails are stored. |
 | **Browser hardening** | Nonce-based Content-Security-Policy with no inline scripts. Pyodide's `wasm-unsafe-eval` is allowed *only* in its own worker. Also `X-Frame-Options: DENY`, Referrer-Policy, Permissions-Policy, and HSTS in production. |
 | **Data at rest** | Drafts, originals and saved solutions are encrypted with AES-256-GCM (random IV per value, each ciphertext bound to its row). Storage buckets are all private. |
 | **Uploads** | File type is detected by magic bytes; images ≤ 15 MB, audio ≤ 25 MB. Images are re-encoded to strip metadata and hidden payloads. |
@@ -333,8 +341,17 @@ $ pnpm test
 - **Tracker numbers are self-reported** by the user's own extension: good for motivation, not proof.
 - **A certificate can't prove someone didn't copy by hand** from another screen. The revision and typing-rhythm stats help readers judge. Japanese and Chinese input methods insert whole phrases at once, so instant insertions are only flagged after 3 occurrences.
 - **The code sandbox must stay on a private network.** Judge0 needs cgroup v1. Piston works on cgroup v2 but can't do the C memory check.
-- Rate limits are in-memory, which is fine for one server. Use a shared store such as Redis if you run several.
+- Rate limits are shared across instances through Postgres. The "5 concurrent code runs" cap is still per instance.
+- **On Vercel:** music uploads need ffmpeg, which Vercel doesn't provide; the app returns a clear "not available" message. Code Dojo **Submit** needs a Piston or Judge0 sandbox reachable from Vercel. Without one, Submit says the runner is unavailable, while Python **Run** still works in the browser.
 - Three Supabase Auth settings must be switched on by hand (see [Getting started](#getting-started)).
+
+---
+
+## Deploying (Vercel + Supabase)
+1. Import the GitHub repo into Vercel with **Root Directory `apps/web`** (framework: Next.js). `apps/web/vercel.json` pins functions to `sin1`, the same region as the Supabase project.
+2. In Vercel → Settings → Environment Variables → **Import .env**, upload `apps/web/.env.local`. Mark `SUPABASE_SERVICE_ROLE_KEY` and every `HM_*` value as **Sensitive**.
+3. Add the production URL to Supabase's Site URL and redirect URLs (`https://<domain>/auth/callback`), and to the Google OAuth client's authorized JavaScript origins.
+4. Deploy. Then check that `curl -A GPTBot https://<domain>/` returns 403 and `/api/cert/public-key` returns your key.
 
 ---
 

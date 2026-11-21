@@ -10,7 +10,7 @@ const Body = z.object({ reason: z.enum(["stolen", "ai_generated", "offensive", "
 export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: string }> }) => {
   assertSameOrigin(req);
   const user = await requireUser();
-  rateLimit("upload", `report:${user.id}`);
+  await rateLimit("upload", `report:${user.id}`);
   const id = UUID.parse((await ctx.params).id);
   await viewableWork(id, user.id);
   const b = await parseJson(req, Body, 3_000);

@@ -91,6 +91,10 @@ describe.skipIf(!enabled)("RLS isolation between two users", () => {
   it("users can't change server-controlled profile columns", async () => {
     const { error } = await A.c.from("profiles").update({ username: "hijack" }).eq("id", A.id);
     expect(error).not.toBeNull();
+    const flag = await A.c.from("profiles").update({ username_chosen: false }).eq("id", A.id);
+    expect(flag.error).not.toBeNull();
+    const flagged = await A.c.from("profiles").update({ flagged_bulk: false }).eq("id", A.id);
+    expect(flagged.error).not.toBeNull();
     const ok = await A.c.from("profiles").update({ bio: "hi" }).eq("id", A.id);
     expect(ok.error).toBeNull();
   });
@@ -107,6 +111,15 @@ describe.skipIf(!enabled)("RLS isolation between two users", () => {
     expect(other.error).not.toBeNull();
     const up = await B.c.storage.from("art-previews").upload(`${B.id}/x.bin`, Buffer.from("x"));
     expect(up.error).not.toBeNull();
+  });
+
+  it("rate-limit buckets and login attempts are closed to clients", async () => {
+    for (const t of ["rate_limits", "login_attempts"]) {
+      const { data } = await A.c.from(t).select("*");
+      expect(data ?? [], t).toHaveLength(0);
+    }
+    const rpc = await A.c.rpc("hm_take_token", { p_key: "x", p_capacity: 1, p_window_seconds: 1 });
+    expect(rpc.error).not.toBeNull();
   });
 
   it("anonymous visitors see only public data", async () => {

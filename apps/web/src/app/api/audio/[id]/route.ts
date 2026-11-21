@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 /** Streams the 64 kbps preview (never the encrypted original) via a viewer-bound signed URL. */
 export const GET = api(async (req: NextRequest, ctx: { params: Promise<{ id: string }> }) => {
   const user = await requireUser();
-  rateLimit("media", user.id);
+  await rateLimit("media", user.id);
   const id = UUID.parse((await ctx.params).id);
   const check = verifyMedia(keyBytes("HM_MEDIA_HMAC_KEY"), id, user.id, Number(req.nextUrl.searchParams.get("exp")), req.nextUrl.searchParams.get("sig") ?? "");
   if (check === "expired") throw new HttpError(410, "This link expired — reload the page.");

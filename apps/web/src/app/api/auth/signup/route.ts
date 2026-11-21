@@ -10,9 +10,9 @@ const Body = z.object({ email: z.string().trim().toLowerCase().email().max(254),
 export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const ip = clientIp(req);
-  rateLimit("signup", `ip:${ip}`);
+  await rateLimit("signup", `ip:${ip}`);
   const body = await parseJson(req, Body, 10_000);
-  rateLimit("signup", `user:${body.username}`);
+  await rateLimit("signup", `user:${body.username}`);
 
   const problem = passwordProblem(body.password, body.username);
   if (problem) throw new HttpError(400, problem);
@@ -29,7 +29,14 @@ export const POST = api(async (req: NextRequest) => {
   });
   if (error) {
     // Supabase's leaked-password protection and its own policy errors surface here.
-    if (/password/i.test(error.message)) throw new HttpError(400, error.message);
+    if (error.code === "weak_password" || /password/i.test(error.message)) throw new HttpError(400, error.message);
+    if (error.code === "email_address_invalid") throw new HttpError(400, "That email address can't be used. Please check it and try again.");
+    if (error.code === "over_email_send_rate_limit" || error.status === 429)
+      throw new HttpError(429, "We can't send more confirmation emails right now. Please try again in a little while.");
+    if (error.code === "email_address_not_authorized" || /sending|smtp|confirmation email/i.test(error.message)) {
+      console.error("[signup] email delivery failed:", error.code ?? error.status);
+      throw new HttpError(503, "We couldn't send the confirmation email. Please try again later.");
+    }
     // Don't reveal whether an email is already registered.
     console.warn("[signup] rejected:", error.code ?? error.status);
   }
