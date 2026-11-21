@@ -17,7 +17,7 @@ export default async function ArtFeed() {
   ).length;
 
   return (
-    <main className="pb-20">
+    <div className="pb-20">
       <header className="relative mb-10 overflow-hidden rounded-[2rem] border border-line bg-surface px-6 py-9 shadow-sm sm:px-10 sm:py-12 lg:px-14">
         <div
           aria-hidden="true"
@@ -147,6 +147,6 @@ export default async function ArtFeed() {
           }
         />
       )}
-    </main>
+    </div>
   );
 }
