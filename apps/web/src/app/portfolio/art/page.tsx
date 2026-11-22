@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { requireUserPage } from "@/lib/auth";
 import { portfolioFeed } from "@/lib/server/portfolio";
-import { ArtWall, EmptyFeed } from "@/components/portfolio/Feed";
+import { signedMediaUrl } from "@/lib/server/gallery";
+import { ArtDiscoveryWall } from "@/components/gallery/ArtDiscoveryWall";
+import { EmptyFeed } from "@/components/portfolio/Feed";
 
 export const metadata = {
   title: "Art Gallery",
@@ -35,7 +37,7 @@ export default async function ArtFeed() {
       </header>
 
       {items.length ? (
-        <ArtWall items={items} viewerId={user.id} />
+        <ArtDiscoveryWall items={items.map((item) => ({ ...item, imageUrl: signedMediaUrl(item.id, user.id) }))} />
       ) : (
         <EmptyFeed
           text="No artwork has been shared yet."

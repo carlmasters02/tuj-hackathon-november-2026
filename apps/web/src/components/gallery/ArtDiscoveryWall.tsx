@@ -23,7 +23,7 @@ export function ArtDiscoveryWall({ items }: { items: ArtTile[] }) {
 
   return (
     <section aria-label="Browse community artwork">
-      <div className="sticky top-0 z-20 -mx-4 mb-7 border-b border-line bg-canvas/95 px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
+      <div className="sticky top-16 z-20 -mx-4 mb-7 border-b border-line bg-canvas/95 px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative min-w-[14rem] flex-1">
             <Search aria-hidden="true" size={20} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-fg-dim" />
