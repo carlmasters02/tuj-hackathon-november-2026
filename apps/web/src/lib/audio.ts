@@ -1,5 +1,7 @@
+import { MAX_AUDIO_BYTES } from "./magic";
+
 export const MAX_SECONDS = 180;
-export const MAX_BYTES = 25 * 1024 * 1024;
+export const MAX_BYTES = MAX_AUDIO_BYTES;
 
 export const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
@@ -11,7 +13,7 @@ export function micErrorMessage(e: unknown): string {
   const name = (e as { name?: string } | null)?.name;
   if (name === "NotAllowedError" || name === "SecurityError") return "Microphone access is blocked. Allow it in your browser’s site settings and try again.";
   if (name === "NotFoundError") return "No microphone found. Plug one in and try again.";
-  if (name === "NotReadableError") return "Another app is using your microphone. Close it and try again.";
+  if (name === "NotReadableError") return "The browser or operating system couldn’t access your microphone. Close other apps using it and try again.";
   return "Couldn’t start the microphone. Try again.";
 }
 
@@ -33,7 +35,7 @@ export function encodeWav(samples: Float32Array, sampleRate: number): Blob {
 
 /** True only for the exact 44-byte-header mono PCM WAV shape produced by encodeWav (no hidden chunks). */
 export function isCanonicalMonoPcmWav(bytes: Uint8Array | ArrayBuffer): boolean {
-  const length = bytes instanceof ArrayBuffer ? bytes.byteLength : bytes.byteLength;
+  const length = bytes.byteLength;
   if (length < 46) return false;
   const view = bytes instanceof ArrayBuffer ? new DataView(bytes) : new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const ascii = (offset: number, text: string) => [...text].every((char, i) => view.getUint8(offset + i) === char.charCodeAt(0));
@@ -49,6 +51,7 @@ export async function toWav(blob: Blob): Promise<Blob> {
   const ctx = new AudioContext();
   try {
     const audio = await ctx.decodeAudioData(await blob.arrayBuffer());
+    if (44 + audio.length * 2 > MAX_BYTES) throw new Error("wav_too_large");
     const mono = new Float32Array(audio.length);
     for (let c = 0; c < audio.numberOfChannels; c++) {
       const d = audio.getChannelData(c);
