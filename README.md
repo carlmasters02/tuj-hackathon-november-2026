@@ -14,24 +14,29 @@ The app has three tabs, plus a browser extension:
 |---|---|
 | **Dashboard** | Your share of the thinking this week (your own minutes vs time on AI sites), Human Points and levels, streak, progress, and where you left off. |
 | **Tutor** — Math, Code, Writing | Math (College Algebra, Precalculus, Calculus 1–3, Probability & Statistics), Code (Python, C, Java) and Writing (research papers, argumentative essays, poetry). It checks your work and says *where* and *what kind* of mistake you made. It never gives the answer. |
-| **Portfolio** — Art, Words, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and non-empty final work whose replay passes the checks gets the **creation-record seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
-| **Reliance Tracker** — Chrome extension | Measures your active time on AI sites so the dashboard can compare it with time you spent thinking for yourself. |
+| **Portfolio** — Art, Words, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio with Digital Art and Pixel Art modes, the composer) is recorded event by event, and non-empty final work whose replay passes the checks gets the **creation-record seal**. Uploads and microphone recordings are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
+| **Reliance Tracker** — Chrome extension | Measures your active time on AI sites so the dashboard can compare it with time you spent thinking for yourself, and can ask you to try first before an AI site opens. |
+
+Everyone signs in to **their own account** (email + password, optional Google). Published work is visible to other signed-in people; drafts, documents, progress and tracker data stay private to their owner.
 
 ---
 
 ## Contents
 1. [Features in detail](#features-in-detail)
-2. [How it's built](#how-its-built)
-3. [Getting started](#getting-started)
-4. [Security model](#security-model)
-5. [How everything is verified](#how-everything-is-verified)
-6. [Known limitations](#known-limitations)
-7. [Demo script (3 minutes)](#demo-script-3-minutes)
-8. [Contributing](#contributing)
+2. [Accounts, pages and the demo archive](#accounts-pages-and-the-demo-archive)
+3. [How it's built](#how-its-built)
+4. [Getting started](#getting-started)
+5. [Security model](#security-model)
+6. [How everything is verified](#how-everything-is-verified)
+7. [Known limitations](#known-limitations)
+8. [Demo script (3 minutes)](#demo-script-3-minutes)
+9. [Contributing](#contributing)
 
 ---
 
 ## Features in detail
+
+The **Tutor hub** (`/tutor`) shows Math, Code and Writing as three cards, each listing its courses or genres in order with your progress (problems solved, exercises completed, pieces in progress).
 
 ### 1. StepCheck — math tutor (`/tutor/math`)
 Students solve a problem one step per line. Each line renders live as math (KaTeX).
@@ -109,7 +114,22 @@ Every work has **likes and comments**. **Only work with a verified creation reco
 | **Art** | drawn in the **drawing studio** (`/portfolio/art/studio`) | allowed, never sealed |
 | **Music** | composed in the **composer** (`/portfolio/music/composer`) | allowed (MP3/OGG/WAV), never sealed |
 
-**Drawing studio and composer.** These use the same protocol as the writing editor. Every stroke, undo and clear (studio) or note placed and removed (composer) is an event in a **SHA-256 hash chain**, sent every 2 seconds and stamped with the server's receipt time. **Finish** replays the whole log on the server, recomputes the chain and the stats, and signs an **Ed25519 certificate**:
+The **Portfolio hub** (`/portfolio`) shows Art, Words and Music as three horizontal cards with hand-drawn illustrations, plus a link to upload finished work and a short explanation of the seal. Each section page lists published work; **Art** has a searchable discovery wall (search by title or artist, filter by *studio verified* / *not studio verified*).
+
+**Drawing studio** (`/portfolio/art/studio`). The hub offers two ways to start: **Digital Art** and **Pixel Art** (which opens straight into pixel mode). Both use the same canvas, recorder and certificate.
+
+| Mode | Tools |
+|---|---|
+| **Digital art** | Pen (B), Marker (M), Eraser (E), **Line** (L), **Box** (R), **Oval** (O) and an **eyedropper** (I). Brush size is a 1–80 px slider (`[` and `]` step it). Holding **Shift** keeps lines at 45° and makes squares and circles. A row of recent colours appears beside the 14-colour palette and the custom colour mixer. |
+| **Pixel art** | Pixel brush (P) and pixel eraser (E) on a grid of **10, 15, 20 or 30 px** cells (120 × 90 down to 40 × 30). A toggleable grid overlay, and **Mirror left ↔ right** for symmetric sprites. Fast drags fill every cell in between, so lines have no gaps. The grid is an editor overlay only; it never appears in the published image. |
+
+Undo (Ctrl+Z) and *Clear the page* work in both modes, and a piece can mix freehand strokes, shapes and pixels. Shapes are recorded as two-point strokes and pixels as the top-left corner of each painted cell. One shared function, `strokeShape()` in `packages/shared/src/creation.ts`, turns every stroke into geometry for **both** the browser canvas and the server's PNG render, so the certified image can't drift from what the artist saw. The server rejects shapes with the wrong number of points and pixels that are off the grid, outside the canvas or an unsupported size.
+
+**Composer** (`/portfolio/music/composer`): a 16-step × 12-note sequencer over two octaves of C major with tempo control and playback.
+
+**Microphone recorder** (`/portfolio/music/record`). Records from your microphone in the browser, converts it locally to canonical PCM WAV, and lets you preview it before publishing. Nothing leaves the tab until you choose to publish. Microphone access is allowed **only on this page** (`Permissions-Policy: microphone=(self)` here, `microphone=()` everywhere else). Recordings are published as uploads: welcome, playable through signed links, but never sealed.
+
+**How the studio and composer are recorded.** These use the same protocol as the writing editor. Every stroke, undo and clear (studio) or note placed and removed (composer) is an event in a **SHA-256 hash chain**, sent every 2 seconds and stamped with the server's receipt time. **Finish** replays the whole log on the server, recomputes the chain and the stats, and signs an **Ed25519 certificate**:
 - Studio art is **rendered by the server from the strokes**, so the published image is exactly what the log describes. It then goes through the art pipeline below.
 - For studio art and composer music, a non-empty final replay and no integrity, plausibility or timing flags are enough; there is **no minimum stroke/note count or active-time requirement**. Counts and duration remain visible as context. Flags include strokes laid down faster than a hand can move, edits faster than a person can click, and a client timeline that disagrees with the server's clock.
 - The certificate page re-verifies the signature, chain and replay on every load, and plays the piece back: a stroke-by-stroke redraw, or the score played and re-written note by note.
@@ -122,7 +142,17 @@ Every work has **likes and comments**. **Only work with a verified creation reco
   5. The original is **encrypted** and never served.
 - **Viewing:** images are served only to logged-in users through 5-minute signed links tied to that viewer. Each copy is stamped with the **viewer's username and date** in a near-invisible pattern, so leaks are traceable. Images are drawn on a canvas with right-click and drag disabled.
 - **AI crawlers** (GPTBot, ClaudeBot, CCBot, Google-Extended and ~25 more) get **403 Forbidden**. Portfolio responses also send `robots.txt` rules, `X-Robots-Tag: noai, noimageai`, a `noai` meta tag and `tdm-reservation: 1`. Old `/gallery` links redirect to `/portfolio`.
-- **Social:** profiles, follow, like, comment, report. Owners can unpublish or delete at any time, which deletes the files.
+- **Social:** profiles (`/u/<username>`), follow, like, comment, report. Comment times are shown in the viewer's own time zone. Owners can unpublish or delete at any time, which deletes the files.
+
+---
+
+## Accounts, pages and the demo archive
+
+- **Real accounts.** Sign up with email, username and password (≥ 12 characters, common passwords rejected), or with Google when enabled. Each person has their own dashboard, drafts, documents, progress, points and portfolio. Signed-out visitors can read the homepage, the developers page, the legal pages and `/verify`; everything else asks them to log in. Login and sign-up errors are deliberately generic so the site doesn't reveal which emails have accounts (`HM_DETAILED_AUTH_ERRORS=false`).
+- **Homepage** (`/`): the pitch, a call to action (*Go to your dashboard* when signed in, *Start creating* otherwise), *Verify a certificate*, six feature cards and an honest "what we promise — and what we don't" panel. The installable web app also opens here.
+- **About the developers** (`/about/developers`): the four-person team with photos, roles, bios and links to LinkedIn, GitHub and personal sites. Profiles live in `apps/web/src/lib/siteInformation.ts`.
+- **Legal pages** (`/legal/…`): Terms of Use, Privacy Policy, Cookie Policy, Accessibility and Copyright & Content, linked from every page's footer.
+- **The demo archive.** During early testing the site ran in demo mode, where every visitor shared one `@demo` account. Real logins replaced that on 22 November 2026. Everything made in demo mode (14 published pieces, drafts, documents and certificates) **stays in the `@demo` account as an archive** until it is reassigned to the people who made it. The app refuses to delete that account, and a full backup was taken and checked byte for byte before the switch.
 
 ---
 
@@ -207,19 +237,23 @@ apps/
   web/              Next.js app — pages in src/app, API route handlers in src/app/api,
                     server-only helpers in src/lib (auth, crypto, rate limits, storage, runners)
     brand/          source logo; scripts/brand-assets.mjs generates all logos & icons from it
+    test/           e2e-live.ts (full user journey), e2e-accounts.ts (two accounts), unit tests
   extension/        Chrome Manifest V3 extension (Vite build → apps/extension/dist)
+    test/           accounting unit tests, e2e-browser.mjs (real Chromium run)
 packages/
   shared/           Pure, unit-tested logic used by browser and server:
                     provenance/ (hash chain, replay, stats) · math/ (checker + hint rules)
                     code/ (grading, error rules, exercises) · gallery/ (dHash, watermark, signed URLs)
                     redpen · scoring · certificate · ratelimit · passwords · aiDomains · crawlers
-    problems/       math/*.json (20 problems) and code/<lang>/*.json (36 exercises)
+    courses/math/   six 12-unit semester pathways (College Algebra → Probability & Statistics)
+    problems/       math/*.json (legacy "Extra practice" sets) and code/<lang>/*.json (36 exercises)
 supabase/
   migrations/       Schema, Row Level Security policies, storage buckets, RPC functions
 infra/
   piston/           Default code sandbox (docker compose, bound to 127.0.0.1)
   judge0/           Alternative code sandbox (Judge0 CE)
 scripts/            no-ai-check, service-role leak check, key generator, exercise generator
+artDetector.ts      unwired prototype from a teammate's PR; not imported by the app (see Known limitations)
 DECISIONS.md        Every judgement call made where the spec was ambiguous
 ```
 
@@ -242,7 +276,7 @@ node scripts/setup-env.mjs --url https://<ref>.supabase.co --anon <publishable-k
 **Database.**
 1. Apply the ordered files in `supabase/migrations/`, either with `supabase db push` or by pasting them into the SQL editor. When creating the project, turn **"Grant API access to new tables automatically" off** and **"Enable RLS on new tables automatically" on**. Migration 4 then grants each role exactly the access it needs.
 2. In the Supabase dashboard (these settings can't be set from SQL):
-   - Authentication → Email: turn **Confirm email** on, set minimum password length to **12**, and turn **Leaked password protection** on.
+   - Authentication → Email: turn **Confirm email** on, set minimum password length to **12**, and turn **Leaked password protection** on. (For a live demo or for running the E2E suites, Confirm email can stay **off** so new accounts are usable immediately; Supabase's built-in mailer is heavily rate-limited, so confirmation needs a real SMTP provider.)
    - Authentication → URL configuration: set the Site URL to your production URL, and add `http://localhost:3000/auth/callback` plus `https://<your-domain>/auth/callback` to the redirect URLs.
 3. **Google sign-in** (optional):
    1. In Google Cloud Console → APIs & Services, set up the OAuth consent screen as **External**.
@@ -255,7 +289,7 @@ node scripts/setup-env.mjs --url https://<ref>.supabase.co --anon <publishable-k
 cd infra/piston && docker compose up -d && ./install-runtimes.sh   # Python 3.12, GCC 10.2, Java 15
 ```
 
-**Demo mode (testing only):** set `HM_DEMO_MODE=true` to skip login. Every visitor is signed in to one shared, pre-confirmed `demo` account, and a yellow banner says so. Sessions, row-level security and rate limits still apply. It needs **"Enable magic links and email OTP"** left on in Supabase, because the server mints a one-time token for the sign-in. Turn it **off** before real users sign up.
+**Demo mode (local testing only; production runs with real logins):** set `HM_DEMO_MODE=true` to skip login. Every visitor is signed in to one shared, pre-confirmed `demo` account, and a yellow banner says so. Sessions, row-level security and rate limits still apply. It needs **"Enable magic links and email OTP"** left on in Supabase, because the server mints a one-time token for the sign-in. Turn it **off** before real users sign up.
 
 **Run it:**
 ```bash
@@ -275,7 +309,9 @@ pnpm dev      # http://localhost:3000
 | `pnpm dev` | Start the web app |
 | `pnpm lint` | AI-free check → service-role leak check → ESLint → typecheck all packages |
 | `pnpm test` | All unit and integration tests (Vitest) |
-| `pnpm e2e:live <url>` | Full end-to-end test of a **deployed** site from the user's side. It signs up a throwaway account, uses every feature, then deletes the account. Needs "Confirm email" off. |
+| `pnpm e2e:live <url>` | Full end-to-end test of a **deployed** site from the user's side (100 checks). It signs up a throwaway account, uses every feature, then deletes the account. Needs "Confirm email" off. |
+| `pnpm e2e:accounts <url>` | Two-account test (33 checks): two made-up people sign up, log out and back in, and try to read, change, finish, rename and delete each other's work. Both accounts are deleted afterwards. |
+| `pnpm e2e:browser <url>` | Builds the extension and drives it in headless Chromium against a running server (19 checks). Defaults to `http://localhost:3000`. |
 | `pnpm test:authz` | Database permission tests against your real Supabase project |
 | `pnpm build` | Production build of every package |
 | `pnpm gen:keys` | Generate the app secrets |
@@ -328,9 +364,19 @@ $ pnpm lint
   eslint ✓   typecheck: shared ✓  extension ✓  web ✓
 
 $ pnpm test
- Test Files  20 passed (20)
-      Tests  575 passed (575)
+ Test Files  22 passed (22)
+      Tests  591 passed (591)
 ```
+
+On top of the unit tests, three end-to-end suites run against a real server and database. They were last run against production (humagination.vercel.app) on 22 November 2026 with real logins on:
+
+| Suite | Result | What it proves |
+|---|---|---|
+| `pnpm e2e:live` | **100 / 100** | The whole product from a user's side: sign-up rules (common passwords and duplicate usernames rejected), login, StepCheck across all six courses, Code Dojo, the editor and its certificate, uploads (re-encoded, hashed, watermarked and encrypted; a non-image disguised as a PNG is rejected by its bytes), signed watermarked previews, AI crawlers refused with 403, the microphone recorder's WAV pipeline and permission headers, the drawing studio (freehand, all three shape tools and pixel cells) and composer, rejection of tampered chains, sequence gaps and off-grid pixels, signed certificates that re-verify publicly, likes, comments, extension tokens and tracker ingest, and account deletion. |
+| `pnpm e2e:accounts` | **33 / 33** | Demo sign-in is off, signed-out visitors are sent to `/login`, logout and login work, wrong passwords are refused. Ben can't open, edit, finish, rename or delete Ana's drafts, documents or portfolio pieces, but can like and comment on her published work; her certificate names her as the author; deleted accounts can't log in. |
+| `pnpm e2e:browser` | **19 / 19** | The real extension loaded in Chromium: it installs with only `alarms`, `idle`, `storage` and `tabs` permissions and sets its alarms. Options rejects malformed tokens and saves the server origin; the popup toggles Think First. Think First intercepts ChatGPT and keeps only the hostname; *Continue anyway* is counted and allows the site for 20 minutes. Active time is credited in 15-second ticks; no URLs, paths or queries are stored; the popup shows the exact JSON, and sync is accepted by the server. |
+
+A crawl of all 36 pages of the live site as a made-up user also checked every page for HTTP errors, React and console errors, broken images and horizontal overflow. It found and fixed one hydration error (comment times formatted differently on the server and in the browser).
 
 | What | How it's proven | Where |
 |---|---|---|
@@ -340,6 +386,7 @@ $ pnpm test
 | Tamper detection | Editing one stored event, deleting or reordering events, or moving a log to another document all break the chain | `provenance.test.ts` |
 | Replay & authenticity stats | Exact replay; typed text → verified creation record; external paste lowers the score; undo/redo of a paste stays a paste; injection bursts, superhuman speed, transcription and fake timelines are all flagged | `provenance.test.ts` |
 | Certificates | Ed25519 sign/verify; any change to the certificate, or a different key, fails | `provenance.test.ts` |
+| Drawing studio geometry | Shapes need exactly two points; pixels must be on the grid, inside the canvas and a supported size; shapes render as stroked paths and pixels as crisp filled cells; a mixed freehand + shape + pixel drawing certifies | `creation.test.ts` |
 | Code exercises are correct | All 36 exercises pass with test-only reference solutions on real gcc, javac and python. Wrong answers fail the hidden tests; hidden test data never reaches the browser | `code.test.ts` |
 | Error explainer | 30 rules per language; sample outputs map to the expected rule and line number, including **real** gcc/javac/python error output | `code.test.ts` |
 | Code sandbox (live) | All 36 reference solutions graded through the real Piston adapter: **36/36 passed**. Compile errors, segfaults, Java exceptions, Python errors and timeouts were all explained correctly | `packages/shared/test/piston/harness.ts` |
@@ -348,10 +395,12 @@ $ pnpm test
 | Scoring | Reliance score, points and bonuses, daily cap, streak rules | `scoring.test.ts` |
 | RedPen & passwords | Expected rules fire, flags never contain replacement text, Flesch scores sensible; common/derived passwords rejected | `redpen.test.ts` |
 | Extension | 15-second ticks, idle and sleep gaps capped, only date → domain → seconds stored | `apps/extension/test/accounting.test.ts` |
+| Microphone recorder | WAV encoding is canonical and byte-exact; recorder lifecycle and limits | `apps/web/test/audio.test.ts`, `recorder.test.ts` |
+| Site information | Unique legal routes, four keyed developer profiles, profile links are https only | `apps/web/test/siteInformation.test.ts` |
 | Database permissions | Two real users: B can't read or change A's drafts, events, tracker data, progress or points; nobody can write tamper-sensitive tables; private buckets are closed; anonymous users see only public data | `apps/web/test/authz.test.ts` (`pnpm test:authz`, **needs a live Supabase project**) |
 
 ### Checked by hand against a production build
-`next build` compiles all 49 routes. Against `next start`:
+`next build` compiles every route. Against `next start`:
 - Security headers and a per-request CSP nonce are present on every page.
 - `curl -A GPTBot` and `curl -A ClaudeBot` get **403**.
 - `robots.txt` blocks AI bots, and gallery pages send `X-Robots-Tag: noai, noimageai`.
@@ -361,8 +410,8 @@ $ pnpm test
 - The Pyodide worker is served with its own CSP.
 
 ### Not yet verified end-to-end
-- `pnpm e2e:live <url>` runs the full user journey against a deployed site: sign-up, StepCheck, the editor and certificate, uploads, the drawing studio and composer (tampered chains and sequence gaps rejected, finished pieces locked), comments, likes, the extension, and account deletion. Code Dojo **Submit** still needs a hosted code sandbox in production.
-- The Chrome extension builds, and its accounting logic is unit-tested, but it hasn't been exercised in Chrome yet.
+- Code Dojo **Submit** needs a hosted Piston or Judge0 sandbox; production has none yet, so Submit reports "unavailable" (the E2E accepts that) while Python **Run** works in the browser.
+- The extension's server-permission prompt: headless Chrome can't click it, so `e2e:browser` loads a copy of the build that pre-grants localhost. Everything else is the shipped build.
 - Judge0 configuration is provided but untested. It needs a cgroup v1 host, and our dev machine uses v2.
 
 ---
@@ -375,7 +424,9 @@ $ pnpm test
 - **Writer pagination:** on-screen pages are approximate and a single block taller than one page runs past its sheet; print and DOCX paginate with the real page engine. Footnotes appear as endnotes under **Notes** on screen, while DOCX contains true Word footnotes.
 - Rate limits are shared across instances through Postgres. The "5 concurrent code runs" cap is still per instance.
 - **On Vercel:** ffmpeg isn't available, so MP3/OGG and non-canonical WAV previews can't be transcoded there; those uploads return a clear "not available" message. The browser recorder converts microphone input to strict canonical PCM WAV locally, which uploads and serves through the same signed preview pipeline without requiring ffmpeg. Recordings remain unsealed uploads. Code Dojo **Submit** needs a Piston or Judge0 sandbox reachable from Vercel; without one, Submit is unavailable while Python **Run** still works in the browser.
-- Three Supabase Auth settings must be switched on by hand (see [Getting started](#getting-started)).
+- Three Supabase Auth settings must be switched on by hand (see [Getting started](#getting-started)). For the hackathon, email confirmation is off so new accounts work immediately.
+- **Demo-era artwork is still owned by `@demo`.** It will be reassigned once every teammate has an account. Certificates sign the author's username, so a moved piece keeps a certificate that says it was made in the demo account unless it is re-issued.
+- **`artDetector.ts` (repo root) is not part of the app.** It was merged from a teammate's prototype for flagging AI-generated uploads and is not imported anywhere. It calls a detection server on `localhost:8000`, so it can't work from visitors' browsers, and wiring it in would conflict with the "no AI anywhere" promise. It stays out of the product until the team decides otherwise.
 
 ---
 
@@ -391,8 +442,9 @@ $ pnpm test
 1. **A chatbot's math mistake gets caught.** On `/tutor/math/lin-3` (`3(x − 2) = 2x + 4`), enter `3x - 6 = 2x + 4`, then `x = 4 - 6`, then `x = -2`. Line 2 turns red. Check again to unlock the hint: *"a term moved to the other side of the = sign but kept its sign."*
 2. **A paste shows up.** In `/write`, type a paragraph, paste a block of text from elsewhere (it's highlighted), then click **Finalize**. The certificate shows a lower typed %, and the replay flashes the paste.
 3. **Tampering is caught.** Edit one character of the certificate's stored log in the Supabase table editor, then reload `/verify/<id>`. The hash-chain and replay checks turn red.
-4. **AI crawlers are blocked.** Upload art, then run `curl -i -A "GPTBot" http://localhost:3000/portfolio/art` and get a **403**. Open the art as another user and take a screenshot: their username is faintly tiled across it.
-5. **The score responds.** After a StepCheck or Code Dojo session, `/dashboard` shows more human minutes and a lower reliance score.
+4. **Pixel art with a certificate.** In the drawing studio choose **New pixel drawing**, turn on **Mirror**, paint a sprite on the 20 px grid, add a circle with the Oval tool while holding Shift, then **Finish**. The published image matches the canvas exactly, and *Watch how it was made* redraws it cell by cell.
+5. **AI crawlers are blocked.** Upload art, then run `curl -i -A "GPTBot" http://localhost:3000/portfolio/art` and get a **403**. Open the art as another user and take a screenshot: their username is faintly tiled across it.
+6. **The score responds.** After a StepCheck or Code Dojo session, `/dashboard` shows more human minutes and a lower reliance score.
 
 ---
 
@@ -402,8 +454,8 @@ $ pnpm test
 - Every API route validates its input with zod, calls `requireUser()` and `assertSameOrigin()` for state changes, and rate-limits.
 - Tamper-sensitive tables are written only from route handlers via `supabaseAdmin()`. Never import it from a `"use client"` file.
 - Keep UI wording honest: say "screenshot-deterred and traceable", never "screenshot-proof".
-- Public legal documents live under `apps/web/src/app/legal/`; update the four developer profiles in `apps/web/src/lib/siteInformation.ts` when teammates supply their details.
+- Public legal documents live under `apps/web/src/app/legal/`; developer profiles (photos in `apps/web/public/developers/`, links) live in `apps/web/src/lib/siteInformation.ts`.
 - Note judgement calls in `DECISIONS.md`.
-- Run `pnpm lint && pnpm test` before pushing.
+- Run `pnpm lint && pnpm test` before pushing, and `pnpm e2e:live <url>` plus `pnpm e2e:accounts <url>` against a deployment before a demo.
 
 **Credits:** the common-password list is the 10k list from [SecLists](https://github.com/danielmiessler/SecLists) (MIT). Code sandboxes are [Piston](https://github.com/engineer-man/piston) and [Judge0 CE](https://github.com/judge0/judge0).

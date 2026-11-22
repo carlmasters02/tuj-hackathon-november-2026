@@ -17,7 +17,9 @@
     "gen:exercises": "node scripts/gen-exercises.mjs",
     "gen:types": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_REF\" > packages/shared/src/db.types.ts",
     "test:authz": "vitest run apps/web/test/authz.test.ts",
-    "e2e:live": "pnpm --filter web e2e:live"
+    "e2e:live": "pnpm --filter web e2e:live",
+    "e2e:accounts": "pnpm --filter web e2e:accounts",
+    "e2e:browser": "pnpm --filter extension e2e:browser"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

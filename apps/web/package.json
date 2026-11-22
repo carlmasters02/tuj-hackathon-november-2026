@@ -10,7 +10,8 @@
     "postinstall": "node scripts/copy-pyodide.mjs",
     "seed": "tsx --env-file=.env.local --conditions=react-server scripts/seed.ts",
     "brand": "node scripts/brand-assets.mjs",
-    "e2e:live": "tsx test/e2e-live.ts"
+    "e2e:live": "tsx test/e2e-live.ts",
+    "e2e:accounts": "tsx test/e2e-accounts.ts"
   },
   "dependencies": {
     "@codemirror/commands": "6.10.1",
