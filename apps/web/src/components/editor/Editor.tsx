@@ -329,7 +329,19 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="min-w-0">
-          <div ref={deskRef} className="hm-desk-wrap rounded-3xl border border-line">
+          <div
+            ref={deskRef}
+            className="hm-desk-wrap rounded-3xl border border-line"
+            onMouseDown={(e) => {
+              // Clicking blank paper (below the text, the margins, the page gaps) should land in the
+              // document, like a word processor, instead of leaving focus on the page.
+              const t = e.target as HTMLElement;
+              if (!editor || !editor.isEditable || e.button !== 0) return;
+              if (t.closest(".ProseMirror, a, button, input, textarea, select, label, [contenteditable='true']")) return;
+              e.preventDefault();
+              editor.commands.focus("end");
+            }}
+          >
             <Paper setup={meta.setup} title={title} pages={pages} sources={meta.sources} style={meta.citationStyle} zoom={z} onFirstOffset={onFirstOffset} onReferencePages={setReferencePages}>
               <EditorContent editor={editor} />
             </Paper>

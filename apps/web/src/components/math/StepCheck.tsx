@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toTex } from "@hm/shared/math/parse";
 import type { Hint, PublicMathProblem } from "@hm/shared/math/types";
 import { postJson, ApiError } from "@/lib/client";
@@ -47,27 +47,33 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
     [lines, problem.variable, problem.kind, problem.symbols],
   );
 
+  // Every update derives from the latest lines (not this render's copy): a keystroke right after
+  // Enter can arrive before React re-renders, and a stale copy would drop the new line.
+  const focusNext = useRef<number | null>(null);
+  useEffect(() => {
+    if (focusNext.current === null) return;
+    inputs.current[focusNext.current]?.focus();
+    focusNext.current = null;
+  }, [lines]);
+
   const edit = (i: number, v: string) => {
-    const next = [...lines];
-    next[i] = v;
-    setLines(next);
+    setLines((prev) => prev.map((x, k) => (k === i ? v : x)));
     // editing a line invalidates its verdict and everything after it
     setStatus((s) => s.map((x, k) => (k >= i ? "unchecked" : x)));
     setResult(null);
   };
 
   const addLine = (after: number) => {
-    const next = [...lines.slice(0, after + 1), "", ...lines.slice(after + 1)];
-    setLines(next);
+    focusNext.current = after + 1;
+    setLines((prev) => [...prev.slice(0, after + 1), "", ...prev.slice(after + 1)]);
     setStatus((s) => [...s.slice(0, after + 1), "unchecked", ...s.slice(after + 1)]);
-    setTimeout(() => inputs.current[after + 1]?.focus(), 0);
   };
 
   const removeLine = (i: number) => {
     if (lines.length === 1) return;
-    setLines(lines.filter((_, k) => k !== i));
+    focusNext.current = Math.max(0, i - 1);
+    setLines((prev) => (prev.length === 1 ? prev : prev.filter((_, k) => k !== i)));
     setStatus((s) => s.filter((_, k) => k !== i).map((x, k) => (k >= i ? "unchecked" : x)));
-    setTimeout(() => inputs.current[Math.max(0, i - 1)]?.focus(), 0);
   };
 
   const check = async () => {
