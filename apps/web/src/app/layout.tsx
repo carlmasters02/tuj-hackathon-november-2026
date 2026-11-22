@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "katex/dist/katex.min.css";
-import Image from "next/image";
 import { Nav } from "@/components/Nav";
-import bulb from "@/assets/bulb.png";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: { default: "Humagination", template: "%s · Humagination" },
@@ -27,15 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
         <Nav />
         <main className="hm-app-main mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-8 sm:px-6">{children}</main>
-        <footer className="border-t border-line bg-surface/60 print:hidden">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-fg-faint sm:px-6">
-            <span className="flex items-center gap-2">
-              <Image src={bulb} alt="" width={22} height={22} />
-              Humagination — every idea here comes from a human. No AI runs anywhere in this app.
-            </span>
-            <span className="chip chip-sun">✓ Verified AI-free</span>
-          </div>
-        </footer>
+        <SiteFooter />
       </body>
     </html>
   );

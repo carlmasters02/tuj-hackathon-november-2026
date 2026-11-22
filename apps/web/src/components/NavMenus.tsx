@@ -118,6 +118,7 @@ export function NavMenus({ signedIn, username, displayName, demo }: { signedIn: 
     <div ref={wrap} className="flex flex-1 items-center">
       {/* desktop */}
       <div className="hidden flex-1 items-center justify-center gap-1 md:flex">
+        <Link href="/" className={linkCls(active("/"))}>Home</Link>
         <Link href="/dashboard" className={linkCls(active("/dashboard"))}>Dashboard</Link>
         {menu("tutor", "Tutor", "/tutor", TUTOR)}
         {menu("portfolio", "Portfolio", "/portfolio", PORTFOLIO)}
@@ -156,7 +157,8 @@ export function NavMenus({ signedIn, username, displayName, demo }: { signedIn: 
         <svg viewBox="0 0 20 20" className="h-5 w-5" aria-hidden><path d={mobile ? "M5 5l10 10M15 5 5 15" : "M3 6h14M3 10h14M3 14h14"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
       </button>
       {mobile && (
-        <div className="fixed inset-x-0 top-[61px] bottom-0 z-40 overflow-y-auto border-t border-line bg-canvas px-4 pb-10 pt-4 md:hidden">
+        <div className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-61px)] overflow-y-auto border-t border-line bg-canvas px-4 pb-10 pt-4 md:hidden">
+          <Link href="/" className="block border-b border-line py-3 text-2xl font-bold">Home</Link>
           <Link href="/dashboard" className="block border-b border-line py-3 text-2xl font-bold">Dashboard</Link>
           {[{ label: "Tutor", href: "/tutor", sections: TUTOR }, { label: "Portfolio", href: "/portfolio", sections: PORTFOLIO }].map((g) => (
             <details key={g.label} className="group border-b border-line py-3" open={active(g.href)}>

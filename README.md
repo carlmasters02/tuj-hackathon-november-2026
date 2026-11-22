@@ -402,6 +402,7 @@ $ pnpm test
 - Every API route validates its input with zod, calls `requireUser()` and `assertSameOrigin()` for state changes, and rate-limits.
 - Tamper-sensitive tables are written only from route handlers via `supabaseAdmin()`. Never import it from a `"use client"` file.
 - Keep UI wording honest: say "screenshot-deterred and traceable", never "screenshot-proof".
+- Public legal documents live under `apps/web/src/app/legal/`; update the four developer profiles in `apps/web/src/lib/siteInformation.ts` when teammates supply their details.
 - Note judgement calls in `DECISIONS.md`.
 - Run `pnpm lint && pnpm test` before pushing.
 
