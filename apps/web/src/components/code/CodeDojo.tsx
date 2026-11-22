@@ -19,8 +19,9 @@ interface SubmitResult {
 
 const LANG_LABEL = { python: "Python", c: "C", java: "Java" } as const;
 
-export function CodeDojo({ ex, solved: initiallySolved, initialHints, failed }: { ex: PublicExercise; solved: boolean; initialHints: string[]; failed: number }) {
-  const storageKey = `hm-code-${ex.id}`;
+export function CodeDojo({ ex, userId, solved: initiallySolved, initialHints, failed }: { ex: PublicExercise; userId: string; solved: boolean; initialHints: string[]; failed: number }) {
+  // Drafts are per account, so a new person on a shared computer starts from the starter code.
+  const storageKey = `hm-code-${userId}-${ex.id}`;
   const [source, setSource] = useState(ex.starterCode);
   const [loaded, setLoaded] = useState(false);
   const [runRows, setRunRows] = useState<RunRow[] | null>(null);
@@ -38,6 +39,8 @@ export function CodeDojo({ ex, solved: initiallySolved, initialHints, failed }: 
 
   useEffect(() => {
     try {
+      // Older drafts were saved without an owner; nobody can tell whose they are, so drop them.
+      localStorage.removeItem(`hm-code-${ex.id}`);
       const saved = localStorage.getItem(storageKey);
       if (saved) setSource(saved);
     } catch {}

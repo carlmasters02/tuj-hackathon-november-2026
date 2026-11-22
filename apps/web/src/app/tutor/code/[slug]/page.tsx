@@ -68,7 +68,7 @@ export default async function CodeSlugPage({ params }: { params: Promise<{ slug:
           <div className="mt-3 space-y-3 text-fg-dim" dangerouslySetInnerHTML={{ __html: renderMarkdown(ex.conceptNoteMd) }} />
         </details>
       </div>
-      <CodeDojo ex={pub} solved={!!prog?.solved_at} initialHints={ex.hints.slice(0, hintsUnlocked(failed))} failed={failed} />
+      <CodeDojo ex={pub} userId={user.id} solved={!!prog?.solved_at} initialHints={ex.hints.slice(0, hintsUnlocked(failed))} failed={failed} />
     </div>
   );
 }
