@@ -217,6 +217,16 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior, ini
             aria-label="Drawing canvas"
             className={`block w-full touch-none rounded-2xl border border-line shadow-[var(--shadow-lift)] ${cursor ? "cursor-none" : "cursor-crosshair"}`}
           />
+          {tool === "pixel" && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 border border-transparent"
+              style={{
+                backgroundImage: "linear-gradient(to right, rgba(27,43,94,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(27,43,94,0.1) 1px, transparent 1px)",
+                backgroundSize: `${(size / CANVAS_W) * 100}% ${(size / CANVAS_H) * 100}%`,
+              }}
+            />
+          )}
           {cursor && (
             <div aria-hidden className="pointer-events-none absolute rounded-full border border-fg/70 mix-blend-multiply" style={{ left: cursor.x, top: cursor.y, width: Math.max(4, cursor.d), height: Math.max(4, cursor.d), transform: "translate(-50%,-50%)", background: tool === "eraser" ? "transparent" : `${color}33` }} />
           )}
