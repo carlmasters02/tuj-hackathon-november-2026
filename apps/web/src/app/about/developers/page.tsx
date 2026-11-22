@@ -30,9 +30,9 @@ export default function DevelopersPage() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 id="team-heading" className="text-3xl font-extrabold tracking-tight">The developer team</h2>
-            <p className="mt-2 text-fg-dim">Four profile spaces for the people bringing Humagination to life.</p>
+            <p className="mt-2 text-fg-dim">The four people bringing Humagination to life.</p>
           </div>
-          <span className="chip">{DEVELOPERS.length} developer slots</span>
+          <span className="chip">{DEVELOPERS.length} developers</span>
         </div>
 
         <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" aria-label="Humagination developers">

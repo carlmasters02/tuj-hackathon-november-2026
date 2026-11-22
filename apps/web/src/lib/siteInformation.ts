@@ -19,7 +19,7 @@ export type Developer = {
   photo?: string;
 };
 
-/** Four developer slots; replace the remaining placeholder as the last teammate supplies their details. */
+/** The four Humagination developers, shown in this order on /about/developers. */
 export const DEVELOPERS: readonly Developer[] = [
   {
     id: "carl-masters",
@@ -45,5 +45,12 @@ export const DEVELOPERS: readonly Developer[] = [
     bio: "Hi I'm Rishika, a Computer Science student at Temple University Japan Campus. I enjoy exploring new technologies, and solving problems. I'm particularly interested in AI and always curious to learn new things and experiment with ideas.",
     photo: "/developers/rishika-bajaj.jpg",
   },
-  { id: "developer-4", name: "Developer 4", initials: "04", role: "Team member", bio: "Developer profile coming soon." },
+  {
+    id: "marquine-silva",
+    name: "Marquine Silva",
+    initials: "MS",
+    role: "Computer Science student · Temple University Japan",
+    bio: "Hi, I am Marquine, majoring in Computer Science at Temple University Japan Campus. My interests are centered around data science and AI, and I enjoy problem-solving.",
+    photo: "/developers/marquine-silva.jpg",
+  },
 ];
