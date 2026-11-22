@@ -1,19 +1,25 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CANVAS_H, CANVAS_W, PAPER, replayArt, strokePath, type ArtEvent, type Stroke } from "@hm/shared/creation";
+import { CANVAS_H, CANVAS_W, PAPER, replayArt, strokeColor, strokeOpacity, strokeShape, type ArtEvent, type Stroke } from "@hm/shared/creation";
 
 type Batches = { events: unknown[] }[];
 const SPEEDS = [1, 4, 16] as const;
 
 export function paintStroke(g: CanvasRenderingContext2D, s: Stroke, pts = s.pts) {
   if (pts.length < 2) return;
+  const { d, fill } = strokeShape(s, pts);
   g.save();
-  g.globalAlpha = s.tool === "marker" ? 0.55 : 1;
-  g.strokeStyle = s.tool === "eraser" ? PAPER : s.color;
-  g.lineWidth = s.size;
-  g.lineCap = "round";
-  g.lineJoin = "round";
-  g.stroke(new Path2D(strokePath(pts)));
+  if (fill) {
+    g.fillStyle = strokeColor(s);
+    g.fill(new Path2D(d));
+  } else {
+    g.globalAlpha = strokeOpacity(s);
+    g.strokeStyle = strokeColor(s);
+    g.lineWidth = s.size;
+    g.lineCap = "round";
+    g.lineJoin = "round";
+    g.stroke(new Path2D(d));
+  }
   g.restore();
 }
 

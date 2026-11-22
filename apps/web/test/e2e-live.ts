@@ -340,7 +340,14 @@ async function publicPage(path: string) {
       }
       return res;
     };
-    const stroke = (i: number) => ({ type: "stroke", tool: i % 3 === 0 ? "marker" : "pen", color: "#1b2b5e", size: 6 + i, pts: Array.from({ length: 30 }, (_, k) => [100 + i * 60 + k * 4, 200 + Math.round(Math.sin(k / 3) * 40) + i * 30]).flat(), dur: 450 });
+    // freehand strokes, plus one of each shape tool and a pixel-mode row of grid cells
+    const shapes: Record<number, object> = {
+      4: { tool: "line", size: 5, pts: [120, 600, 520, 700] },
+      5: { tool: "rect", size: 4, pts: [600, 100, 900, 300] },
+      8: { tool: "ellipse", size: 6, pts: [700, 400, 1000, 600] },
+      9: { tool: "pixel", size: 15, pts: Array.from({ length: 30 }, (_, k) => [300 + k * 15, 750]).flat() },
+    };
+    const stroke = (i: number) => ({ type: "stroke", tool: i % 3 === 0 ? "marker" : "pen", color: "#1b2b5e", size: 6 + i, pts: Array.from({ length: 30 }, (_, k) => [100 + i * 60 + k * 4, 200 + Math.round(Math.sin(k / 3) * 40) + i * 30]).flat(), dur: 450, ...shapes[i] });
     for (let b = 0; b < 7; b++) {
       const evs = kind === "art" ? [stroke(b * 2), stroke(b * 2 + 1)] : [{ type: "toggle", step: b * 2, row: b }, { type: "toggle", step: b * 2 + 1, row: (b + 4) % 12 }];
       r = await send(evs as any);
@@ -348,6 +355,10 @@ async function publicPage(path: string) {
       await new Promise((res) => setTimeout(res, 1000));
     }
     check(`${kind}: 7 batches of events accepted`, r.status === 200 && seq === 14, `seq ${seq}`);
+    if (kind === "art") {
+      r = await send([{ type: "stroke", tool: "pixel", color: "#1b2b5e", size: 15, pts: [7, 7], dur: 100 }] as any);
+      check("art: off-grid pixel stroke is rejected", r.status === 400 && seq === 14, `status ${r.status}`);
+    }
     if (kind === "music") await send([{ type: "tempo", bpm: 128 }] as any);
     r = await send([kind === "art" ? { type: "undo" } : { type: "clear" }] as any, true);
     check(`${kind}: tampered hash chain rejected`, r.status === 409);

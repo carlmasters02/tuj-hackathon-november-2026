@@ -71,6 +71,36 @@ describe("art provenance", () => {
     expect(ArtEventSchema.safeParse({ seq: 0, t: 0, type: "stroke", tool: "pen", color: "red", size: 4, pts: [1, 2], dur: 10 }).success).toBe(false);
     expect(ArtEventSchema.safeParse({ seq: 0, t: 0, type: "stroke", tool: "pen", color: "#000000", size: 4, pts: [1, 2, 3], dur: 10 }).success).toBe(false);
   });
+
+  const ev = (tool: string, size: number, pts: number[]) => ({ seq: 0, t: 0, type: "stroke", tool, color: "#c0392b", size, pts, dur: 300 });
+  it("accepts two-point shapes and rejects shapes with any other point count", () => {
+    for (const tool of ["line", "rect", "ellipse"]) {
+      expect(ArtEventSchema.safeParse(ev(tool, 6, [100, 100, 400, 300])).success).toBe(true);
+      expect(ArtEventSchema.safeParse(ev(tool, 6, [100, 100, 200, 200, 400, 300])).success).toBe(false);
+    }
+  });
+  it("accepts on-grid pixel cells and rejects off-grid, out-of-canvas or odd-sized pixels", () => {
+    expect(ArtEventSchema.safeParse(ev("pixel", 15, [0, 0, 15, 0, 1185, 885])).success).toBe(true);
+    expect(ArtEventSchema.safeParse(ev("pixel", 15, [7, 0])).success).toBe(false);
+    expect(ArtEventSchema.safeParse(ev("pixel", 15, [1200, 0])).success).toBe(false);
+    expect(ArtEventSchema.safeParse(ev("pixel", 16, [0, 0])).success).toBe(false);
+  });
+  it("renders shapes as stroked paths and pixels as crisp filled cells", () => {
+    const svg = artToSvg([ev("rect", 6, [10, 20, 110, 220]), ev("ellipse", 4, [0, 0, 100, 50]), ev("pixel", 10, [30, 40, 40, 40])] as never);
+    expect(svg).toContain('d="M10 20H110V220H10Z"');
+    expect(svg).toContain('d="M0 25A50 25 0 1 0 100 25A50 25 0 1 0 0 25Z"');
+    expect(svg).toContain('d="M30 40h10v10h-10ZM40 40h10v10h-10Z" fill="#c0392b" shape-rendering="crispEdges"');
+  });
+  it("certifies a mixed freehand, shape and pixel drawing", () => {
+    const mixed = [
+      { ...drawing[0], seq: 0, t: 0 },
+      { ...ev("line", 6, [100, 100, 400, 300]), seq: 1, t: 4000 },
+      { ...ev("pixel", 20, Array.from({ length: 30 }, (_, i) => [i * 20, 400]).flat()), seq: 2, t: 9000, dur: 1500 },
+    ] as ArtEvent[];
+    const { stats } = creationStats("art", batches(mixed));
+    expect(stats.finalStrokes).toBe(3);
+    expect(creationVerdict("art", stats, true)).toBe("human_verified");
+  });
 });
 
 describe("music provenance", () => {

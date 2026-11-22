@@ -18,12 +18,18 @@ export const MAX_STROKE_POINTS = 2000;
 const base = { seq: z.number().int().nonnegative(), t: z.number().int().nonnegative().max(86_400_000) };
 const hex = z.string().regex(/^#[0-9a-f]{6}$/i);
 
-export const ArtEventSchema = z.discriminatedUnion("type", [
+/** Two-point tools: pts is exactly [x0, y0, x1, y1] (start and end of the drag). */
+export const SHAPE_TOOLS = ["line", "rect", "ellipse"] as const;
+/** Pixel mode cell sizes; each divides both canvas sides so the grid tiles the page exactly. */
+export const PIXEL_SIZES = [10, 15, 20, 30] as const;
+
+const ArtEventUnion = z.discriminatedUnion("type", [
   z
     .object({
       ...base,
       type: z.literal("stroke"),
-      tool: z.enum(["pen", "marker", "eraser"]),
+      // pen/marker/eraser: freehand polyline · line/rect/ellipse: two points · pixel: top-left corner of each painted grid cell
+      tool: z.enum(["pen", "marker", "eraser", "line", "rect", "ellipse", "pixel"]),
       color: hex,
       size: z.number().int().min(1).max(80),
       // flat [x0, y0, x1, y1, ...] in canvas pixels
@@ -34,7 +40,21 @@ export const ArtEventSchema = z.discriminatedUnion("type", [
   z.object({ ...base, type: z.literal("undo") }).strict(),
   z.object({ ...base, type: z.literal("clear") }).strict(),
 ]);
-export type ArtEvent = z.infer<typeof ArtEventSchema>;
+export const ArtEventSchema = ArtEventUnion.superRefine((e, ctx) => {
+  if (e.type !== "stroke") return;
+  if ((SHAPE_TOOLS as readonly string[]).includes(e.tool) && e.pts.length !== 4) ctx.addIssue({ code: "custom", message: "shapes need exactly two points" });
+  if (e.tool === "pixel") {
+    if (!(PIXEL_SIZES as readonly number[]).includes(e.size)) ctx.addIssue({ code: "custom", message: "unsupported pixel size" });
+    for (let i = 0; i < e.pts.length; i += 2) {
+      const [x, y] = [e.pts[i], e.pts[i + 1]];
+      if (x % e.size || y % e.size || x < 0 || y < 0 || x >= CANVAS_W || y >= CANVAS_H) {
+        ctx.addIssue({ code: "custom", message: "pixel cells must sit on the grid inside the canvas" });
+        return;
+      }
+    }
+  }
+});
+export type ArtEvent = z.infer<typeof ArtEventUnion>;
 
 export const STEPS = 16;
 export const ROWS = 12;
@@ -137,12 +157,42 @@ export function strokePath(pts: number[]): string {
   return d;
 }
 
+/**
+ * Geometry for any stroke as SVG path data. The server's PNG render and the browser canvas both
+ * draw from this, so the certified image and what the artist saw cannot drift apart.
+ * `fill` strokes (pixel cells) are filled squares; everything else is stroked with `size`.
+ */
+export function strokeShape(s: Pick<Stroke, "tool" | "size">, pts: number[]): { d: string; fill: boolean } {
+  if (s.tool === "pixel") {
+    let d = "";
+    for (let i = 0; i + 1 < pts.length; i += 2) d += `M${pts[i]} ${pts[i + 1]}h${s.size}v${s.size}h-${s.size}Z`;
+    return { d, fill: true };
+  }
+  if ((SHAPE_TOOLS as readonly string[]).includes(s.tool)) {
+    const [x0, y0] = pts;
+    const [x1, y1] = pts.length >= 4 ? pts.slice(-2) : pts;
+    if (s.tool === "line") return { d: `M${x0} ${y0}L${x1} ${y1}`, fill: false };
+    if (s.tool === "rect") return { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, fill: false };
+    const rx = Math.max(0.5, Math.abs(x1 - x0) / 2);
+    const ry = Math.max(0.5, Math.abs(y1 - y0) / 2);
+    const cx = (x0 + x1) / 2;
+    const cy = (y0 + y1) / 2;
+    return { d: `M${cx - rx} ${cy}A${rx} ${ry} 0 1 0 ${cx + rx} ${cy}A${rx} ${ry} 0 1 0 ${cx - rx} ${cy}Z`, fill: false };
+  }
+  return { d: strokePath(pts), fill: false };
+}
+
+export const strokeColor = (s: Pick<Stroke, "tool" | "color">) => (s.tool === "eraser" ? PAPER : s.color);
+export const strokeOpacity = (s: Pick<Stroke, "tool">) => (s.tool === "marker" ? 0.55 : 1);
+
 export function artToSvg(strokes: Stroke[]): string {
   const paths = strokes
     .map((s) => {
-      const color = s.tool === "eraser" ? PAPER : s.color;
-      const opacity = s.tool === "marker" ? 0.55 : 1;
-      return `<path d="${strokePath(s.pts)}" stroke="${color}" stroke-width="${s.size}" stroke-opacity="${opacity}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+      const { d, fill } = strokeShape(s, s.pts);
+      const color = strokeColor(s);
+      return fill
+        ? `<path d="${d}" fill="${color}" shape-rendering="crispEdges"/>`
+        : `<path d="${d}" stroke="${color}" stroke-width="${s.size}" stroke-opacity="${strokeOpacity(s)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
     })
     .join("");
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${CANVAS_W}" height="${CANVAS_H}" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}"><rect width="100%" height="100%" fill="${PAPER}"/>${paths}</svg>`;
