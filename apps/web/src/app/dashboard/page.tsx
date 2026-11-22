@@ -60,7 +60,7 @@ export default async function Dashboard() {
           {humanShare === null ? (
             <>
               <p className="text-[clamp(2.2rem,5vw,2.75rem)] leading-none font-semibold tracking-[-0.05em] text-fg-faint">—</p>
-              <p className="mt-3 max-w-md text-lg text-fg-dim">Nothing tracked yet this week. Solve a problem, write a paragraph or draw something, and your week fills in here.</p>
+              <p className="mt-3 max-w-md text-sm text-fg-dim">Nothing tracked yet this week. Solve a problem, write a paragraph or draw something, and your week fills in here.</p>
             </>
           ) : (
             <>
@@ -82,17 +82,17 @@ export default async function Dashboard() {
           <dl className="mt-4 grid grid-cols-3 gap-2 border-t border-[#EFE8CC] pt-3">
             <div>
               <dt className="text-xs text-fg-dim">Reliance score</dt>
-              <dd className={`text-2xl font-semibold tabular-nums ${tone}`}>{s.relianceScore}</dd>
+              <dd className={`text-lg font-semibold tabular-nums ${tone}`}>{s.relianceScore}</dd>
               <dd className="text-xs text-fg-faint">0–100, lower is better</dd>
             </div>
             <div>
-              <dt className="text-sm text-fg-dim">Streak</dt>
+              <dt className="text-xs text-fg-dim">Streak</dt>
               <dd className="text-lg font-semibold tabular-nums">{s.streak} <span className="text-base font-semibold text-fg-faint">{s.streak === 1 ? "day" : "days"}</span></dd>
               <dd className="text-xs text-fg-faint">score under 30, 15+ min of your own work</dd>
             </div>
             <div>
-              <dt className="text-sm text-fg-dim">Think First</dt>
-              <dd className="text-2xl font-semibold tabular-nums">{s.thinkFirst.redirected}</dd>
+              <dt className="text-xs text-fg-dim">Think First</dt>
+              <dd className="text-lg font-semibold tabular-nums">{s.thinkFirst.redirected}</dd>
               <dd className="text-xs text-fg-faint">times you tried it yourself first{s.thinkFirst.bypassed ? `, ${s.thinkFirst.bypassed} skipped` : ""}</dd>
             </div>
           </dl>
@@ -100,7 +100,7 @@ export default async function Dashboard() {
 
         <div className={panel}>
           <h3 className="text-base font-bold text-[#1B2B5E]">Human Points</h3>
-          <p className="mt-1 text-[2.8rem] leading-none font-semibold tracking-[-0.04em] tabular-nums">{x.points.total}</p>
+          <p className="mt-3 text-[clamp(2.2rem,5vw,2.75rem)] leading-none font-semibold tracking-[-0.04em] tabular-nums">{x.points.total}</p>
           <div className="mt-4 h-1.5 overflow-hidden bg-[#F1EBD8]"><div className="h-full bg-fg" style={{ width: `${Math.min(100, ((x.points.total - lv.floor) / (lv.next - lv.floor)) * 100)}%` }} /></div>
           <p className="mt-1.5 text-sm text-fg-dim">{toNext} to {nextName}, level {lv.level + 1}</p>
           <p className="mt-4 text-sm"><strong className="tabular-nums">{x.points.today}</strong> <span className="text-fg-dim">of {x.points.cap} today · </span><strong className="tabular-nums">{s.pointsWeek}</strong> <span className="text-fg-dim">this week</span></p>
@@ -130,7 +130,7 @@ export default async function Dashboard() {
           <p className="text-sm text-fg-dim"><strong className="text-fg tabular-nums">{x.tutor.certified}</strong> {x.tutor.certified === 1 ? "piece" : "pieces"} of writing certified Human-made</p>
         </Link>
         <Link href="/portfolio" className={`${panel} group block transition hover:border-[#CFB855]`}>
-          <h2 className="text-lg font-semibold">Portfolio</h2>
+          <h2 className="text-base font-bold">Portfolio</h2>
           <dl className="mt-4 grid grid-cols-2 gap-y-4">
             {[
               ["Works shared", x.portfolio.works],
@@ -140,7 +140,7 @@ export default async function Dashboard() {
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col-reverse">
                 <dt className="text-sm text-fg-dim">{k}</dt>
-                <dd className="text-2xl font-semibold tabular-nums">{v}</dd>
+                <dd className="text-xl font-semibold tabular-nums">{v}</dd>
               </div>
             ))}
           </dl>
@@ -182,8 +182,8 @@ function Meter({ done, total, label }: { done: number; total: number; label: str
         <span className="text-fg-dim">{label}</span>
         <span className="font-semibold tabular-nums">{done}<span className="text-fg-faint"> / {total}</span></span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={total} aria-valuenow={done}>
-        <div className="h-full rounded-full bg-fg" style={{ width: `${total ? (100 * done) / total : 0}%` }} />
+      <div className="h-1.5 overflow-hidden bg-[#F1EBD8]" role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={total} aria-valuenow={done}>
+        <div className="h-full bg-fg" style={{ width: `${total ? (100 * done) / total : 0}%` }} />
       </div>
     </div>
   );
