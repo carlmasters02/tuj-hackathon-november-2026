@@ -10,7 +10,7 @@ export function NewCreationButton({ kind, label, mode = "digital" }: { kind: "ar
   return (
     <span className="inline-flex flex-col gap-1">
       <button
-        className="inline-flex items-center justify-center rounded-lg border border-[#E9D68A] bg-white px-4 py-2.5 text-sm font-semibold text-fg shadow-sm transition hover:bg-[#FFF8DC] disabled:opacity-50"
+        className={kind === "art" ? "inline-flex items-center justify-center rounded-lg border border-[#E9D68A] bg-white px-4 py-2.5 text-sm font-semibold text-fg shadow-sm transition hover:bg-[#FFF8DC] disabled:opacity-50" : "btn btn-primary px-5 py-2.5"}
         disabled={busy}
         onClick={async () => {
           setBusy(true);
