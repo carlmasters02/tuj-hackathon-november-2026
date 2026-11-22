@@ -220,8 +220,10 @@ async function publicPage(path: string) {
   check("Music gallery keeps compact header and composer action", r.status === 200 && musicHeader.includes("Where feelings become melodies.") && musicHeader.includes("href=\"/portfolio/music/composer\"") && musicHeader.includes("href=\"/portfolio/upload\""));
 
   // ── Gallery ──────────────────────────────────────────────────────────────
-  const png = await sharp({ create: { width: 320, height: 240, channels: 3, background: { r: 27, g: 43, b: 94 } } })
-    .composite([{ input: Buffer.from(`<svg width="320" height="240"><circle cx="${100 + Math.random() * 120}" cy="120" r="70" fill="#fbcb3d"/><rect x="20" y="20" width="${40 + Math.random() * 80}" height="60" fill="#ff9f1c"/></svg>`) }])
+  // Random source pixels keep the dHash fixture unique across runs on the shared demo gallery;
+  // small changes to the same shapes can perceptually collide and fail for the wrong reason.
+  const png = await sharp(randomBytes(320 * 240 * 3), { raw: { width: 320, height: 240, channels: 3 } })
+    .composite([{ input: Buffer.from(`<svg width="320" height="240"><rect x="12" y="12" width="296" height="42" rx="10" fill="#1b2b5e" opacity=".9"/><text x="24" y="41" fill="white" font-size="20">E2E ${tag}</text><circle cx="${100 + Math.random() * 120}" cy="150" r="70" fill="#fbcb3d" opacity=".55"/></svg>`) }])
     .png()
     .toBuffer();
   const fd = new FormData();
