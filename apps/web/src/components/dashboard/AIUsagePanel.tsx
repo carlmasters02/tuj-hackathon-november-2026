@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { WeeklyStats } from "@/lib/server/stats";
 
-const displayTime = (minutes: number): string => {
+const displayTime = (minutes: number) => {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return h ? `${h}h ${m}m` : `${m}m`;
@@ -9,102 +9,77 @@ const displayTime = (minutes: number): string => {
 
 export function AIUsagePanel({ stats }: { stats: WeeklyStats }) {
   const maxDay = Math.max(30, ...stats.days.map((day) => day.aiMinutes));
-  const maxDomain = Math.max(1, ...stats.domains.map((domain) => domain.minutes));
-  const start = stats.days[0]?.date;
-  const end = stats.days[stats.days.length - 1]?.date;
-  const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
-  const dateLabel = start && end
-    ? `${dateFormat.format(new Date(`${start}T00:00:00Z`))} – ${dateFormat.format(new Date(`${end}T00:00:00Z`))}`
-    : "Past 7 days";
+  const average = stats.days.length ? stats.aiMinutes / stats.days.length : 0;
+  const W = 480;
+  const H = 152;
+  const left = 10;
+  const right = 44;
+  const top = 12;
+  const floor = 122;
+  const barStep = (W - left - right) / Math.max(1, stats.days.length);
+  const y = (v: number) => floor - Math.min(1, v / maxDay) * (floor - top);
 
   return (
-    <section aria-labelledby="usage-heading" className="border-t border-line pt-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-fg-dim">Browser extension</p>
-          <h2 id="usage-heading" className="mt-2 text-2xl font-semibold text-fg">AI usage</h2>
-          <p className="mt-1 text-sm text-fg-dim">Tracked AI websites · {dateLabel}</p>
-        </div>
-        <span className="border-b border-line pb-1 text-sm font-semibold text-fg-dim">Past 7 days</span>
-      </div>
-
-      <div className="mt-7">
-        <p className="text-sm text-fg-dim">Total usage</p>
-        <p className="mt-1 text-[clamp(2.8rem,7vw,4.2rem)] font-semibold leading-none tracking-tight tabular-nums text-fg">
-          {displayTime(stats.aiMinutes)}
-        </p>
-        <p className="mt-2 text-xs text-fg-faint">Only activity reported by the connected browser extension</p>
-      </div>
-
-      <figure className="mt-8">
-        <div className="relative">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 bottom-7 flex flex-col justify-between">
-            {[0, 1, 2, 3].map((i) => <div key={i} className="border-t border-line" />)}
+    <section id="ai-activity" aria-labelledby="ai-activity-heading" className="scroll-mt-6">
+      <h2 id="ai-activity-heading" className="mb-3 text-xs font-bold uppercase tracking-[0.12em] text-[#59647C]">02 / AI activity</h2>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
+        <div className="min-w-0 rounded-xl border-[1.5px] border-[#E9D68A] bg-white p-4 shadow-[0_5px_16px_rgba(91,77,39,0.10)]">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-base font-bold text-[#1B2B5E]">AI usage</h3>
+            <span className="text-xs text-[#656E82]">Past 7 days</span>
           </div>
-          <div className="relative grid grid-cols-7 gap-2 sm:gap-4" role="img" aria-label={`AI-site minutes by day: ${stats.days.map((day) => `${day.date}: ${displayTime(day.aiMinutes)}`).join("; ")}`}>
-            {stats.days.map((day) => {
-              const h = Math.max(0, Math.min(100, 100 * day.aiMinutes / maxDay));
-              const weekday = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
-              return (
-                <div key={day.date} className="min-w-0 text-center">
-                  <div className="flex h-44 items-end justify-center border-b border-line sm:h-52">
-                    <div
-                      className="w-full max-w-12 rounded-t-sm bg-flame/85 transition-[height]"
-                      style={{ height: `${h}%` }}
-                      title={`${day.date}: ${displayTime(day.aiMinutes)} on tracked AI sites`}
-                    />
-                  </div>
-                  <p className="mt-2 text-xs font-medium text-fg-dim">{weekday}</p>
-                  <p className="mt-1 text-[11px] tabular-nums text-fg-faint">{day.aiMinutes ? displayTime(day.aiMinutes) : "—"}</p>
-                </div>
-              );
-            })}
-          </div>
+          <p className="mt-4 text-xs text-[#656E82]">Tracked website usage</p>
+          <p className="mt-1 text-[clamp(1.8rem,4vw,2.2rem)] font-medium leading-none tabular-nums text-[#1B2B5E]">{displayTime(stats.aiMinutes)}</p>
+          <figure className="mt-3">
+            <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Daily AI website usage for the past seven days, with the daily average marked as a green dashed line">
+              {[0, .25, .5, .75, 1].map((fraction) => (
+                <line key={fraction} x1={left} x2={W - right} y1={y(fraction * maxDay)} y2={y(fraction * maxDay)} stroke="#DEDCCA" strokeWidth="1" />
+              ))}
+              {Array.from({ length: stats.days.length + 1 }, (_, i) => (
+                <line key={i} x1={left + i * barStep} x2={left + i * barStep} y1={top} y2={floor} stroke="#E3DFD1" strokeDasharray="2 4" />
+              ))}
+              {stats.days.map((day, i) => {
+                const cx = left + barStep * (i + .5);
+                const weekday = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" }).slice(0, 1);
+                return (
+                  <g key={day.date}>
+                    {day.aiMinutes > 0 && (
+                      <rect x={cx - Math.min(14, barStep * .22)} y={y(day.aiMinutes)} width={Math.min(28, barStep * .44)} height={floor - y(day.aiMinutes)} fill="#377CBB">
+                        <title>{`${day.date}: ${displayTime(day.aiMinutes)}`}</title>
+                      </rect>
+                    )}
+                    <text x={cx} y={H - 7} fontSize="11" textAnchor="middle" fill="#6D7380">{weekday}</text>
+                  </g>
+                );
+              })}
+              <line x1={left} x2={W - right} y1={y(average)} y2={y(average)} stroke="#33985B" strokeWidth="1.5" strokeDasharray="6 5" />
+              <text x={W - right + 4} y={y(average) + 3} fontSize="11" fill="#33985B">avg</text>
+            </svg>
+            <figcaption className="mt-1 flex flex-wrap justify-between gap-2 text-[11px] text-[#656E82]">
+              <span>Browser extension data</span>
+              <span>Daily avg: {displayTime(Math.round(average))}</span>
+            </figcaption>
+          </figure>
         </div>
-        <figcaption className="mt-4 flex items-center gap-2 text-xs text-fg-dim">
-          <span className="inline-block h-2.5 w-2.5 rounded-sm bg-flame" /> AI-site activity by day
-        </figcaption>
-      </figure>
-
-      <div className="mt-9 border-t border-line pt-5">
-        <div className="flex items-end justify-between gap-3">
-          <h3 className="text-lg font-semibold text-fg">Websites</h3>
-          <span className="text-xs text-fg-dim">{stats.domains.length} tracked {stats.domains.length === 1 ? "site" : "sites"}</span>
-        </div>
-        {stats.domains.length ? (
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-[300px] border-collapse text-left text-sm">
-              <thead>
-                <tr className="border-y border-line text-xs font-semibold text-fg-dim">
-                  <th scope="col" className="py-3 pr-3">Website</th>
-                  <th scope="col" className="py-3 pr-3">Usage</th>
-                  <th scope="col" className="py-3 text-right">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.domains.map((domain) => (
-                  <tr key={domain.domain} className="border-b border-line/70">
-                    <th scope="row" className="max-w-40 truncate py-3 pr-4 font-medium text-fg">{domain.domain}</th>
-                    <td className="w-[36%] py-3 pr-4">
-                      <div className="h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true">
-                        <div className="h-full bg-flame" style={{ width: `${Math.min(100, 100 * domain.minutes / maxDomain)}%` }} />
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap py-3 text-right font-semibold tabular-nums text-fg">{displayTime(domain.minutes)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="min-w-0 rounded-xl border-[1.5px] border-[#E9D68A] bg-white p-4 shadow-[0_5px_16px_rgba(91,77,39,0.10)]">
+          <div className="flex items-center justify-between gap-2 border-b border-[#EFE8CC] pb-3">
+            <h3 className="text-base font-bold text-[#1B2B5E]">Websites</h3>
+            <span className="text-xs text-[#656E82]">Time</span>
           </div>
-        ) : (
-          <p className="mt-4 text-sm text-fg-dim">
-            No AI websites recorded yet. To start tracking, connect the browser extension in <Link href="/settings" className="link">Settings</Link>.
-          </p>
-        )}
-        <p className="mt-4 text-xs leading-relaxed text-fg-faint">
-          This is not Mac Screen Time. It shows tracked AI-site activity, not all device apps or hourly screen usage.
-          Data is reported by your browser extension and is meant for reflection, not verification.
-        </p>
+          {stats.domains.length ? (
+            <ul className="mt-2">
+              {stats.domains.map((site, i) => (
+                <li key={site.domain} className={`flex items-center justify-between gap-3 px-2.5 py-2.5 text-xs ${i % 2 === 0 ? "bg-[#FCF8E9]" : "bg-white"}`}>
+                  <span className="min-w-0 truncate font-medium text-[#1B2B5E]" title={site.domain}>{site.domain}</span>
+                  <span className="shrink-0 font-bold tabular-nums text-[#1B2B5E]">{displayTime(site.minutes)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-4 text-sm text-[#656E82]">No AI activity recorded. Connect the extension in <Link href="/settings" className="underline font-semibold text-[#1B2B5E]">Settings</Link>.</p>
+          )}
+          <p className="mt-4 text-[11px] leading-relaxed text-[#656E82]">AI websites tracked by the extension only; not Mac-wide Screen Time. Usage is for reflection, not proof.</p>
+        </div>
       </div>
     </section>
   );
