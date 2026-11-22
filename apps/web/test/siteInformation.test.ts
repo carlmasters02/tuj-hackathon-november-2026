@@ -22,4 +22,10 @@ describe("site information pages", () => {
       expect(developer.bio).toBeTruthy();
     }
   });
+
+  it("links developer profiles only to https URLs", () => {
+    const links = DEVELOPERS.flatMap((developer) => developer.links ?? []);
+    expect(links.length).toBeGreaterThan(0);
+    for (const link of links) expect(new URL(link.href).protocol).toBe("https:");
+  });
 });
