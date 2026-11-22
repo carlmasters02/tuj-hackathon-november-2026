@@ -56,10 +56,11 @@ export default function DevelopersPage() {
                 <p className="mt-1 text-sm font-semibold text-fg-faint">{developer.role}</p>
                 <p className="mt-4 text-sm leading-6 text-fg-dim">{developer.bio}</p>
               </div>
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+              {/* fixed-height footer: cards line up whether or not a developer has links */}
+              <div className="mt-5 border-t border-line pt-4">
                 <p className="text-xs font-semibold uppercase tracking-wide text-fg-faint">Humagination contributor</p>
                 {developer.links?.length ? (
-                  <ul className="flex gap-1.5" aria-label={`${developer.name} online`}>
+                  <ul className="mt-3 flex h-9 gap-1.5" aria-label={`${developer.name} online`}>
                     {developer.links.map((link) => (
                       <li key={link.href}>
                         <a
@@ -75,7 +76,9 @@ export default function DevelopersPage() {
                       </li>
                     ))}
                   </ul>
-                ) : null}
+                ) : (
+                  <div className="mt-3 h-9" aria-hidden />
+                )}
               </div>
             </li>
           ))}
