@@ -22,7 +22,7 @@ export default async function ArtFeed() {
           <h1 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-[-0.035em] text-fg">
             Art<span className="text-flame">.</span>
           </h1>
-          <p className="mt-1.5 text-sm leading-relaxed text-fg-dim">Felt by art.</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-fg-dim">Felt by heart.</p>
           <nav aria-label="Art actions" className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link href="/portfolio/upload" className="inline-flex items-center gap-1 border-b-2 border-fg pb-0.5 text-sm font-bold text-fg transition hover:border-flame focus-visible:outline-offset-4">
               Upload artwork <span aria-hidden="true">↗</span>
