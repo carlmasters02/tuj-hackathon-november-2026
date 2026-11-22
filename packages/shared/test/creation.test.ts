@@ -38,7 +38,7 @@ describe("art provenance", () => {
     expect(replayArt(drawing)).toHaveLength(15);
     expect(artToSvg(replayArt(drawing))).toMatch(/^<svg[\s\S]*<path d="M100 302Q/);
   });
-  it("a patient human drawing is Human-Verified", () => {
+  it("a drawing with an intact creation record is verified", () => {
     const b = batches(drawing);
     expect(verifyCreationChain(ID, b).ok).toBe(true);
     const { stats } = creationStats("art", b);
@@ -56,8 +56,15 @@ describe("art provenance", () => {
     expect(stats.scriptedStrokes).toBe(16);
     expect(creationVerdict("art", stats, true)).not.toBe("human_verified");
   });
-  it("too little effort is not verified", () => {
-    const { stats } = creationStats("art", batches(drawing.slice(0, 3)));
+  it("one valid stroke can be verified without a time or count minimum", () => {
+    const { stats } = creationStats("art", batches(drawing.slice(0, 1)));
+    expect(stats.finalStrokes).toBe(1);
+    expect(creationVerdict("art", stats, true)).toBe("human_verified");
+  });
+  it("an empty replay after undoing every stroke cannot be verified", () => {
+    const events = drawing.slice(0, 1).concat({ seq: 1, t: 2000, type: "undo" });
+    const { stats } = creationStats("art", batches(events));
+    expect(stats.finalStrokes).toBe(0);
     expect(creationVerdict("art", stats, true)).toBe("unverified");
   });
   it("rejects malformed strokes", () => {
@@ -73,9 +80,20 @@ describe("music provenance", () => {
     expect(s.bpm).toBe(96);
     expect(s.cells).not.toContain("0:0");
   });
-  it("a composed piece is Human-Verified", () => {
+  it("a composed piece with an intact creation record is verified", () => {
     const { stats } = creationStats("music", batches(edits));
     expect(stats.noteEdits).toBe(20);
     expect(creationVerdict("music", stats, true)).toBe("human_verified");
+  });
+  it("one active music cell can be verified without an edit minimum", () => {
+    const { stats } = creationStats("music", batches(edits.slice(0, 1)));
+    expect(stats.finalNotes).toBe(1);
+    expect(creationVerdict("music", stats, true)).toBe("human_verified");
+  });
+  it("an empty music score cannot be verified", () => {
+    const events = edits.slice(0, 1).concat({ seq: 1, t: 2000, type: "clear" });
+    const { stats } = creationStats("music", batches(events));
+    expect(stats.finalNotes).toBe(0);
+    expect(creationVerdict("music", stats, true)).toBe("unverified");
   });
 });

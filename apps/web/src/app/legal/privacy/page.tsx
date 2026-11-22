@@ -50,7 +50,7 @@ export default function PrivacyPage() {
 
       <LegalSection title="6. What is public and what is shared">
         <LegalList>
-          <li><strong>Your choices:</strong> published work, public certificates and replays, usernames, public profiles, public comments, and opted-in leaderboard entries can be visible to others. Uploaded work can be public without receiving a Human-made seal.</li>
+          <li><strong>Your choices:</strong> published work, public certificates and replays, usernames, public profiles, public comments, and opted-in leaderboard entries can be visible to others. Uploaded work can be public without receiving a creation-record seal.</li>
           <li><strong>Other authorized users:</strong> media previews may contain a forensic mark linked to the viewer and date. Private viewer-specific links do not make public sharing socially risk-free.</li>
           <li><strong>Infrastructure providers:</strong> Supabase processes authentication, database and storage operations; Vercel hosts application traffic. Optional identity providers process sign-in if enabled. Configured code runners process submitted source code. These providers act under their own terms and our configuration.</li>
           <li><strong>Legal and safety disclosures:</strong> information may be disclosed when reasonably necessary to comply with valid legal process, protect rights and safety, investigate abuse, or complete a legitimate project transfer subject to safeguards.</li>

@@ -63,7 +63,7 @@ describe("replay", () => {
 });
 
 describe("stats & verdict", () => {
-  it("typed text is Human-Verified", () => {
+  it("typed text receives a verified creation record", () => {
     const ev = typeText(PARA);
     // a few revisions
     ev.push({ seq: ev.length, t: ev.length * 150, type: "delete", from: PARA.length - 1, to: PARA.length, len: 0 });

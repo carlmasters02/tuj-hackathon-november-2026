@@ -19,7 +19,7 @@ export function CreationList({ items, base, empty }: { items: CreationSummary[];
                 </span>
               </span>
               <span className="flex items-center gap-2">
-                {c.verdict === "human_verified" ? <HumanSeal size={40} /> : c.status === "finalized" ? <span className="chip">Not sealed</span> : <span className="chip chip-sun">Continue</span>}
+                {c.verdict === "human_verified" ? <HumanSeal size={40} /> : c.status === "finalized" ? <span className="chip">Record not verified</span> : <span className="chip chip-sun">Continue</span>}
               </span>
             </Link>
           </li>

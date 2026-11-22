@@ -8,34 +8,21 @@ import { HumanSeal } from "@/components/HumanSeal";
 
 export interface Effort {
   done: number;
-  need: number;
   unit: string; // "strokes" | "note edits"
   seconds: number;
-  needSeconds: number;
 }
 
-/** Shows how close a piece is to the Human-made seal; finishing signs the certificate and publishes. */
+/** Shows the recorded work; count and time are context, never thresholds for certification. */
 export function SealProgress({ e }: { e: Effort }) {
-  const a = Math.min(1, e.done / e.need);
-  const b = Math.min(1, e.seconds / e.needSeconds);
-  const ready = a >= 1 && b >= 1;
+  const hasContent = e.done > 0;
   return (
-    <div className={`flex items-center gap-3 rounded-2xl p-3 text-sm transition-colors ${ready ? "bg-sun-soft ring-1 ring-sun" : "bg-muted/60"}`}>
-      <div className={`transition-[filter,opacity] duration-500 ${ready ? "" : "opacity-40 grayscale"}`}><HumanSeal size={40} /></div>
+    <div className={`flex items-center gap-3 rounded-2xl p-3 text-sm transition-colors ${hasContent ? "bg-sun-soft ring-1 ring-sun" : "bg-muted/60"}`}>
+      <div className={`transition-[filter,opacity] duration-500 ${hasContent ? "" : "opacity-40 grayscale"}`}><HumanSeal size={40} /></div>
       <div className="min-w-0 flex-1 space-y-1.5">
-        <p className="font-semibold">{ready ? "Ready for the Human-made seal" : "Working toward the seal"}</p>
-        <Bar label={`${Math.min(e.done, e.need)}/${e.need} ${e.unit}`} p={a} />
-        <Bar label={`${Math.min(e.seconds, e.needSeconds)}/${e.needSeconds} s of active time`} p={b} />
+        <p className="font-semibold">{hasContent ? "Ready to check the creation record" : "Add something to record"}</p>
+        <p className="text-xs text-fg-dim tabular-nums">{e.done} {e.unit} · {e.seconds} s active</p>
+        <p className="text-xs leading-relaxed text-fg-dim">No stroke-count or time minimum. The server checks the non-empty final work against the event chain and receipt times.</p>
       </div>
-    </div>
-  );
-}
-
-function Bar({ label, p }: { label: string; p: number }) {
-  return (
-    <div>
-      <span className="text-xs text-fg-dim tabular-nums">{label}</span>
-      <div className="mt-0.5 h-1.5 overflow-hidden rounded-full bg-line"><div className={`h-full rounded-full transition-[width] duration-300 ${p >= 1 ? "bg-ok" : "bg-fg"}`} style={{ width: `${p * 100}%` }} /></div>
     </div>
   );
 }
@@ -45,7 +32,7 @@ export function FinishPanel({ id, kind, title, setTitle, effort, drain, onClose 
   const [publish, setPublish] = useState(true);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const ready = effort.done >= effort.need && effort.seconds >= effort.needSeconds;
+  const ready = effort.done > 0;
   const titleRef = useRef<HTMLInputElement>(null);
   const untitled = isDefaultTitle(title);
   const finish = async () => {
@@ -70,7 +57,7 @@ export function FinishPanel({ id, kind, title, setTitle, effort, drain, onClose 
         <TitleField value={title} onChange={setTitle} inputRef={titleRef} id="finish-title" />
         {untitled && <DefaultTitleWarning title={title} onChange={() => { titleRef.current?.focus(); titleRef.current?.select(); }} />}
         <SealProgress e={effort} />
-        {!ready && <p className="text-sm text-warn">You can finish now, but it won&apos;t carry the seal. Keep going a little longer to earn it.</p>}
+        {!ready && <p className="text-sm text-warn">Add at least one visible {kind === "art" ? "stroke" : "active note"} before finishing. Event counts and active time are shown for context, not required as targets.</p>}
         <label className="flex items-center gap-2 text-sm font-semibold">
           <input type="checkbox" checked={publish} onChange={(e) => setPublish(e.target.checked)} className="h-4 w-4 accent-[var(--color-fg)]" />
           Show it in the portfolio

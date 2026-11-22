@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MIN_EFFORT, replayMusic, SCALE_HZ, STEPS, type MusicEvent } from "@hm/shared/creation";
+import { replayMusic, SCALE_HZ, STEPS, type MusicEvent } from "@hm/shared/creation";
 import { CreationRecorder, STATUS_TEXT, type SaveStatus } from "./recorder";
 import { ScoreGrid } from "./ScoreGrid";
 import { FinishPanel, SealProgress } from "./FinishPanel";
@@ -141,7 +141,7 @@ export function Composer({ id, initialTitle, lastSeq, headHash, events, prior }:
     setConfirmClear(false);
   };
 
-  const eff = { done: effort.edits, need: MIN_EFFORT.music.edits, unit: "note edits", seconds: Math.floor(effort.seconds), needSeconds: MIN_EFFORT.music.seconds };
+  const eff = { done: effort.edits, unit: "note edits", seconds: Math.floor(effort.seconds) };
   const playing = playhead !== null || loop.current !== null;
 
   return (

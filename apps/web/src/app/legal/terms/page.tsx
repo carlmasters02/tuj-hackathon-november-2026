@@ -20,8 +20,8 @@ export default function TermsPage() {
         <p>Tutoring feedback, progress measures and creation records are educational and motivational tools. They are not accredited assessments, guarantees of learning outcomes, fraud-proof identity checks, or conclusive proof that a person worked without outside assistance.</p>
       </LegalSection>
 
-      <LegalSection title="3. Human-made certificates and tracker figures">
-        <p>A Human-made seal means that work was created in an eligible Humagination tool and that its recorded event log passed the checks described in the service. It does not prove that nobody copied, received assistance, or used another tool off-screen. Replay evidence, statistics and verdict labels must be read together with those limitations.</p>
+      <LegalSection title="3. Creation records and tracker figures">
+        <p>A creation-record seal means an eligible event log was received by the server, replayed to the published work and passed the integrity checks described in the service. It does not prove that nobody copied, received assistance or used another tool off-screen. Replay evidence, statistics and verdict labels must be read together with those limitations.</p>
         <p>Reliance Tracker figures come from the browser extension and focus/idle signals available to it. They are self-reported motivational estimates, not surveillance records or proof of conduct. Do not rely on certificates or tracker figures for high-stakes employment, disciplinary, legal, academic-integrity, or eligibility decisions without independent human review.</p>
       </LegalSection>
 

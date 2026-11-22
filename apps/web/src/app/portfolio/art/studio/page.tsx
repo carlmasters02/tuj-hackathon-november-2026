@@ -11,7 +11,7 @@ export default async function StudioIndex() {
   const items = await myCreations(user.id, "art");
   return (
     <div>
-      <HubHeader title="Drawing studio" intro="Every stroke you make here is recorded and timestamped by the server. Finish a piece and it carries its whole history, which is what earns the Human-made seal." back={{ href: "/portfolio/art", label: "Art" }}>
+      <HubHeader title="Drawing studio" intro="Every stroke you make here is recorded and timestamped by the server. Finish a non-empty drawing and the server replays its whole history to verify the creation record—there is no stroke-count or time minimum." back={{ href: "/portfolio/art", label: "Art" }}>
         <NewCreationButton kind="art" label="New drawing" />
       </HubHeader>
       <CreationList items={items} base="/portfolio/art/studio" empty="No drawings yet. Start one and it will be saved here as you go." />

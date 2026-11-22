@@ -1,8 +1,8 @@
 /**
- * The "Human-made" seal — shown only on work with a passing provenance certificate.
+ * Creation-record seal — shown only when replay and integrity checks pass.
  * A sun-yellow stamp with the fingerprint whorl and the words set on a circle.
  */
-export function HumanSeal({ size = 56, title = "Human-made: verified by how it was created" }: { size?: number; title?: string }) {
+export function HumanSeal({ size = 56, title = "Creation record verified" }: { size?: number; title?: string }) {
   const rings = [10, 16, 22, 28];
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" role="img" aria-label={title} className="shrink-0 drop-shadow-sm">
@@ -27,11 +27,11 @@ export function HumanSeal({ size = 56, title = "Human-made: verified by how it w
 /** Small inline badge version for lists. */
 export function HumanBadge() {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-sun px-2.5 py-0.5 text-xs font-bold text-fg" title="Human-made: verified by how it was created">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-sun px-2.5 py-0.5 text-xs font-bold text-fg" title="Creation record verified">
       <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
         <path d="M6 14a5 6 0 1 1 8 0M8 15.5a3 4 0 1 1 4 0M10 16v-4" />
       </svg>
-      Human-made
+      Creation record verified
     </span>
   );
 }

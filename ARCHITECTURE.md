@@ -9,7 +9,7 @@ Humagination helps people learn and create with their own minds. The app is deli
 Four rules outrank individual feature requests:
 
 1. **Coach, do not replace the learner's work.** Math, code, and writing feedback is deterministic. StepCheck points out the first bad line, Code Dojo explains errors and grades hidden tests, and RedPen identifies writing issues without rewriting the text. There is no “show solution” shortcut.
-2. **Prove provenance with recorded creation, not AI detection.** Human-made certificates come from hash-chained events recorded in the app, received on the server, replayed and checked by the server, then signed with Ed25519. Uploads may be shared in Art or Music but never receive that seal.
+2. **Prove provenance with recorded creation, not AI detection or effort thresholds.** Creation-record certificates come from hash-chained events received by the server, replayed to non-empty final work and checked for integrity and timing/plausibility before Ed25519 signing. They do not prove humanity or absence of other tools. Uploads may be shared in Art or Music but never receive that seal.
 3. **Authenticate and authorize every trust-sensitive action.** A caller-supplied `user_id`, username, email, or profile id is not an identity. Use the Supabase-auth user, owner-scoped RLS, and existing route security helpers.
 4. **Preserve compatibility.** Do not remove existing routes, old problem ids, saved progress, certificate verification, or user privacy protections to make a new feature simpler. Keep changes focused and add tests rather than rewriting unrelated code or weakening assertions.
 
@@ -146,7 +146,7 @@ Known limitations: on-screen pagination is approximate; one block taller than a 
 
 Art, Words and Music support likes and comments subject to visibility and ownership rules. Owners can unpublish or delete. Public profile visibility is not permission to alter another user's work. UI state alone is never persistence: social contribution or progress must use the appropriate authenticated API and database policies.
 
-Only in-app work with passing replay evidence receives the Human-made seal. Word publishing requires an owned passing writing certificate. Art studio work is server-rendered from stroke events. Music is rendered from note events. Creation finalization checks chain integrity, event plausibility, server receipt timing, active time and minimum work requirements, then signs the certificate.
+Only in-app work with a non-empty final replay and passing integrity, plausibility and receipt-timing checks receives the creation-record seal. Count and active-time minimums are not used. Word publishing requires an owned passing writing certificate. Art studio work is server-rendered from stroke events. Music is rendered from note events. Creation finalization rejects cleared/undone-empty results, checks chain integrity, event plausibility and server receipt timing, then signs the certificate.
 
 Uploads are explicitly unsealed. Do not introduce EXIF checks, vocabulary-frequency heuristics, pixel smoothness, paste counts, or another scoring heuristic as “100% human verified.” Those signals are editable, unreliable for honest students, and contradict the product contract.
 

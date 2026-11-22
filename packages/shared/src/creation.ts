@@ -212,15 +212,16 @@ export function creationStats(kind: CreationKind, batches: CreationBatch[]): { s
   return { stats, contentHash: sha256Hex(canonicalJSON(content)) };
 }
 
-export const MIN_EFFORT = { art: { strokes: 12, seconds: 45 }, music: { edits: 12, seconds: 45 } } as const;
+/** A certificate must describe a non-empty final artifact, not an erased or cleared canvas/score. */
+export function creationHasContent(kind: CreationKind, s: CreationStats): boolean {
+  return kind === "art" ? (s.finalStrokes ?? 0) > 0 : (s.finalNotes ?? 0) > 0;
+}
 
 export function creationVerdict(kind: CreationKind, s: CreationStats, integrityOk: boolean): CreationVerdict {
-  if (!integrityOk) return "unverified";
-  const effort = kind === "art" ? (s.strokes ?? 0) >= MIN_EFFORT.art.strokes : (s.noteEdits ?? 0) >= MIN_EFFORT.music.edits;
-  const time = s.activeSeconds >= (kind === "art" ? MIN_EFFORT.art.seconds : MIN_EFFORT.music.seconds);
-  if (effort && time && s.flags.length === 0) return "human_verified";
-  if (s.flags.length === 0 && (kind === "art" ? (s.strokes ?? 0) >= 4 : (s.noteEdits ?? 0) >= 4)) return "mostly_human";
-  return "unverified";
+  // Legacy enum values stay on the wire for certificate compatibility. The displayed badge means
+  // "creation record verified": replay integrity and a compatible timeline, not an effort judgment.
+  if (!integrityOk || !creationHasContent(kind, s) || s.flags.length > 0) return "unverified";
+  return "human_verified";
 }
 
 /** C major across two octaves, bottom row first: C4 D4 E4 F4 G4 A4 B4 C5 D5 E5 F5 G5. */

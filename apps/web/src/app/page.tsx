@@ -10,7 +10,7 @@ const FEATURES: { icon: IconName; title: string; tag: string; body: string; href
   { icon: "pencil", title: "Written Here", tag: "Authentic editor", body: "Every keystroke goes into a hash-chained log. Finalize to get a signed certificate and a replay anyone can watch. Pasted text shows up — honestly.", href: "/write" },
   { icon: "pilcrow", title: "RedPen", tag: "Writing coach", body: "Flags passive voice, filler, clichés and sentences over 30 words, and coaches research papers, essays and poems on their own terms. It never rewrites a word for you.", href: "/tutor/writing" },
   { icon: "clock", title: "Reliance Tracker", tag: "Chrome extension", body: "Counts only active minutes on AI sites — no URLs, no prompts, no keystrokes. Think First asks for your own attempt before you ask a bot.", href: "/dashboard" },
-  { icon: "frame", title: "Portfolio", tag: "Art · writing · music", body: "Draw in the studio or compose in the composer, and the whole process is on record. Only work that passes the checks earns the Human-made seal. AI crawlers get a 403.", href: "/portfolio" },
+  { icon: "frame", title: "Portfolio", tag: "Art · writing · music", body: "Draw in the studio or compose in the composer, and the whole process is on record. Work that passes replay and integrity checks earns the creation-record seal. AI crawlers get a 403.", href: "/portfolio" },
 ];
 
 export default async function Home() {

@@ -14,7 +14,7 @@ The app has three tabs, plus a browser extension:
 |---|---|
 | **Dashboard** | Your share of the thinking this week (your own minutes vs time on AI sites), Human Points and levels, streak, progress, and where you left off. |
 | **Tutor** — Math, Code, Writing | Math (College Algebra, Precalculus, Calculus 1–3, Probability & Statistics), Code (Python, C, Java) and Writing (research papers, argumentative essays, poetry). It checks your work and says *where* and *what kind* of mistake you made. It never gives the answer. |
-| **Portfolio** — Art, Words, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and only pieces whose record passes the checks get the **Human-made seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
+| **Portfolio** — Art, Words, Music | Share work, with likes and comments on everything. Work made in the app (the writing editor, the drawing studio, the composer) is recorded event by event, and non-empty final work whose replay passes the checks gets the **creation-record seal**. Uploads are welcome but never sealed. AI crawlers are refused, originals are encrypted, and every view is watermarked with the viewer's name. |
 | **Reliance Tracker** — Chrome extension | Measures your active time on AI sites so the dashboard can compare it with time you spent thinking for yourself. |
 
 ---
@@ -83,7 +83,7 @@ Flags passive voice, filler and weasel words, hedges and intensifiers, sentences
    - the revision ratio (near-zero revisions suggests transcription)
    - whether the client timeline is consistent with the server's clock
 
-   The verdict is **Human-Verified**, **Mostly Human** or **Unverified**.
+   The displayed verdict for a passing creation record is **Creation record verified**. Legacy values such as **Mostly Human** and **Unverified** remain for compatible certificate verification.
 5. The server signs a certificate with **Ed25519**. Its public page shows the verdict and statistics, re-checks the signature, chain and replay on every load, and includes a **replay player** (1×, 5×, 20×) that re-types the document. Pastes flash amber.
 6. `/verify` lets anyone check pasted certificate JSON plus text **entirely in their browser**.
 
@@ -101,17 +101,17 @@ Formatting-only changes are saved without inventing typing events: their content
 ### 6. Portfolio (`/portfolio`): Art, Words, Music
 Tutor → **Writing** is for drafting and coaching; Portfolio → **Words** is only for finished prose and poetry, with authors, likes, comments and certificates. Coaching controls never appear in the portfolio.
 
-Every work has **likes and comments**. **Only authentic work gets the Human-made seal**, and "authentic" means the app holds a record of how the piece was made that passes every check:
+Every work has **likes and comments**. **Only work with a verified creation record gets the creation-record seal**: the app holds an intact event log, its server replay matches the non-empty final work, and its receipt timing and plausibility checks pass:
 
 | Section | Sealed when… | Uploads |
 |---|---|---|
-| **Words** | made in the editor and certified **Human-Verified** (see section 4) | — |
+| **Words** | made in the editor with a **verified creation record** (see section 4) | — |
 | **Art** | drawn in the **drawing studio** (`/portfolio/art/studio`) | allowed, never sealed |
 | **Music** | composed in the **composer** (`/portfolio/music/composer`) | allowed (MP3/OGG/WAV), never sealed |
 
 **Drawing studio and composer.** These use the same protocol as the writing editor. Every stroke, undo and clear (studio) or note placed and removed (composer) is an event in a **SHA-256 hash chain**, sent every 2 seconds and stamped with the server's receipt time. **Finish** replays the whole log on the server, recomputes the chain and the stats, and signs an **Ed25519 certificate**:
 - Studio art is **rendered by the server from the strokes**, so the published image is exactly what the log describes. It then goes through the art pipeline below.
-- The seal needs at least 12 strokes or note edits and 45 seconds of active time, with no flags. Flags include strokes laid down faster than a hand can move, edits faster than a person can click, and a client timeline that disagrees with the server's clock.
+- For studio art and composer music, a non-empty final replay and no integrity, plausibility or timing flags are enough; there is **no minimum stroke/note count or active-time requirement**. Counts and duration remain visible as context. Flags include strokes laid down faster than a hand can move, edits faster than a person can click, and a client timeline that disagrees with the server's clock.
 - The certificate page re-verifies the signature, chain and replay on every load, and plays the piece back: a stroke-by-stroke redraw, or the score played and re-written note by note.
 
 **Art pipeline (uploads and studio pieces):**
@@ -338,7 +338,7 @@ $ pnpm test
 | Math checking | Every legacy and semester problem is solvable via its server-side answer. Six 12-unit curricula, unit objectives, unique ids and legacy links are validated; equivalence, solution sets, final forms, parse errors and all targeted hint rules are covered. | `packages/shared/test/math.test.ts`, `mathCourseContent.test.ts` |
 | Typography compatibility | Local-only font assets, retained Bricolage writer option, and display fonts that cannot override MLA/APA/publication document typography | `apps/web/test/typography.test.ts` |
 | Tamper detection | Editing one stored event, deleting or reordering events, or moving a log to another document all break the chain | `provenance.test.ts` |
-| Replay & authenticity stats | Exact replay; typed text → Human-Verified; external paste lowers the score; undo/redo of a paste stays a paste; injection bursts, superhuman speed, transcription and fake timelines are all flagged | `provenance.test.ts` |
+| Replay & authenticity stats | Exact replay; typed text → verified creation record; external paste lowers the score; undo/redo of a paste stays a paste; injection bursts, superhuman speed, transcription and fake timelines are all flagged | `provenance.test.ts` |
 | Certificates | Ed25519 sign/verify; any change to the certificate, or a different key, fails | `provenance.test.ts` |
 | Code exercises are correct | All 36 exercises pass with test-only reference solutions on real gcc, javac and python. Wrong answers fail the hidden tests; hidden test data never reaches the browser | `code.test.ts` |
 | Error explainer | 30 rules per language; sample outputs map to the expected rule and line number, including **real** gcc/javac/python error output | `code.test.ts` |

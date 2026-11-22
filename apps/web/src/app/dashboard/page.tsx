@@ -140,7 +140,7 @@ export default async function Dashboard() {
           <h2 className="text-lg font-semibold">Tutor</h2>
           <Meter done={x.tutor.mathSolved} total={x.tutor.mathTotal} label="Math problems solved" />
           <Meter done={x.tutor.codeSolved} total={x.tutor.codeTotal} label="Code exercises solved" />
-          <p className="text-sm text-fg-dim"><strong className="text-fg tabular-nums">{x.tutor.certified}</strong> {x.tutor.certified === 1 ? "piece" : "pieces"} of writing certified Human-made</p>
+          <p className="text-sm text-fg-dim"><strong className="text-fg tabular-nums">{x.tutor.certified}</strong> {x.tutor.certified === 1 ? "piece" : "pieces"} of writing with a verified creation record</p>
         </Link>
         <Link href="/portfolio" className="group block border-t border-line pt-5 transition hover:border-fg">
           <h2 className="text-lg font-semibold">Portfolio</h2>

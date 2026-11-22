@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { z } from "zod";
-import { artToSvg, creationStats, creationVerdict, replayArt, verifyCreationChain, type ArtEvent } from "@hm/shared/creation";
+import { artToSvg, creationHasContent, creationStats, creationVerdict, replayArt, verifyCreationChain, type ArtEvent } from "@hm/shared/creation";
 import { signCertificate } from "@hm/shared/certificate";
 import { api, assertSameOrigin, HttpError, json, parseJson, rateLimit, UUID } from "@/lib/http";
 import { profileOf, requireUser } from "@/lib/auth";
@@ -36,6 +36,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
   const chain = verifyCreationChain(id, batches);
   const integrityOk = chain.ok && chain.head === c.head_hash;
   const { stats, contentHash } = creationStats(c.kind, batches);
+  if (!creationHasContent(c.kind, stats)) throw new HttpError(400, c.kind === "art" ? "The final drawing is empty. Add a visible stroke before finishing." : "The final score is empty. Add at least one active note before finishing.");
   if (!integrityOk) stats.flags.unshift("Integrity check failed: the log does not match the stored head");
   const verdict = creationVerdict(c.kind, stats, integrityOk);
 

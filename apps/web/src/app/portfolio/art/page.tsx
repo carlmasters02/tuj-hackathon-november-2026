@@ -33,7 +33,7 @@ export default async function ArtFeed() {
               Create in the studio <span aria-hidden="true">↗</span>
             </Link>
           </nav>
-          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-fg-faint">Only works marked Studio verified have a Human-Verified certificate. Uploads are welcome but never sealed; studio pieces that do not pass every check also remain unsealed.</p>
+          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-fg-faint">Studio verified means the server replayed the work and its creation record passed every integrity check. Uploads are welcome but never sealed; studio pieces with failed checks also remain unsealed.</p>
         </div>
       </header>
 

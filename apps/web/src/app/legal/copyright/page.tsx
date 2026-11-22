@@ -16,7 +16,7 @@ export default function CopyrightPage() {
       </LegalSection>
 
       <LegalSection title="2. What the seals and labels do not decide">
-        <p>A Human-made seal reflects automated checks on an eligible creation-event log; it is not a copyright registration, identity verification or final judgment about authorship. An upload without a seal has not been found infringing merely because it is unsealed. Copyright ownership, plagiarism, licensed reuse and creation-process evidence are different questions.</p>
+        <p>A creation-record seal means the server replayed an eligible creation-event log and its final work passed the integrity checks. It is not a copyright registration, identity verification, proof that no other tool was used, or final judgment about authorship. An upload without a seal has not been found infringing merely because it is unsealed. Copyright ownership, plagiarism, licensed reuse and creation-process evidence are different questions.</p>
         <p>Reports about ownership should receive human review. A seal, score or detector-like label must not be used as the sole basis for accusations or punishment.</p>
       </LegalSection>
 

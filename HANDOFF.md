@@ -27,7 +27,7 @@ Humagination is a hackathon app with an anti-AI theme. It helps people learn and
 
 - **Dashboard:** the share of your thinking that was your own this week (your minutes vs time on AI sites, from a Chrome extension), Human Points and levels, streak, progress, "pick up where you left off".
 - **Tutor:** Math (StepCheck: algebra to Calc 3 plus prob/stats, checked line by line on the server, never gives answers), Code (Code Dojo: Python, C and Java with hidden tests), Writing (an editor whose keystrokes are hash-chained and certified, the RedPen coach, and genre coaches for research papers, argumentative essays and poetry).
-- **Portfolio:** Art, Words and Music with likes and comments. **Only work made inside the app with a record that passes the checks gets the "Human-made" seal.** Uploads are allowed but never sealed.
+- **Portfolio:** Art, Words and Music with likes and comments. **Only non-empty final work with an intact replay and passing plausibility/receipt-timing checks gets the creation-record seal.** Uploads are allowed but never sealed.
 
 Stack: pnpm monorepo. `apps/web` is Next.js 15 (App Router), React 19, Tailwind v4 and TipTap 3.35. `apps/extension` is a Chrome MV3 extension. `packages/shared` holds pure, unit-tested logic and is imported as `@hm/shared/<path>`. The backend is Supabase.
 
@@ -58,7 +58,7 @@ Stop the dev server before `pnpm build`, or the build can be killed for lack of 
 5. **Dependencies:** pin exact versions, choose releases at least two weeks old, and check the license. Recent example: `docx@9.15.3` and `lucide-react@1.70.0` were pinned instead of brand-new releases.
 6. **Teammates:** when asked to merge their work, review it first. Merge what's safe and good; reject anything unsafe or redundant, and give the owner a kind, specific, copy-pasteable message for the author. Don't delete teammates' branches without asking (`his-feature-name` is stale but kept).
 7. **Push to `main` only when the owner asks**, or when a finished, verified phase is ready.
-8. **UI tone:** parchment and navy, light and happy. Sentence-case buttons. Copy should be plain and specific. Design tokens are in `apps/web/src/app/globals.css` (`canvas`, `surface`, `muted`, `line`, `fg`, `fg-dim`, `fg-faint`, `sun`, `sun-soft`, `flame`, `redpen`, `ok`, `warn`). Fonts: Bricolage Grotesque for the UI, a book serif for prose. The "Human-made" seal (`components/HumanSeal.tsx`) appears **only** on authentic work.
+8. **UI tone:** parchment and navy, light and happy. Sentence-case buttons. Copy should be plain and specific. Design tokens are in `apps/web/src/app/globals.css` (`canvas`, `surface`, `muted`, `line`, `fg`, `fg-dim`, `fg-faint`, `sun`, `sun-soft`, `flame`, `redpen`, `ok`, `warn`). Fonts: Bricolage Grotesque for the UI, a book serif for prose. The creation-record seal (`components/HumanSeal.tsx`) appears **only** on work whose record passes verification.
 9. Every responsive grid needs a base `grid-cols-1` (`minmax(0,1fr)`), or wide content stretches it on phones.
 
 ---
@@ -69,7 +69,7 @@ The owner said the creative tools were "toys": the art pad is far from what real
 
 - **Build order: Writing → Art → Music.** Each tool is its own phase, committed in parts and pushed when verified.
 - **Writer:** **Word-style pages** (page layout, margins, page numbers, MLA/APA templates, tables, footnotes, citations, comments, find & replace, DOCX/PDF export).
-- **Art made outside the app** (Procreate, Krita, Photoshop, paper): a separate **"Process shown" badge** earned by uploading a layered source file or 3 or more work-in-progress stages that plain image maths confirms build toward the final piece. The full Human-made seal stays reserved for in-app work.
+- **Art made outside the app** (Procreate, Krita, Photoshop, paper): a separate **"Process shown" badge** earned by uploading a layered source file or 3 or more work-in-progress stages that plain image maths confirms build toward the final piece. The creation-record seal stays reserved for in-app work with a verified replay.
 - **Music:** multi-track piano roll **and microphone recording** (both).
 
 ### The non-negotiable design rule behind all three
@@ -113,7 +113,7 @@ Known limitations to note honestly in the README: footnotes render as endnotes (
 
 ## 6. Phase 2: Art (not started)
 
-Current studio: `components/studio/Studio.tsx` (pen, marker, eraser, palette, sizes, undo, clear) on a 1200×900 canvas. Events are defined in `packages/shared/src/creation.ts`, and the server renders an SVG to PNG with `sharp` in `app/api/creations/[id]/finalize`. Sealing needs ≥12 strokes and ≥45 s of active time with no flags.
+Current studio: `components/studio/Studio.tsx` (pen, marker, eraser, palette, sizes, undo, clear) on a 1200×900 canvas. Events are defined in `packages/shared/src/creation.ts`, and the server renders an SVG to PNG with `sharp` in `app/api/creations/[id]/finalize`. Sealing requires a non-empty final replay and no integrity, plausibility or timing flags; there is no stroke/note-count or active-time minimum.
 
 Build:
 - **A real painting app:** layers (add, reorder, hide, opacity, blend modes), pen-pressure brushes (Pointer Events `pressure`, `tiltX/Y`) with size, opacity, flow and hardness, brush types (pencil, ink, airbrush/soft, marker, eraser), an HSV picker and eyedropper, fill bucket, line and shape tools, zoom, pan and rotate, larger canvas presets, undo/redo, and a reference-image layer that is never exported.

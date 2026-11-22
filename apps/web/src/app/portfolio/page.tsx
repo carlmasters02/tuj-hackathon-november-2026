@@ -18,14 +18,13 @@ export default async function PortfolioHub() {
       <div className="mb-8 flex items-center gap-4 rounded-2xl border border-line bg-surface p-4">
         <HumanSeal size={64} />
         <p className="text-sm leading-relaxed text-fg-dim">
-          <strong className="text-fg">The Human-made seal</strong> appears only on work created inside Humagination — written in the editor, drawn in the studio or composed in the composer —
-          whose recorded process passes verification. Uploads are welcome, but they can&apos;t prove how they were made, so they never get the seal.
+          <strong className="text-fg">The creation-record seal</strong> appears only when the server can replay a non-empty work from its event chain and every integrity check passes. Stroke counts and active time are shown as context, not targets. Uploads are welcome, but they have no creation record to verify.
         </p>
       </div>
       <nav aria-label="Portfolio sections">
         {PORTFOLIO.map((s) => {
           const c = counts[s.key as keyof typeof counts];
-          return <IndexRow key={s.key} href={s.href} title={s.label} note={s.blurb} chips={s.items.map((i) => i.label)} status={<span className="tabular-nums">{c.total} published<br /><span className="text-fg-faint">{c.verified} human-made</span></span>} />;
+          return <IndexRow key={s.key} href={s.href} title={s.label} note={s.blurb} chips={s.items.map((i) => i.label)} status={<span className="tabular-nums">{c.total} published<br /><span className="text-fg-faint">{c.verified} verified records</span></span>} />;
         })}
       </nav>
     </div>

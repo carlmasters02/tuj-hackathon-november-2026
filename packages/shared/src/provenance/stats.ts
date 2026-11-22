@@ -264,7 +264,7 @@ export function computeStats(batches: StoredBatch[]): { text: string; stats: Doc
 export type Verdict = "human_verified" | "mostly_human" | "unverified";
 
 export const VERDICT_LABEL: Record<Verdict, string> = {
-  human_verified: "Human-Verified",
+  human_verified: "Creation record verified",
   mostly_human: "Mostly Human",
   unverified: "Unverified",
 };

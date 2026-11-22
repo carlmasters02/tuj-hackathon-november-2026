@@ -10,7 +10,7 @@ export interface FeedItem {
   createdAt: string;
   width: number | null;
   height: number | null;
-  verified: boolean; // has a Human-Verified provenance certificate
+  verified: boolean; // has a certificate whose replay and integrity checks passed
   certId: string | null;
   likes: number;
   comments: number;

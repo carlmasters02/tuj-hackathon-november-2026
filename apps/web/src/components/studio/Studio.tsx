@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CANVAS_H, CANVAS_W, MAX_STROKE_POINTS, MIN_EFFORT, replayArt, type ArtEvent, type Stroke } from "@hm/shared/creation";
+import { CANVAS_H, CANVAS_W, MAX_STROKE_POINTS, replayArt, type ArtEvent, type Stroke } from "@hm/shared/creation";
 import { CreationRecorder, STATUS_TEXT, type SaveStatus } from "./recorder";
 import { paintAll, paintStroke } from "./ArtReplay";
 import { FinishPanel, SealProgress } from "./FinishPanel";
@@ -167,7 +167,7 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
     return () => window.removeEventListener("keydown", onKey);
   }, [undo]);
 
-  const eff = { done: effort.strokes, need: MIN_EFFORT.art.strokes, unit: "strokes", seconds: Math.floor(effort.seconds), needSeconds: MIN_EFFORT.art.seconds };
+  const eff = { done: effort.strokes, unit: "strokes", seconds: Math.floor(effort.seconds) };
 
   return (
     <div className="space-y-4">

@@ -10,26 +10,17 @@ import { LikeButton, OwnerControls, ReportButton } from "@/components/gallery/Wo
 import ArtworkComments, { type CommentView } from "@/components/gallery/ArtworkComments";
 import { HumanSeal } from "@/components/HumanSeal";
 import { ScorePlayer } from "@/components/studio/ScorePlayer";
-import { MIN_EFFORT } from "@hm/shared/creation";
 import { publishedDocForDisplay } from "@/lib/server/publishedDoc";
 import { WritingDocument } from "@/components/portfolio/WritingDocument";
 
-/** Plain-language reason a recorded piece didn't earn the seal. */
+/** Plain-language reason a recorded piece did not pass verification. */
 function whyNotSealed(kind: string, s: Record<string, unknown> | undefined): string {
-  if (!s) return "The record didn't clear the bar for the Human-made seal.";
+  if (!s) return "There is no usable creation record to check.";
   const flags = (s.flags as string[] | undefined) ?? [];
   if (flags.length) return `The record was flagged: ${flags.join("; ").toLowerCase()}.`;
-  const secs = Number(s.activeSeconds ?? 0);
-  if (kind === "art" || kind === "music") {
-    const need = kind === "art" ? MIN_EFFORT.art : { strokes: MIN_EFFORT.music.edits, seconds: MIN_EFFORT.music.seconds };
-    const done = Number((kind === "art" ? s.strokes : s.noteEdits) ?? 0);
-    const unit = kind === "art" ? "strokes" : "note edits";
-    const short: string[] = [];
-    if (done < need.strokes) short.push(`${done} of ${need.strokes} ${unit}`);
-    if (secs < need.seconds) short.push(`${secs} of ${need.seconds} seconds of active time`);
-    if (short.length) return `It was too short for the seal: ${short.join(" and ")}.`;
-  }
-  return "The record didn't clear the bar for the Human-made seal.";
+  const finalCount = Number((kind === "art" ? s.finalStrokes : s.finalNotes) ?? 0);
+  if ((kind === "art" || kind === "music") && finalCount === 0) return "The replayed final work is empty.";
+  return "The record did not pass the replay and integrity checks.";
 }
 
 export const metadata = { title: "Work", other: { robots: "noai, noimageai" } };
@@ -112,8 +103,8 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               <div className="flex items-center gap-3">
                 <HumanSeal size={60} />
                 <div>
-                  <p className="font-bold">Human-made</p>
-                  <p className="text-sm text-fg-dim">The full creation process was recorded and checked.</p>
+                  <p className="font-bold">Creation record verified</p>
+                  <p className="text-sm text-fg-dim">The server replayed the whole creation record, and its final work matches.</p>
                 </div>
               </div>
               {stats && (
@@ -131,11 +122,11 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               <p className="font-bold text-fg">Not verified</p>
               {c ? (
                 <p className="mt-1">
-                  Made here, so the whole process is on record. {whyNotSealed(w.kind, statsAny)}{" "}
+                  This piece has a creation record, but its replay and integrity checks did not pass. {whyNotSealed(w.kind, statsAny)}{" "}
                   <Link className="link" href={`/verify/${c.id}`}>See the record</Link>
                 </p>
               ) : (
-                <p className="mt-1">This piece was uploaded, so there&apos;s no record of how it was made and it can&apos;t carry the Human-made seal.</p>
+                <p className="mt-1">This piece was uploaded, so there&apos;s no creation record to verify. Uploads do not receive the creation-record seal.</p>
               )}
             </div>
           )}
@@ -155,7 +146,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
                 {w.description}
               </p>
               <p className="relative mt-4 border-t border-line pt-3 text-xs text-fg-faint">
-                A story shared by the creator; not evidence for a Human-made seal.
+                A story shared by the creator; not evidence used to verify the creation record.
               </p>
             </section>
           )}
