@@ -13,6 +13,7 @@ const TOOLS: { id: Tool; label: string; key: string }[] = [
   { id: "pen", label: "Pen", key: "B" },
   { id: "marker", label: "Marker", key: "M" },
   { id: "eraser", label: "Eraser", key: "E" },
+  { id: "pixel", label: "Pixel", key: "P" },
 ];
 
 export interface StudioProps {
@@ -22,18 +23,19 @@ export interface StudioProps {
   headHash: string | null;
   events: ArtEvent[];
   prior: { strokes: number; activeSeconds: number };
+  initialMode?: "digital" | "pixel";
 }
 
-export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: StudioProps) {
+export function Studio({ id, initialTitle, lastSeq, headHash, events, prior, initialMode = "digital" }: StudioProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const baseRef = useRef<HTMLCanvasElement | null>(null);
   const strokesRef = useRef<Stroke[]>(replayArt(events));
   const recRef = useRef<CreationRecorder<ArtEvent> | null>(null);
   const live = useRef<{ pts: number[]; t0: number; tStart: number } | null>(null);
   const lastT = useRef<number | null>(null);
-  const [tool, setTool] = useState<Tool>("pen");
+  const [tool, setTool] = useState<Tool>(initialMode === "pixel" ? "pixel" : "pen");
   const [color, setColor] = useState(PALETTE[0]);
-  const [size, setSize] = useState(SIZES[1]);
+  const [size, setSize] = useState(initialMode === "pixel" ? 18 : SIZES[1]);
   const [status, setStatus] = useState<SaveStatus>("idle");
   const [err, setErr] = useState<string | null>(null);
   const [count, setCount] = useState(strokesRef.current.length);
@@ -110,7 +112,9 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
     if (e.button !== 0 || status === "conflict") return;
     e.currentTarget.setPointerCapture(e.pointerId);
     const [x, y] = toCanvas(e);
-    live.current = { pts: [x, y], t0: performance.now(), tStart: recRef.current!.now() };
+    const cell = Math.max(1, size);
+    const point = tool === "pixel" ? [Math.floor(x / cell) * cell, Math.floor(y / cell) * cell] : [x, y];
+    live.current = { pts: point, t0: performance.now(), tStart: recRef.current!.now() };
     drawLive();
   };
 
@@ -120,9 +124,10 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
     const l = live.current;
     if (!l) return;
     for (const pe of e.nativeEvent.getCoalescedEvents?.() ?? [e.nativeEvent]) {
-      const [x, y] = toCanvas(pe);
+      let [x, y] = toCanvas(pe);
+      if (tool === "pixel") { x = Math.floor(x / size) * size; y = Math.floor(y / size) * size; }
       const n = l.pts.length;
-      if (Math.hypot(x - l.pts[n - 2], y - l.pts[n - 1]) < 1.5) continue;
+      if (Math.hypot(x - l.pts[n - 2], y - l.pts[n - 1]) < (tool === "pixel" ? 0.5 : 1.5)) continue;
       l.pts.push(x, y);
       if (l.pts.length >= MAX_STROKE_POINTS * 2) {
         commit();
@@ -261,6 +266,7 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
 
 function ToolGlyph({ tool }: { tool: Tool }) {
   const p = { viewBox: "0 0 24 24", className: "h-5 w-5", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  if (tool === "pixel") return <svg {...p}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>;
   if (tool === "pen") return <svg {...p}><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>;
   if (tool === "marker") return <svg {...p}><path d="m9 11-6 6v3h9l3-3" /><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" /></svg>;
   return <svg {...p}><path d="m7 21-4.3-4.3a1 1 0 0 1 0-1.4l9.6-9.6a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4L13 21" /><path d="M22 21H7" /><path d="m5 11 9 9" /></svg>;
