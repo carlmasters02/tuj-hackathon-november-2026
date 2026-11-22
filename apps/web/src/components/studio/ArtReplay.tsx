@@ -7,6 +7,21 @@ const SPEEDS = [1, 4, 16] as const;
 
 export function paintStroke(g: CanvasRenderingContext2D, s: Stroke, pts = s.pts) {
   if (pts.length < 2) return;
+  if (s.tool === "pixel") {
+    const cell = s.size;
+    const plotted = new Set<string>();
+    for (let i = 0; i < pts.length; i += 2) {
+      const x = Math.floor(pts[i] / cell);
+      const y = Math.floor(pts[i + 1] / cell);
+      const k = `${x}:${y}`;
+      if (!plotted.has(k)) {
+        plotted.add(k);
+        g.fillStyle = s.color;
+        g.fillRect(x * cell, y * cell, cell, cell);
+      }
+    }
+    return;
+  }
   g.save();
   g.globalAlpha = s.tool === "marker" ? 0.55 : 1;
   g.strokeStyle = s.tool === "eraser" ? PAPER : s.color;
