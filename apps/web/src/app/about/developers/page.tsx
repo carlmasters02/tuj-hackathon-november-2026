@@ -38,7 +38,19 @@ export default function DevelopersPage() {
         <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" aria-label="Humagination developers">
           {DEVELOPERS.map((developer) => (
             <li key={developer.id} className="card card-hover flex min-w-0 flex-col p-6">
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-fg font-display text-2xl font-bold text-surface shadow-[var(--shadow-soft)]" aria-hidden>{developer.initials}</div>
+              {developer.photo ? (
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-sun-soft shadow-[var(--shadow-soft)]">
+                  <Image
+                    src={developer.photo}
+                    alt={`Portrait of ${developer.name}`}
+                    fill
+                    sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+              ) : (
+                <div className="grid aspect-[4/5] w-full place-items-center rounded-2xl border border-dashed border-line bg-surface font-display text-4xl font-bold text-fg-faint" aria-hidden>{developer.initials}</div>
+              )}
               <div className="mt-5 flex-1">
                 <h3 className="text-xl font-extrabold">{developer.name}</h3>
                 <p className="mt-1 text-sm font-semibold text-fg-faint">{developer.role}</p>

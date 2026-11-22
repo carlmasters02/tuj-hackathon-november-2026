@@ -9,10 +9,41 @@ export const LEGAL_LINKS = [
   { href: "/legal/copyright", label: "Copyright & Content" },
 ] as const;
 
-/** Replace these four placeholders as each teammate supplies their public profile details. */
-export const DEVELOPERS = [
-  { id: "developer-1", name: "Developer 1", initials: "01", role: "Team member", bio: "Developer profile coming soon." },
-  { id: "developer-2", name: "Developer 2", initials: "02", role: "Team member", bio: "Developer profile coming soon." },
-  { id: "developer-3", name: "Developer 3", initials: "03", role: "Team member", bio: "Developer profile coming soon." },
+export type Developer = {
+  id: string;
+  name: string;
+  initials: string;
+  role: string;
+  bio: string;
+  /** Path under /public; omit to show the initials tile instead. */
+  photo?: string;
+};
+
+/** Four developer slots; replace the remaining placeholder as the last teammate supplies their details. */
+export const DEVELOPERS: readonly Developer[] = [
+  {
+    id: "carl-masters",
+    name: "Carl Masters",
+    initials: "CM",
+    role: "Cybersecurity student · Temple University Japan",
+    bio: "Hello everyone, I'm Carl, a Cybersecurity student at Temple University Japan. I am passionate about security and AI and I aim to help with the development of secure software and the responsible and safe development of AI.",
+    photo: "/developers/carl-masters.jpg",
+  },
+  {
+    id: "bristy-das",
+    name: "Bristy Das",
+    initials: "BD",
+    role: "Computer Science student · Temple University Japan",
+    bio: "I'm a Computer Science student at Temple University Japan, passionate about technology and creativity. I enjoy exploring new ideas, learning through hands-on projects, and using technology to bring people together.",
+    photo: "/developers/bristy-das.jpg",
+  },
+  {
+    id: "rishika-bajaj",
+    name: "Rishika Bajaj",
+    initials: "RB",
+    role: "Computer Science student · Temple University Japan",
+    bio: "Hi I'm Rishika, a Computer Science student at Temple University Japan Campus. I enjoy exploring new technologies, and solving problems. I'm particularly interested in AI and always curious to learn new things and experiment with ideas.",
+    photo: "/developers/rishika-bajaj.jpg",
+  },
   { id: "developer-4", name: "Developer 4", initials: "04", role: "Team member", bio: "Developer profile coming soon." },
-] as const;
+];
