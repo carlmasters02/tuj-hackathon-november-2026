@@ -3,6 +3,7 @@ import { requireUserPage, profileOf } from "@/lib/auth";
 import { refreshLeaderboard, weeklyStats } from "@/lib/server/stats";
 import { dashboardExtras } from "@/lib/server/dashboard";
 import { WeekChart } from "@/components/WeekChart";
+import { AIUsagePanel } from "@/components/dashboard/AIUsagePanel";
 import { LEVEL_NAMES } from "@hm/shared/scoring";
 
 export const metadata = { title: "Dashboard" };
@@ -35,31 +36,31 @@ export default async function Dashboard() {
   const maxReason = Math.max(1, ...REASONS.map((r) => x.points.byReason[r.key]));
 
   return (
-    <div className="space-y-10">
-      <header className="flex flex-wrap items-end justify-between gap-3">
+    <div className="mx-auto max-w-5xl space-y-12 pb-16">
+      <header className="flex flex-wrap items-end justify-between gap-5 border-b border-line pb-6">
         <div>
-          <h1 className="text-[2.4rem] leading-none font-extrabold tracking-[-0.035em]">Hi, {name}.</h1>
+          <h1 className="text-[clamp(2rem,4vw,3rem)] leading-tight font-semibold tracking-[-0.035em]">Hi, {name}.</h1>
           <p className="mt-2 text-fg-dim">Your week, {fmtRange(s.days[0].date, s.days[s.days.length - 1].date)}.</p>
         </div>
-        <span className="chip chip-sun px-3 py-1 text-sm">{lv.name} · level {lv.level}</span>
+        <span className="border-l border-line pl-4 text-sm font-medium text-fg-dim">{lv.name} · level {lv.level}</span>
       </header>
 
       {/* the one number this app is about */}
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <div className="card relative min-w-0 overflow-hidden p-6 sm:p-8">
+      <section className="grid grid-cols-1 gap-0 border-b border-line pb-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:divide-x lg:divide-line">
+        <div className="relative min-w-0 py-4 lg:pr-10">
           {humanShare === null ? (
             <>
-              <p className="text-[clamp(3.5rem,9vw,6rem)] leading-none font-extrabold tracking-[-0.05em] text-fg-faint">—</p>
+              <p className="text-[clamp(3rem,8vw,5rem)] leading-none font-semibold tracking-[-0.05em] text-fg-faint">—</p>
               <p className="mt-3 max-w-md text-lg text-fg-dim">Nothing tracked yet this week. Solve a problem, write a paragraph or draw something, and your week fills in here.</p>
             </>
           ) : (
             <>
               <p className="flex items-baseline gap-1 leading-none">
-                <span className="text-[clamp(4rem,11vw,7.5rem)] font-extrabold tracking-[-0.06em] tabular-nums">{humanShare}</span>
-                <span className="text-[clamp(2rem,5vw,3.5rem)] font-extrabold text-fg-dim">%</span>
+                <span className="text-[clamp(3.5rem,9vw,5.5rem)] font-semibold tracking-[-0.06em] tabular-nums">{humanShare}</span>
+                <span className="text-[clamp(1.7rem,4vw,2.4rem)] font-medium text-fg-dim">%</span>
               </p>
               <p className="mt-2 max-w-md text-lg text-fg-dim">of your thinking this week was your own.</p>
-              <div className="mt-6 flex h-4 overflow-hidden rounded-full bg-line" role="img" aria-label={`${s.humanMinutes} minutes your own work, ${s.aiMinutes} minutes on AI sites`}>
+              <div className="mt-6 flex h-1.5 overflow-hidden rounded-full bg-line" role="img" aria-label={`${s.humanMinutes} minutes your own work, ${s.aiMinutes} minutes on AI sites`}>
                 <div className="h-full bg-fg" style={{ width: `${humanShare}%` }} />
                 <div className="h-full bg-flame" style={{ width: `${100 - humanShare}%` }} />
               </div>
@@ -69,36 +70,36 @@ export default async function Dashboard() {
               </div>
             </>
           )}
-          <dl className="mt-7 grid grid-cols-3 gap-4 border-t border-line pt-5">
+          <dl className="mt-7 grid grid-cols-1 gap-4 border-t border-line pt-5 sm:grid-cols-3">
             <div>
               <dt className="text-sm text-fg-dim">Reliance score</dt>
-              <dd className={`text-2xl font-extrabold tabular-nums ${tone}`}>{s.relianceScore}</dd>
+              <dd className={`text-2xl font-semibold tabular-nums ${tone}`}>{s.relianceScore}</dd>
               <dd className="text-xs text-fg-faint">0–100, lower is better</dd>
             </div>
             <div>
               <dt className="text-sm text-fg-dim">Streak</dt>
-              <dd className="text-2xl font-extrabold tabular-nums">{s.streak} <span className="text-base font-semibold text-fg-faint">{s.streak === 1 ? "day" : "days"}</span></dd>
+              <dd className="text-2xl font-semibold tabular-nums">{s.streak} <span className="text-base font-semibold text-fg-faint">{s.streak === 1 ? "day" : "days"}</span></dd>
               <dd className="text-xs text-fg-faint">score under 30, 15+ min of your own work</dd>
             </div>
             <div>
               <dt className="text-sm text-fg-dim">Think First</dt>
-              <dd className="text-2xl font-extrabold tabular-nums">{s.thinkFirst.redirected}</dd>
+              <dd className="text-2xl font-semibold tabular-nums">{s.thinkFirst.redirected}</dd>
               <dd className="text-xs text-fg-faint">times you tried it yourself first{s.thinkFirst.bypassed ? `, ${s.thinkFirst.bypassed} skipped` : ""}</dd>
             </div>
           </dl>
         </div>
 
-        <div className="min-w-0 rounded-2xl bg-sun-soft p-6 ring-1 ring-sun sm:p-8">
+        <div className="min-w-0 border-t border-line py-6 lg:border-t-0 lg:py-4 lg:pl-10">
           <p className="text-sm font-semibold text-fg-dim">Human Points</p>
-          <p className="mt-1 text-[3.25rem] leading-none font-extrabold tracking-[-0.04em] tabular-nums">{x.points.total}</p>
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-surface/80"><div className="h-full rounded-full bg-fg" style={{ width: `${Math.min(100, ((x.points.total - lv.floor) / (lv.next - lv.floor)) * 100)}%` }} /></div>
+          <p className="mt-1 text-[2.8rem] leading-none font-semibold tracking-[-0.04em] tabular-nums">{x.points.total}</p>
+          <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-fg" style={{ width: `${Math.min(100, ((x.points.total - lv.floor) / (lv.next - lv.floor)) * 100)}%` }} /></div>
           <p className="mt-1.5 text-sm text-fg-dim">{toNext} to {nextName}, level {lv.level + 1}</p>
           <p className="mt-4 text-sm"><strong className="tabular-nums">{x.points.today}</strong> <span className="text-fg-dim">of {x.points.cap} today · </span><strong className="tabular-nums">{s.pointsWeek}</strong> <span className="text-fg-dim">this week</span></p>
           <ul className="mt-5 space-y-2">
             {REASONS.map((r) => (
               <li key={r.key} className="grid grid-cols-[5.5rem_minmax(0,1fr)_2.5rem] items-center gap-2 text-sm">
                 <span className="text-fg-dim">{r.label}</span>
-                <span className="h-1.5 overflow-hidden rounded-full bg-surface/80"><span className="block h-full rounded-full bg-fg/80" style={{ width: `${(x.points.byReason[r.key] / maxReason) * 100}%` }} /></span>
+                <span className="h-1.5 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-fg/80" style={{ width: `${(x.points.byReason[r.key] / maxReason) * 100}%` }} /></span>
                 <span className="text-right font-semibold tabular-nums">{x.points.byReason[r.key]}</span>
               </li>
             ))}
@@ -109,7 +110,7 @@ export default async function Dashboard() {
 
       {x.next.length > 0 && (
         <section aria-labelledby="continue-h">
-          <h2 id="continue-h" className="mb-2 text-xl font-extrabold tracking-tight">Pick up where you left off</h2>
+          <h2 id="continue-h" className="mb-4 text-xl font-semibold tracking-tight">Pick up where you left off</h2>
           <ul>
             {x.next.map((n) => (
               <li key={n.href}>
@@ -126,39 +127,23 @@ export default async function Dashboard() {
         </section>
       )}
 
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <div className="card min-w-0 p-5">
-          <h2 className="text-lg font-extrabold">Day by day</h2>
+      <section aria-label="Activity details" className="grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:gap-12">
+        <div className="min-w-0 border-t border-line pt-5">
+          <h2 className="mb-4 text-xl font-semibold">Day by day</h2>
           <WeekChart days={s.days} />
         </div>
-        <div className="card min-w-0 p-5">
-          <h2 className="text-lg font-extrabold">AI sites this week</h2>
-          {s.domains.length === 0 ? (
-            <p className="mt-2 text-sm text-fg-dim">No AI time recorded. {s.aiMinutes === 0 && <>Install the browser extension and add a token in <Link className="link" href="/settings">Settings</Link> to track it.</>}</p>
-          ) : (
-            <ul className="mt-3 space-y-2.5">
-              {s.domains.slice(0, 6).map((d) => (
-                <li key={d.domain} className="grid grid-cols-[minmax(0,8rem)_minmax(0,1fr)_3rem] items-center gap-3 text-sm">
-                  <span className="truncate text-fg-dim">{d.domain}</span>
-                  <span className="h-2 rounded-full bg-muted"><span className="block h-2 rounded-full bg-flame" style={{ width: `${Math.min(100, (100 * d.minutes) / Math.max(1, s.domains[0].minutes))}%` }} /></span>
-                  <span className="text-right tabular-nums">{d.minutes}m</span>
-                </li>
-              ))}
-            </ul>
-          )}
-          <p className="mt-4 text-xs text-fg-faint">Reported by your own browser extension. It&apos;s for motivation, not proof.</p>
-        </div>
+        <AIUsagePanel stats={s} />
       </section>
 
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Link href="/tutor" className="card card-hover block space-y-4 p-5">
-          <h2 className="text-lg font-extrabold">Tutor</h2>
+      <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <Link href="/tutor" className="group block space-y-4 border-t border-line pt-5 transition hover:border-fg">
+          <h2 className="text-lg font-semibold">Tutor</h2>
           <Meter done={x.tutor.mathSolved} total={x.tutor.mathTotal} label="Math problems solved" />
           <Meter done={x.tutor.codeSolved} total={x.tutor.codeTotal} label="Code exercises solved" />
           <p className="text-sm text-fg-dim"><strong className="text-fg tabular-nums">{x.tutor.certified}</strong> {x.tutor.certified === 1 ? "piece" : "pieces"} of writing certified Human-made</p>
         </Link>
-        <Link href="/portfolio" className="card card-hover block p-5">
-          <h2 className="text-lg font-extrabold">Portfolio</h2>
+        <Link href="/portfolio" className="group block border-t border-line pt-5 transition hover:border-fg">
+          <h2 className="text-lg font-semibold">Portfolio</h2>
           <dl className="mt-4 grid grid-cols-2 gap-y-4">
             {[
               ["Works shared", x.portfolio.works],
@@ -168,7 +153,7 @@ export default async function Dashboard() {
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col-reverse">
                 <dt className="text-sm text-fg-dim">{k}</dt>
-                <dd className="text-2xl font-extrabold tabular-nums">{v}</dd>
+                <dd className="text-2xl font-semibold tabular-nums">{v}</dd>
               </div>
             ))}
           </dl>
