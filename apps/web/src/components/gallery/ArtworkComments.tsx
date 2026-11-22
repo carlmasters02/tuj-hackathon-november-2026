@@ -1,6 +1,6 @@
 "use client";
 // Artwork comments — original idea and UI by dasbristy997-ux; now persisted in Supabase.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { postJson, ApiError } from "@/lib/client";
 
 export interface CommentView {
@@ -53,7 +53,7 @@ export default function ArtworkComments({ workId, initial, canModerate }: { work
           <li key={comment.id} className="rounded-xl border border-line bg-canvas/60 p-3">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-sm font-bold">@{comment.author}</p>
-              <span className="text-xs text-fg-faint">{new Date(comment.createdAt).toLocaleString()}</span>
+              <CommentTime iso={comment.createdAt} />
             </div>
             <p className="mt-1 whitespace-pre-wrap break-words text-sm text-fg-dim">{comment.body}</p>
             {(comment.mine || canModerate) && (
@@ -83,5 +83,19 @@ export default function ArtworkComments({ workId, initial, canModerate }: { work
       </div>
       {error && <p role="alert" className="text-sm text-redpen">{error}</p>}
     </section>
+  );
+}
+
+/**
+ * Server and browser run in different time zones, so a locale time can't be rendered on the server
+ * without a hydration mismatch. Render a stable UTC date first, then the viewer's local time.
+ */
+function CommentTime({ iso }: { iso: string }) {
+  const [local, setLocal] = useState<string | null>(null);
+  useEffect(() => setLocal(new Date(iso).toLocaleString()), [iso]);
+  return (
+    <time dateTime={iso} className="text-xs text-fg-faint">
+      {local ?? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })}
+    </time>
   );
 }
