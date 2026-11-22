@@ -18,18 +18,19 @@ export default async function ArtFeed() {
         <Link href="/portfolio" className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-fg-dim transition hover:text-fg">
           <span aria-hidden="true">←</span> Back to portfolio
         </Link>
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
           <h1 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-[-0.035em] text-fg">
-            Made by humans<span className="text-flame">.</span>
+            Art<span className="text-flame">.</span>
           </h1>
-          <div className="flex flex-wrap items-center gap-2.5">
-            <Link href="/portfolio/upload" className="btn btn-primary rounded-full px-5 py-2.5">
-              Upload artwork
+          <p className="mt-1.5 text-sm leading-relaxed text-fg-dim">Felt by art.</p>
+          <nav aria-label="Art actions" className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Link href="/portfolio/upload" className="inline-flex items-center gap-1 border-b-2 border-fg pb-0.5 text-sm font-bold text-fg transition hover:border-flame focus-visible:outline-offset-4">
+              Upload artwork <span aria-hidden="true">↗</span>
             </Link>
-            <Link href="/portfolio/art/studio" className="btn rounded-full px-5 py-2.5">
-              Create in the studio
+            <Link href="/portfolio/art/studio" className="inline-flex items-center gap-1 border-b-2 border-line pb-0.5 text-sm font-bold text-fg transition hover:border-flame focus-visible:outline-offset-4">
+              Create in the studio <span aria-hidden="true">↗</span>
             </Link>
-          </div>
+          </nav>
         </div>
       </header>
 
@@ -38,7 +39,7 @@ export default async function ArtFeed() {
       ) : (
         <EmptyFeed
           text="No artwork has been shared yet."
-          action={<Link href="/portfolio/upload" className="btn btn-primary">Upload artwork</Link>}
+          action={<Link href="/portfolio/upload" className="inline-block border-b-2 border-fg pb-0.5 font-bold text-fg hover:border-flame">Upload artwork ↗</Link>}
         />
       )}
     </div>
