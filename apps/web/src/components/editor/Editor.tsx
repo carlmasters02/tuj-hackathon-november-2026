@@ -100,6 +100,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
           if (s === "conflict") editor.setEditable(false);
         },
         t,
+        content,
       );
       recorder.current.start();
     },

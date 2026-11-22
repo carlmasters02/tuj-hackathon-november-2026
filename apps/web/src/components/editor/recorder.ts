@@ -37,11 +37,14 @@ export class ProvenanceRecorder {
     private getContent: () => unknown,
     private onStatus: (s: RecorderStatus, err: string | null) => void,
     initialText = "",
+    /** The content exactly as the server stored it. The editor's own JSON can differ (extensions add
+     * default attributes), and the server compares against what *it* stored, so start from that. */
+    serverContent?: unknown,
   ) {
     this.lastText = initialText;
     this.nextSeq = lastSeq + 1;
     this.confirmedHead = headHash ?? genesisHash(docId, this.sessionId);
-    this.confirmedContentHash = contentFingerprint(this.getContent());
+    this.confirmedContentHash = contentFingerprint(serverContent ?? this.getContent());
   }
 
   private now() {
