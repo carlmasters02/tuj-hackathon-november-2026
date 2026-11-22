@@ -8,8 +8,9 @@ import { Studio } from "@/components/studio/Studio";
 
 export const metadata = { title: "Drawing studio" };
 
-export default async function StudioPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function StudioPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ mode?: string }> }) {
   const { id } = await params;
+  const { mode } = await searchParams;
   if (!UUID.safeParse(id).success) notFound();
   const user = await requireUserPage(`/portfolio/art/studio/${id}`);
   const c = await creationForEditing(id, user.id);
@@ -21,7 +22,7 @@ export default async function StudioPage({ params }: { params: Promise<{ id: str
   return (
     <div className="space-y-6">
       <Link href="/portfolio/art/studio" className="inline-flex items-center gap-1 text-sm font-semibold text-fg-dim hover:text-fg"><span aria-hidden>←</span> Studio</Link>
-      <Studio id={id} initialTitle={c.row.title} lastSeq={c.row.last_seq} headHash={c.row.head_hash} events={c.events as ArtEvent[]} prior={{ strokes: c.prior.count, activeSeconds: c.prior.activeSeconds }} />
+      <Studio id={id} initialTitle={c.row.title} lastSeq={c.row.last_seq} headHash={c.row.head_hash} events={c.events as ArtEvent[]} prior={{ strokes: c.prior.count, activeSeconds: c.prior.activeSeconds }} initialMode={mode === "pixel" ? "pixel" : "digital"} />
     </div>
   );
 }

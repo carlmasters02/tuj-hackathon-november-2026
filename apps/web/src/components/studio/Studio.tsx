@@ -35,6 +35,8 @@ export interface StudioProps {
   headHash: string | null;
   events: ArtEvent[];
   prior: { strokes: number; activeSeconds: number };
+  /** "pixel" when the piece was started from the hub's Pixel Art choice (?mode=pixel) */
+  initialMode?: "digital" | "pixel";
 }
 
 interface Live {
@@ -45,7 +47,7 @@ interface Live {
   lastCell: [number, number] | null;
 }
 
-export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: StudioProps) {
+export function Studio({ id, initialTitle, lastSeq, headHash, events, prior, initialMode = "digital" }: StudioProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const baseRef = useRef<HTMLCanvasElement | null>(null);
   const strokesRef = useRef<Stroke[]>(replayArt(events));
@@ -53,7 +55,7 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
   const live = useRef<Live | null>(null);
   const lastT = useRef<number | null>(null);
   const prevTool = useRef<Tool>("pen");
-  const [mode, setMode] = useState<Mode>(() => (strokesRef.current.some((s) => s.tool === "pixel") ? "pixel" : "freehand"));
+  const [mode, setMode] = useState<Mode>(() => (initialMode === "pixel" || strokesRef.current.some((s) => s.tool === "pixel") ? "pixel" : "freehand"));
   const [tool, setToolState] = useState<Tool>(mode === "pixel" ? "pixel" : "pen");
   const [color, setColor] = useState(PALETTE[0]);
   const [recent, setRecent] = useState<string[]>([]);
@@ -369,7 +371,7 @@ export function Studio({ id, initialTitle, lastSeq, headHash, events, prior }: S
             <div role="group" aria-label="Drawing mode" className="grid grid-cols-2 gap-1 rounded-xl bg-muted p-1">
               {(["freehand", "pixel"] as const).map((m) => (
                 <button key={m} onClick={() => switchMode(m)} aria-pressed={mode === m} className={`rounded-lg py-2 text-sm font-bold transition ${mode === m ? "bg-surface text-fg shadow-[var(--shadow-soft)]" : "text-fg-dim hover:text-fg"}`}>
-                  {m === "freehand" ? "Freehand" : "Pixel art"}
+                  {m === "freehand" ? "Digital art" : "Pixel art"}
                 </button>
               ))}
             </div>
