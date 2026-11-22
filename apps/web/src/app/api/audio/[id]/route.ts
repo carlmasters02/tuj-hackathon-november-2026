@@ -21,6 +21,6 @@ export const GET = api(async (req: NextRequest, ctx: { params: Promise<{ id: str
   await noteMediaFetch(user.id);
   const buf = await download("audio-previews", work.preview_key);
   return new Response(new Uint8Array(buf), {
-    headers: { "Content-Type": "audio/mpeg", "Cache-Control": "private, no-store", "X-Robots-Tag": "noai, noimageai, noindex", "tdm-reservation": "1", "X-Content-Type-Options": "nosniff", "Content-Disposition": "inline" },
+    headers: { "Content-Type": work.mime === "audio/wav" ? "audio/wav" : "audio/mpeg", "Cache-Control": "private, no-store", "X-Robots-Tag": "noai, noimageai, noindex", "tdm-reservation": "1", "X-Content-Type-Options": "nosniff", "Content-Disposition": "inline" },
   });
 });

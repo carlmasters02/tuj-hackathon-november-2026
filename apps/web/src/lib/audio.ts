@@ -31,6 +31,19 @@ export function encodeWav(samples: Float32Array, sampleRate: number): Blob {
   return new Blob([buf], { type: "audio/wav" });
 }
 
+/** True only for the exact 44-byte-header mono PCM WAV shape produced by encodeWav (no hidden chunks). */
+export function isCanonicalMonoPcmWav(bytes: Uint8Array | ArrayBuffer): boolean {
+  const length = bytes instanceof ArrayBuffer ? bytes.byteLength : bytes.byteLength;
+  if (length < 46) return false;
+  const view = bytes instanceof ArrayBuffer ? new DataView(bytes) : new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const ascii = (offset: number, text: string) => [...text].every((char, i) => view.getUint8(offset + i) === char.charCodeAt(0));
+  if (!ascii(0, "RIFF") || !ascii(8, "WAVE") || !ascii(12, "fmt ") || !ascii(36, "data")) return false;
+  if (view.getUint32(4, true) !== length - 8 || view.getUint32(16, true) !== 16) return false;
+  const rate = view.getUint32(24, true);
+  const dataBytes = view.getUint32(40, true);
+  return view.getUint16(20, true) === 1 && view.getUint16(22, true) === 1 && rate > 0 && view.getUint32(28, true) === rate * 2 && view.getUint16(32, true) === 2 && view.getUint16(34, true) === 16 && dataBytes === length - 44 && dataBytes > 0 && dataBytes % 2 === 0;
+}
+
 // Browsers record webm or mp4. WAV is the safest format to hand to an upload pipeline.
 export async function toWav(blob: Blob): Promise<Blob> {
   const ctx = new AudioContext();

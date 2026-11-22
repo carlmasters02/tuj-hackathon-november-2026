@@ -85,7 +85,8 @@ export async function middleware(req: NextRequest) {
   h.set("X-Frame-Options", "DENY");
   h.set("X-Content-Type-Options", "nosniff");
   h.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  h.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()");
+  const microphones = pathname === "/portfolio/music/record" ? "microphone=(self)" : "microphone=()";
+  h.set("Permissions-Policy", `camera=(), ${microphones}, geolocation=(), payment=(), usb=(), interest-cohort=()`);
   h.set("Cross-Origin-Opener-Policy", "same-origin");
   if (process.env.NODE_ENV === "production") h.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
   if (PROTECTED_PREFIXES.some((p) => pathname.startsWith(p))) {

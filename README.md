@@ -374,7 +374,7 @@ $ pnpm test
 - **The code sandbox must stay on a private network.** Judge0 needs cgroup v1. Piston works on cgroup v2 but can't do the C memory check.
 - **Writer pagination:** on-screen pages are approximate and a single block taller than one page runs past its sheet; print and DOCX paginate with the real page engine. Footnotes appear as endnotes under **Notes** on screen, while DOCX contains true Word footnotes.
 - Rate limits are shared across instances through Postgres. The "5 concurrent code runs" cap is still per instance.
-- **On Vercel:** music uploads need ffmpeg, which Vercel doesn't provide; the app returns a clear "not available" message. Code Dojo **Submit** needs a Piston or Judge0 sandbox reachable from Vercel. Without one, Submit says the runner is unavailable, while Python **Run** still works in the browser.
+- **On Vercel:** ffmpeg isn't available, so MP3/OGG and non-canonical WAV previews can't be transcoded there; those uploads return a clear "not available" message. The browser recorder converts microphone input to strict canonical PCM WAV locally, which uploads and serves through the same signed preview pipeline without requiring ffmpeg. Recordings remain unsealed uploads. Code Dojo **Submit** needs a Piston or Judge0 sandbox reachable from Vercel; without one, Submit is unavailable while Python **Run** still works in the browser.
 - Three Supabase Auth settings must be switched on by hand (see [Getting started](#getting-started)).
 
 ---

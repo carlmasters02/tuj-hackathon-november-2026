@@ -156,7 +156,7 @@ Uploads are explicitly unsealed. Do not introduce EXIF checks, vocabulary-freque
 - Image processing normalizes/re-encodes files, strips metadata, detects duplicates and creates ownership watermarks.
 - Original images are encrypted and stored privately; they are not served directly.
 - `/api/media/[id]` issues short-lived, signature- and viewer-bound access. Previews contain viewer watermarks.
-- Audio has analogous private/signed handling; production music preview limitations are documented in the README.
+- Audio has analogous private/signed handling. The browser recorder converts microphone input into canonical mono PCM WAV; only that strict no-extra-chunks format can bypass ffmpeg and be served as a signed WAV preview. Other audio still uses the existing transcoding path. Recorder uploads remain unsealed and never add creation events.
 - CSP `connect-src 'self'` prevents the frontend from quietly sending work to an outside inference service.
 - Portfolio responses carry crawler refusal headers/meta directives. These are deterrents, not a claim that all copying is technically impossible.
 

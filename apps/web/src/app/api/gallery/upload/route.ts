@@ -8,6 +8,7 @@ import { profileOf, requireUser } from "@/lib/auth";
 import { keyBytes } from "@/lib/env";
 import { encryptBytes, encryptString, sha256 } from "@/lib/crypto";
 import { AUDIO_TYPES, IMAGE_TYPES, MAX_AUDIO_BYTES, MAX_IMAGE_BYTES, sniff } from "@/lib/magic";
+import { isCanonicalMonoPcmWav } from "@/lib/audio";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { dHashOf, makePreview, normalizeImage, watermarkedMaster } from "@/lib/server/images";
 import { upload } from "@/lib/server/storage";
@@ -102,14 +103,18 @@ export const POST = api(async (req: NextRequest) => {
     if (bytes.length > MAX_AUDIO_BYTES) throw new HttpError(413, "Audio can be at most 25 MB");
     const { data: same } = await sb.from("gallery_works").select("id, owner_id").eq("kind", "music").eq("sha256", fileSha).neq("owner_id", user.id).maybeSingle();
     if (same) throw new HttpError(409, "This exact file was already uploaded by another user, so it was blocked.");
-    const preview = await transcodePreview(bytes).catch((e) => {
+    // The recorder emits strict 44-byte-header mono PCM WAV. It contains no extra metadata chunks,
+    // so it can be its own signed preview even where ffmpeg is unavailable. All other audio still
+    // goes through the existing ffmpeg transcode path to normalize content and remove metadata.
+    const directWavPreview = type === "audio/wav" && isCanonicalMonoPcmWav(bytes);
+    const preview = directWavPreview ? bytes : await transcodePreview(bytes).catch((e) => {
       if (e instanceof NoFfmpeg) throw new HttpError(503, "Music uploads aren't available on this server yet (ffmpeg is missing).");
       throw e;
     });
     if (!preview) throw new HttpError(415, "That audio file couldn't be decoded");
     const originalPath = `${user.id}/${workId}.bin`;
     await upload("audio", originalPath, encryptBytes(bytes, `work:${workId}:original`));
-    const previewPath = `${user.id}/${workId}.mp3`;
+    const previewPath = `${user.id}/${workId}.${directWavPreview ? "wav" : "mp3"}`;
     await upload("audio-previews", previewPath, preview, "audio/mpeg");
     const { error } = await sb.from("gallery_works").insert({
       id: workId, owner_id: user.id, kind: "music", title: meta.title, description: meta.description ?? null, sha256: fileSha,

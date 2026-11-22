@@ -13,6 +13,7 @@ import { chainHead, genesisHash, type DocEvent } from "@hm/shared/provenance/ind
 import { creationGenesis, creationHead, type CreationEvent } from "@hm/shared/creation";
 import { contentFingerprint } from "@hm/shared/contentFingerprint";
 import { MATH_COURSES } from "@hm/shared/math/courses";
+import { encodeWav } from "../src/lib/audio";
 
 const BASE = (process.argv[2] ?? "https://humagination.vercel.app").replace(/\/$/, "");
 const jar = new Map<string, string>();
@@ -272,6 +273,34 @@ async function publicPage(path: string) {
     check("Art discovery wall uses signed media and accurate filters", r.status === 200 && artGallery.includes("Browse community artwork") && artGallery.includes(`/api/media/${up.id}`) && artGallery.includes("Studio verified") && artGallery.includes("Not studio verified") && artGallery.includes("Uploads are welcome but never sealed"));
     r = await req("/portfolio/art", { headers: { "User-Agent": "GPTBot/1.2" }, cookies: false });
     check("GPTBot blocked from the portfolio", r.status === 403);
+  }
+
+  // ── Microphone recording: permission, checked WAV upload and private preview ─
+  r = await req("/portfolio/music/record");
+  const recorderPage = await r.text();
+  check("recorder route enables microphone access and renders the recorder", r.status === 200 && (r.headers.get("permissions-policy") ?? "").includes("microphone=(self)") && recorderPage.includes("Start recording") && recorderPage.includes("Record audio"));
+  r = await req("/portfolio/music");
+  check("microphone permission stays disabled outside the recorder", !(r.headers.get("permissions-policy") ?? "").includes("microphone=(self)"));
+
+  const sampleRate = 22050;
+  const samples = Float32Array.from({ length: sampleRate / 2 }, (_, i) => Math.sin(i / 12) * 0.35);
+  const wav = await encodeWav(samples, sampleRate).arrayBuffer();
+  const recordingFd = new FormData();
+  recordingFd.set("file", new Blob([wav], { type: "audio/wav" }), "e2e-recording.wav");
+  recordingFd.set("title", "E2E microphone recording");
+  recordingFd.set("description", "Half a second recorded from a browser microphone test.");
+  recordingFd.set("publish", "true");
+  r = await req("/api/gallery/upload", { method: "POST", body: recordingFd });
+  const recording = await jsonOf(r);
+  check("canonical recorder WAV publishes without requiring ffmpeg", r.status === 200 && !!recording.id, recording.error ?? "");
+  if (recording.id) {
+    r = await req(`/portfolio/work/${recording.id}`);
+    const recordingPage = await r.text();
+    check("recording is published as unsealed uploaded work", r.status === 200 && recordingPage.includes("E2E microphone recording") && recordingPage.includes("Uploads do not receive the creation-record seal"));
+    const audioPath = recordingPage.match(/\/api\/audio\/[0-9a-f-]{36}\?exp=\d+(?:&amp;|\\u0026|&)sig=[0-9a-f]{64}/)?.[0]?.replace(/&amp;|\\u0026/, "&");
+    if (audioPath) r = await req(audioPath);
+    const preview = audioPath ? Buffer.from(await r.arrayBuffer()) : Buffer.alloc(0);
+    check("signed recording preview has the correct WAV content and bytes", !!audioPath && r.status === 200 && r.headers.get("content-type") === "audio/wav" && preview.length === wav.byteLength && preview.equals(Buffer.from(wav)), `${r.headers.get("content-type")}, ${preview.length} bytes`);
   }
 
   // ── Drawing studio & composer: recorded, chained, server-rendered, certified ─

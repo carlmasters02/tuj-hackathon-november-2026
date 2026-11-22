@@ -143,7 +143,7 @@ export function AudioRecorder({ onPublish }: { onPublish?: (file: File) => Promi
       )}
 
       {error && <p className="text-sm text-redpen" role="alert">{error}</p>}
-      <p className="text-xs text-fg-faint">Recorded live, not sealed. Only the composer can earn the Human-made seal. Nothing leaves this tab until you publish.</p>
+      <p className="text-xs text-fg-faint">Recorded live and shared as an upload, with no creation-record seal. Nothing leaves this tab until you publish or download it.</p>
     </div>
   );
 }
