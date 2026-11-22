@@ -145,7 +145,7 @@ export default async function Dashboard() {
             ))}
           </dl>
         </Link>
-          <div className={panel}>
+          <div className={`${panel} md:col-span-3`}>
             <h3 className="text-base font-bold">Day by day</h3>
             <div className="mt-3"><WeekChart days={s.days} /></div>
           </div>

@@ -30,8 +30,8 @@ export function AIUsagePanel({ stats }: { stats: WeeklyStats }) {
           </div>
           <p className="mt-4 text-xs text-[#656E82]">Tracked website usage</p>
           <p className="mt-1 text-[clamp(1.8rem,4vw,2.2rem)] font-medium leading-none tabular-nums text-[#1B2B5E]">{displayTime(stats.aiMinutes)}</p>
-          <figure className="mt-3">
-            <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`AI-site minutes by day: ${stats.days.map((day) => `${day.date}: ${displayTime(day.aiMinutes)}`).join("; ")}. Daily average: ${displayTime(Math.round(average))}`}>
+          <figure className="mt-3 overflow-x-auto">
+            <svg viewBox={`0 0 ${W} ${H}`} className="w-full min-w-[480px]" role="img" aria-label={`AI-site minutes by day: ${stats.days.map((day) => `${day.date}: ${displayTime(day.aiMinutes)}`).join("; ")}. Daily average: ${displayTime(Math.round(average))}`}>
               {[0, .25, .5, .75, 1].map((fraction) => (
                 <line key={fraction} x1={left} x2={W - right} y1={y(fraction * maxDay)} y2={y(fraction * maxDay)} stroke="#DEDCCA" strokeWidth="1" />
               ))}
@@ -40,7 +40,7 @@ export function AIUsagePanel({ stats }: { stats: WeeklyStats }) {
               ))}
               {stats.days.map((day, i) => {
                 const cx = left + barStep * (i + .5);
-                const weekday = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" }).slice(0, 1);
+                const weekday = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
                 return (
                   <g key={day.date}>
                     {day.aiMinutes > 0 && (
@@ -52,8 +52,8 @@ export function AIUsagePanel({ stats }: { stats: WeeklyStats }) {
                   </g>
                 );
               })}
-              <line x1={left} x2={W - right} y1={y(average)} y2={y(average)} stroke="#33985B" strokeWidth="1.5" strokeDasharray="6 5" />
-              <text x={W - right + 4} y={y(average) + 3} fontSize="11" fill="#33985B">avg</text>
+              <line x1={left} x2={W - right} y1={y(average)} y2={y(average)} stroke="var(--color-ok)" strokeWidth="1.5" strokeDasharray="6 5" />
+              <text x={W - right + 4} y={y(average) + 3} fontSize="11" fill="var(--color-ok)">avg</text>
             </svg>
             <figcaption className="mt-1 flex flex-wrap justify-between gap-2 text-[11px] text-[#656E82]">
               <span>Browser extension data</span>
