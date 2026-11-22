@@ -6,7 +6,10 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Humagination",
     short_name: "Humagination",
     description: "Learn and create with your own mind — checked by code, never by AI.",
-    start_url: "/dashboard",
+    // open on the homepage; signed-in people reach their dashboard from there in one tap
+    id: "/",
+    start_url: "/",
+    scope: "/",
     display: "standalone",
     background_color: "#f7f0e1",
     theme_color: "#f7f0e1",
