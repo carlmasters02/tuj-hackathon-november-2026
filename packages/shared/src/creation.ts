@@ -23,7 +23,7 @@ export const ArtEventSchema = z.discriminatedUnion("type", [
     .object({
       ...base,
       type: z.literal("stroke"),
-      tool: z.enum(["pen", "marker", "eraser"]),
+      tool: z.enum(["pen", "marker", "eraser", "pixel"]),
       color: hex,
       size: z.number().int().min(1).max(80),
       // flat [x0, y0, x1, y1, ...] in canvas pixels
@@ -142,6 +142,19 @@ export function artToSvg(strokes: Stroke[]): string {
     .map((s) => {
       const color = s.tool === "eraser" ? PAPER : s.color;
       const opacity = s.tool === "marker" ? 0.55 : 1;
+      if (s.tool === "pixel") {
+        const cell = s.size;
+        const squares = new Set<string>();
+        for (let i = 0; i < s.pts.length; i += 2) {
+          const x = Math.floor(s.pts[i] / cell) * cell;
+          const y = Math.floor(s.pts[i + 1] / cell) * cell;
+          squares.add(`${x},${y}`);
+        }
+        return [...squares].map((key) => {
+          const [x, y] = key.split(",").map(Number);
+          return `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${color}"/>`;
+        }).join("");
+      }
       return `<path d="${strokePath(s.pts)}" stroke="${color}" stroke-width="${s.size}" stroke-opacity="${opacity}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
     })
     .join("");
