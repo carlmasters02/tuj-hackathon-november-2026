@@ -145,6 +145,11 @@ async function main() {
     r = await anon.req(`/portfolio/work/${aDone.workId}`);
     check("portfolio pages ask signed-out visitors to log in", r.status === 307 && (r.headers.get("location") ?? "").startsWith("/login"), `status ${r.status}`);
 
+    r = await B.c.req(`/api/creations/${aDraft.id}`, { method: "DELETE" });
+    check("Ben can't delete Ana's drawing", r.status === 403 || r.status === 404, `status ${r.status}`);
+    r = await B.c.req(`/api/docs/${aDoc}`, { method: "DELETE" });
+    check("Ben can't delete Ana's document", r.status === 403 || r.status === 404, `status ${r.status}`);
+
     // …but published work is visible to other people and social
     r = await B.c.req(`/api/gallery/${aDone.workId}/like`, { method: "POST" });
     check("Ben can like Ana's published piece", r.status === 200, `status ${r.status}`);
@@ -156,9 +161,14 @@ async function main() {
     const cert = r.status === 200 ? await r.text() : "";
     check("Ana's certificate names her as the author", cert.includes(A.username) && !cert.includes(B.username), `status ${r.status}`);
 
-    // Ana's own draft is untouched by Ben's attempts
+    // Ana's own draft is untouched by Ben's attempts, and she can delete her own things
     r = await A.c.req(`/portfolio/art/studio/${aDraft.id}`);
     check("Ana can still open her draft", r.status === 200);
+    r = await A.c.req(`/api/creations/${aDraft.id}`, { method: "DELETE" });
+    const gone = await A.c.req(`/portfolio/art/studio/${aDraft.id}`);
+    check("Ana can delete her own draft", r.status === 200 && gone.status === 404, `${r.status}/${gone.status}`);
+    r = await A.c.req(`/api/docs/${aDoc}`, { method: "DELETE" });
+    check("Ana can delete her own document", r.status === 200, `status ${r.status}`);
   } finally {
     // ── clean up both accounts through the app's own delete flow ────────────
     for (const p of [A, B]) {

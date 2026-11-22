@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { DocMetaSchema } from "@hm/shared/docMeta";
 import { dec, docMeta, enc, ownedDoc } from "@/lib/server/docs";
+import { deletePublishedFrom } from "@/lib/server/gallery";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -45,7 +46,10 @@ export const DELETE = api(async (req: NextRequest, ctx: Ctx) => {
   assertSameOrigin(req);
   const user = await requireUser();
   const id = UUID.parse((await ctx.params).id);
+  await rateLimit("api", user.id);
   await ownedDoc(id, user.id);
+  // "Delete" means gone from the portfolio too; certificates keep verifying from their own copy.
+  await deletePublishedFrom(id, user.id);
   const { error } = await supabaseAdmin().from("documents").delete().eq("id", id).eq("owner_id", user.id);
   if (error) throw error;
   return json({ ok: true });

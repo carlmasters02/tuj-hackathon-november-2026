@@ -36,6 +36,25 @@ export function signedMediaUrl(workId: string, viewerId: string, kind: "art" | "
   return mediaUrl(keyBytes("HM_MEDIA_HMAC_KEY"), workId, viewerId, undefined, kind === "music" ? "/api/audio" : "/api/media");
 }
 
+/**
+ * Deletes the portfolio pieces published from one source (a document or a studio/composer piece),
+ * files first. Certificates are kept: each stores its own copy of the event log, so its public
+ * verify page keeps working after the source is gone.
+ */
+export async function deletePublishedFrom(sourceId: string, ownerId: string): Promise<number> {
+  const sb = supabaseAdmin();
+  const { data: certs } = await sb.from("certificates").select("id").eq("owner_id", ownerId).eq("payload->>docId", sourceId);
+  const certIds = (certs ?? []).map((c) => c.id);
+  if (!certIds.length) return 0;
+  const { data: works } = await sb.from("gallery_works").select("*").eq("owner_id", ownerId).in("cert_id", certIds);
+  for (const w of (works ?? []) as WorkRow[]) {
+    await deleteWorkFiles(w);
+    const { error } = await sb.from("gallery_works").delete().eq("id", w.id).eq("owner_id", ownerId);
+    if (error) throw error;
+  }
+  return works?.length ?? 0;
+}
+
 export async function deleteWorkFiles(w: WorkRow) {
   const original = w.storage_key_enc ? decryptString(w.storage_key_enc, `work:${w.id}:key`) : null;
   if (w.kind === "art") {

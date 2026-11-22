@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DeleteItemButton } from "@/components/DeleteItemButton";
 import { requireUserPage } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { dec } from "@/lib/server/docs";
@@ -36,6 +37,7 @@ export default async function WritePage() {
               <div className="flex items-center gap-3 text-xs text-fg-faint">
                 {cert && <Link href={`/verify/${cert.id}`} className="chip hover:text-fg">{VERDICT_LABEL[cert.verdict]} ↗</Link>}
                 <span>edited {new Date(d.updated_at).toLocaleString()}</span>
+                <DeleteItemButton endpoint={`/api/docs/${d.id}`} name={dec(d.id, "title", d.title_enc)} finished={d.status === "finalized"} />
               </div>
             </li>
           );

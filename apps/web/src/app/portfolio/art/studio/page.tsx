@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DeleteItemButton } from "@/components/DeleteItemButton";
 import { requireUserPage } from "@/lib/auth";
 import { myCreations } from "@/lib/server/creations";
 import { HumanSeal } from "@/components/HumanSeal";
@@ -60,14 +61,15 @@ export default async function StudioIndex() {
             {items.map((c) => {
               const href = c.status === "draft" ? `/portfolio/art/studio/${c.id}` : c.workId ? `/portfolio/work/${c.workId}` : `/portfolio/art/studio/${c.id}`;
               return (
-                <li key={c.id}>
-                  <Link href={href} className="group flex min-h-[82px] items-center justify-between gap-4 rounded-xl border-[1.5px] border-[#E9D68A] bg-white px-5 py-4 shadow-[0_4px_12px_rgba(91,77,39,0.06)] transition hover:border-[#D4BD62]">
+                <li key={c.id} className="flex min-h-[82px] items-center gap-2 rounded-xl border-[1.5px] border-[#E9D68A] bg-white pr-3 shadow-[0_4px_12px_rgba(91,77,39,0.06)] transition hover:border-[#D4BD62]">
+                  <Link href={href} className="group flex min-w-0 flex-1 items-center justify-between gap-4 self-stretch rounded-xl py-4 pl-5 pr-2">
                     <div className="min-w-0">
                       <h3 className="truncate text-base font-semibold text-fg">{c.title}</h3>
                       <p className="mt-1 text-xs text-fg-dim">{c.status === "draft" ? "Draft" : "Finished"} · {c.events} recorded {c.events === 1 ? "event" : "events"} · {new Date(c.updatedAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}</p>
                     </div>
                     {c.verdict === "human_verified" ? <HumanSeal size={36} /> : <span className="shrink-0 text-sm font-semibold text-fg">{c.status === "draft" ? "Continue →" : "View →"}</span>}
                   </Link>
+                  <DeleteItemButton endpoint={`/api/creations/${c.id}`} name={c.title} finished={c.status === "finalized"} />
                 </li>
               );
             })}
