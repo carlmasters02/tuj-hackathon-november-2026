@@ -41,7 +41,7 @@ export function AIUsagePanel({ stats }: { stats: WeeklyStats }) {
           <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 bottom-7 flex flex-col justify-between">
             {[0, 1, 2, 3].map((i) => <div key={i} className="border-t border-line" />)}
           </div>
-          <div className="relative grid grid-cols-7 gap-2 sm:gap-4" role="img" aria-label="AI-site minutes recorded each day during the past seven days">
+          <div className="relative grid grid-cols-7 gap-2 sm:gap-4" role="img" aria-label={`AI-site minutes by day: ${stats.days.map((day) => `${day.date}: ${displayTime(day.aiMinutes)}`).join("; ")}`}>
             {stats.days.map((day) => {
               const h = Math.max(0, Math.min(100, 100 * day.aiMinutes / maxDay));
               const weekday = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });

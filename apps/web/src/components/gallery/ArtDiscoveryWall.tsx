@@ -10,13 +10,13 @@ type ArtTile = FeedItem & { imageUrl: string };
 
 export function ArtDiscoveryWall({ items }: { items: ArtTile[] }) {
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<"all" | "verified" | "uploaded">("all");
+  const [filter, setFilter] = useState<"all" | "verified" | "unverified">("all");
 
   const results = useMemo(() => {
     const term = search.trim().toLocaleLowerCase();
     return items.filter((item) => {
       if (filter === "verified" && !item.verified) return false;
-      if (filter === "uploaded" && item.verified) return false;
+      if (filter === "unverified" && item.verified) return false;
       return !term || item.title.toLocaleLowerCase().includes(term) || item.owner.toLocaleLowerCase().includes(term);
     });
   }, [items, filter, search]);
@@ -49,7 +49,7 @@ export function ArtDiscoveryWall({ items }: { items: ArtTile[] }) {
           {([
             ["all", "All artwork"],
             ["verified", "Studio verified"],
-            ["uploaded", "Community uploads"],
+            ["unverified", "Not studio verified"],
           ] as const).map(([value, label]) => (
             <button
               key={value}

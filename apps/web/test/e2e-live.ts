@@ -214,7 +214,10 @@ async function publicPage(path: string) {
   check("legacy portfolio Writing route redirects to Words", r.status === 307 && r.headers.get("location") === "/portfolio/words");
   r = await req("/portfolio/words");
   const wordsPage = await r.text();
-  check("Words gallery is publishing-only, not a Tutor coach", r.status === 200 && wordsPage.includes("Start a draft in Tutor") && !wordsPage.includes("Research paper coach"));
+  check("Words gallery is publishing-only, not a Tutor coach", r.status === 200 && wordsPage.includes("Writing studio") && wordsPage.includes("href=\"/tutor/writing\"") && !wordsPage.includes("Research paper coach"));
+  r = await req("/portfolio/music");
+  const musicHeader = await r.text();
+  check("Music gallery keeps compact header and composer action", r.status === 200 && musicHeader.includes("Where feelings become melodies.") && musicHeader.includes("href=\"/portfolio/music/composer\"") && musicHeader.includes("href=\"/portfolio/upload\""));
 
   // ── Gallery ──────────────────────────────────────────────────────────────
   const png = await sharp({ create: { width: 320, height: 240, channels: 3, background: { r: 27, g: 43, b: 94 } } })
@@ -262,6 +265,9 @@ async function publicPage(path: string) {
     check("delete own comment", r.status === 200);
     r = await req(`/api/gallery/${up.id}/like`, { method: "POST" });
     check("like a work", r.status === 200);
+    r = await req("/portfolio/art");
+    const artGallery = await r.text();
+    check("Art discovery wall uses signed media and accurate filters", r.status === 200 && artGallery.includes("Browse community artwork") && artGallery.includes(`/api/media/${up.id}`) && artGallery.includes("Studio verified") && artGallery.includes("Not studio verified") && artGallery.includes("Uploads are welcome but never sealed"));
     r = await req("/portfolio/art", { headers: { "User-Agent": "GPTBot/1.2" }, cookies: false });
     check("GPTBot blocked from the portfolio", r.status === 403);
   }
@@ -345,6 +351,7 @@ async function publicPage(path: string) {
   r = await req("/dashboard");
   const d2 = await r.text();
   check("dashboard shows tracked AI time and points", r.status === 200 && d2.includes("chatgpt.com"));
+  check("AI usage chart exposes every daily value accessibly", d2.includes("role=\"img\" aria-label=\"AI-site minutes by day:") && d2.includes(`${today}: 15m`) && d2.includes("Websites"));
   r = await req("/leaderboard");
   check("leaderboard lists the opted-in user", r.status === 200 && (await r.text()).includes(username));
 
