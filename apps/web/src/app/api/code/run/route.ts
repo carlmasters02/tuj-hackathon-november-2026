@@ -36,6 +36,9 @@ export const POST = api(async (req: NextRequest) => {
     const results = [];
     for (const t of inputs) {
       const r = await runner.run({ lang: ex.lang, source: b.source, stdin: t.stdin, sanitize: b.sanitize });
+      // An unreachable or failing sandbox says nothing about the student's code: report an outage,
+      // never a failed test.
+      if (r.status === "internal_error") throw new HttpError(503, `The ${ex.lang === "c" ? "C" : ex.lang === "java" ? "Java" : "code"} runner is offline right now, so your code wasn't run. This isn't a problem with your code; please try again later.`);
       const passed = t.expectedStdout !== null ? r.status === "ok" && outputsMatch(r.stdout, t.expectedStdout) : null;
       const out = r.compileOutput || r.stderr;
       results.push({
@@ -49,7 +52,7 @@ export const POST = api(async (req: NextRequest) => {
         diff: passed === false ? lineDiff(t.expectedStdout!, r.stdout) : undefined,
         explanations: explainErrors(ex.lang, out, r.status, b.source),
       });
-      if (r.status === "compile_error" || r.status === "internal_error") break;
+      if (r.status === "compile_error") break;
     }
     return json({ runner: runner.name, results });
   });

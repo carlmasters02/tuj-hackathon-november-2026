@@ -75,6 +75,7 @@ export function CodeDojo({ ex, solved: initiallySolved, initialHints, failed }: 
         setRunRows(r.results);
       }
     } catch (e) {
+      setRunRows(null); // never leave an earlier run's pass/fail cards next to an error
       setError(e instanceof ApiError ? e.message : "Run failed");
     } finally {
       setBusy(null);

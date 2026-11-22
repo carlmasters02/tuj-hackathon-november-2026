@@ -12,6 +12,21 @@ function ready() {
   return pyodideReady;
 }
 
+/** Drops Pyodide's own frames (/lib/python3*.zip/_pyodide/…, eval_code_async, CodeRunner, run_async)
+ * from a traceback, keeping the header, the student's main.py frames and the final error line. */
+function studentTraceback(text) {
+  if (!text.includes("Traceback (most recent call last):")) return text;
+  const out = [];
+  let keep = true;
+  for (const line of text.split("\n")) {
+    const frame = /^ {2}File "([^"]+)"/.exec(line);
+    if (frame) keep = /(^|\/)main\.py$|^<exec>$|^<string>$/.test(frame[1]);
+    else if (!/^ {4}/.test(line)) keep = true; // header and the final "XyzError: …" lines
+    if (keep) out.push(line);
+  }
+  return out.join("\n");
+}
+
 self.onmessage = async (e) => {
   const { id, source, stdin } = e.data || {};
   if (typeof source !== "string" || source.length > 20480) return self.postMessage({ id, error: "bad request" });
@@ -28,7 +43,7 @@ self.onmessage = async (e) => {
     try {
       await py.runPythonAsync(source, { globals: ns, filename: "main.py" });
     } catch (err) {
-      stderr += String(err && err.message ? err.message : err);
+      stderr += studentTraceback(String(err && err.message ? err.message : err));
     } finally {
       ns.destroy();
     }
