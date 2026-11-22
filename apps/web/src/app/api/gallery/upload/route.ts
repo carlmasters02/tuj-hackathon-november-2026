@@ -50,28 +50,28 @@ export const POST = api(async (req: NextRequest) => {
   const user = await requireUser();
   await rateLimit("upload", user.id);
   await rateLimit("upload", `ip:${req.headers.get("x-real-ip") ?? "local"}`);
-  if (Number(req.headers.get("content-length") ?? 0) > MAX_AUDIO_BYTES + 100_000) throw new HttpError(413, "File too large");
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_AUDIO_BYTES + 100_000) throw new HttpError(413, "That file is too large. Images can be up to 15 MB and audio up to 25 MB.");
 
   const form = await req.formData();
   const file = form.get("file");
-  if (!(file instanceof File)) throw new HttpError(400, "Attach a file");
+  if (!(file instanceof File)) throw new HttpError(400, "Choose a file to upload.");
   const meta = Meta.parse({ title: form.get("title"), description: form.get("description") || undefined, publish: form.get("publish") ?? "false" });
   const bytes = Buffer.from(await file.arrayBuffer());
   const type = sniff(bytes); // magic bytes only — the filename and browser MIME are ignored
-  if (!type) throw new HttpError(415, "Unsupported file. Images: PNG, JPEG, WebP. Audio: MP3, OGG, WAV.");
+  if (!type) throw new HttpError(415, "That file type isn't supported. Images: PNG, JPEG or WebP. Audio: MP3, OGG or WAV.");
   const profile = await profileOf(user.id);
-  if (!profile) throw new HttpError(400, "Profile missing");
+  if (!profile) throw new HttpError(400, "Your profile isn't set up yet. Finish setting up your account and try again.");
   const sb = supabaseAdmin();
   const workId = randomUUID();
   const fileSha = sha256(bytes);
 
   if (IMAGE_TYPES.has(type)) {
-    if (bytes.length > MAX_IMAGE_BYTES) throw new HttpError(413, "Images can be at most 15 MB");
+    if (bytes.length > MAX_IMAGE_BYTES) throw new HttpError(413, "That image is too large. The limit is 15 MB.");
     let norm;
     try {
       norm = await normalizeImage(bytes);
     } catch {
-      throw new HttpError(415, "That image couldn't be decoded");
+      throw new HttpError(415, "That image couldn't be read. Try saving it again as PNG, JPEG or WebP.");
     }
     if (norm.width < 64 || norm.height < 64) throw new HttpError(400, "Images must be at least 64×64 pixels");
     const dhash = await dHashOf(norm.raw, norm.width, norm.height);
@@ -100,7 +100,7 @@ export const POST = api(async (req: NextRequest) => {
   }
 
   if (AUDIO_TYPES.has(type)) {
-    if (bytes.length > MAX_AUDIO_BYTES) throw new HttpError(413, "Audio can be at most 25 MB");
+    if (bytes.length > MAX_AUDIO_BYTES) throw new HttpError(413, "That audio file is too large. The limit is 25 MB.");
     const { data: same } = await sb.from("gallery_works").select("id, owner_id").eq("kind", "music").eq("sha256", fileSha).neq("owner_id", user.id).maybeSingle();
     if (same) throw new HttpError(409, "This exact file was already uploaded by another user, so it was blocked.");
     // The recorder emits strict 44-byte-header mono PCM WAV. It contains no extra metadata chunks,
@@ -108,10 +108,10 @@ export const POST = api(async (req: NextRequest) => {
     // goes through the existing ffmpeg transcode path to normalize content and remove metadata.
     const directWavPreview = type === "audio/wav" && isCanonicalMonoPcmWav(bytes);
     const preview = directWavPreview ? bytes : await transcodePreview(bytes).catch((e) => {
-      if (e instanceof NoFfmpeg) throw new HttpError(503, "Music uploads aren't available on this server yet (ffmpeg is missing).");
+      if (e instanceof NoFfmpeg) throw new HttpError(503, "This audio format can't be processed here yet. Upload an uncompressed WAV file, or use Record audio instead.");
       throw e;
     });
-    if (!preview) throw new HttpError(415, "That audio file couldn't be decoded");
+    if (!preview) throw new HttpError(415, "That audio file couldn't be read. Try exporting it again as MP3, OGG or WAV.");
     const originalPath = `${user.id}/${workId}.bin`;
     await upload("audio", originalPath, encryptBytes(bytes, `work:${workId}:original`));
     const previewPath = `${user.id}/${workId}.${directWavPreview ? "wav" : "mp3"}`;
@@ -123,5 +123,5 @@ export const POST = api(async (req: NextRequest) => {
     if (error) throw error;
     return json({ id: workId });
   }
-  throw new HttpError(415, "Unsupported file");
+  throw new HttpError(415, "That file type isn't supported. Images: PNG, JPEG or WebP. Audio: MP3, OGG or WAV.");
 });

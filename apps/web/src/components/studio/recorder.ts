@@ -107,5 +107,5 @@ export const STATUS_TEXT: Record<SaveStatus, string> = {
   saving: "Saving…",
   saved: "Saved",
   offline: "Offline, will retry",
-  conflict: "Out of sync",
+  conflict: "Not saving: reload the page",
 };

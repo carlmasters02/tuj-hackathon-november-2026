@@ -31,9 +31,9 @@ export const GET = api(async (req: NextRequest, ctx: { params: Promise<{ id: str
   const sig = req.nextUrl.searchParams.get("sig") ?? "";
   const check = verifyMedia(keyBytes("HM_MEDIA_HMAC_KEY"), id, user.id, exp, sig);
   if (check === "expired") throw new HttpError(410, "This link expired — reload the page.");
-  if (check !== "ok") throw new HttpError(403, "Invalid media link");
+  if (check !== "ok") throw new HttpError(403, "This image link isn't valid any more. Reload the page.");
   const work = await viewableWork(id, user.id);
-  if (work.kind !== "art" || !work.preview_key) throw new HttpError(404, "Not found");
+  if (work.kind !== "art" || !work.preview_key) throw new HttpError(404, "We couldn't find that. It may have been deleted.");
   await noteMediaFetch(user.id);
   const viewer = (await profileOf(user.id))?.username ?? user.id.slice(0, 8);
   const preview = await download("art-previews", work.preview_key);

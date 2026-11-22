@@ -15,13 +15,13 @@ import { awardPoints } from "@/lib/server/points";
 export const POST = api(async (req: NextRequest) => {
   const auth = req.headers.get("authorization") ?? "";
   const m = /^Bearer (hm_ext_[A-Za-z0-9_-]{20,100})$/.exec(auth);
-  if (!m) throw new HttpError(401, "Missing or malformed token");
+  if (!m) throw new HttpError(401, "No valid extension token was sent. Paste your token into the extension's Options page.");
   const tokenHash = hashExtensionToken(m[1]);
   await rateLimit("ingest", tokenHash);
 
   const sb = supabaseAdmin();
   const { data: tok } = await sb.from("extension_tokens").select("id, user_id, revoked_at").eq("token_hash", tokenHash).maybeSingle();
-  if (!tok || tok.revoked_at) throw new HttpError(401, "Invalid or revoked token");
+  if (!tok || tok.revoked_at) throw new HttpError(401, "This extension token isn't valid any more. Create a new one in Settings → Extension tokens.");
   const userId = tok.user_id as string;
 
   const body = await parseJson(req, IngestSchema, 100_000);
@@ -34,7 +34,7 @@ export const POST = api(async (req: NextRequest) => {
   const rows = body.days.filter((d) => allowed.has(d.date));
   const perDay = new Map<string, number>();
   for (const r of rows) perDay.set(r.date, (perDay.get(r.date) ?? 0) + r.seconds);
-  if ([...perDay.values()].some((s) => s > 86400)) throw new HttpError(400, "More than 24 hours in one day");
+  if ([...perDay.values()].some((s) => s > 86400)) throw new HttpError(400, "That day has more than 24 hours of activity, so it was rejected.");
 
   if (rows.length) {
     const dates = [...new Set(rows.map((r) => r.date))];

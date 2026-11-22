@@ -28,7 +28,7 @@ export interface WorkRow {
 /** A work the viewer may see: published, or their own. */
 export async function viewableWork(id: string, viewerId: string): Promise<WorkRow> {
   const { data } = await supabaseAdmin().from("gallery_works").select("*").eq("id", id).maybeSingle();
-  if (!data || (!data.published && data.owner_id !== viewerId)) throw new HttpError(404, "Not found");
+  if (!data || (!data.published && data.owner_id !== viewerId)) throw new HttpError(404, "We couldn't find that. It may have been deleted.");
   return data as WorkRow;
 }
 

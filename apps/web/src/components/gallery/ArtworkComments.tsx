@@ -27,7 +27,7 @@ export default function ArtworkComments({ workId, initial, canModerate }: { work
       setComments((previous) => [...previous, comment]);
       setMessage("");
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Couldn't post your comment");
+      setError(e instanceof ApiError ? e.message : "Couldn't post your comment. Check your connection and try again.");
     } finally {
       setBusy(false);
     }
@@ -38,7 +38,7 @@ export default function ArtworkComments({ workId, initial, canModerate }: { work
       await postJson(`/api/gallery/${workId}/comments/${id}`, {}, "DELETE");
       setComments((previous) => previous.filter((c) => c.id !== id));
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Couldn't delete that comment");
+      setError(e instanceof ApiError ? e.message : "Couldn't delete that comment. Check your connection and try again.");
     }
   }
 

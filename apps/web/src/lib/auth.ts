@@ -34,7 +34,7 @@ export async function currentUser(): Promise<User | null> {
 /** For route handlers: throws 401 when signed out. */
 export async function requireUser(): Promise<User> {
   const u = await currentUser();
-  if (!u) throw new HttpError(401, "Sign in first");
+  if (!u) throw new HttpError(401, "Please log in to continue.");
   return u;
 }
 

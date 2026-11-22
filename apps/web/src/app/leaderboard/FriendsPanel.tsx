@@ -14,7 +14,7 @@ export function FriendsPanel({ links }: { me: string; links: { other: string; in
       setName("");
       router.refresh();
     } catch (e) {
-      setMsg(e instanceof ApiError ? e.message : "Failed");
+      setMsg(e instanceof ApiError ? e.message : "That didn't work. Check your connection and try again.");
     }
   };
   return (

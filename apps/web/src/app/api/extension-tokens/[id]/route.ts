@@ -14,6 +14,6 @@ export const DELETE = api(async (req: NextRequest, ctx: { params: Promise<{ id: 
     .eq("user_id", user.id) // ownership enforced in the query itself
     .select("id");
   if (error) throw error;
-  if (!data?.length) throw new HttpError(404, "Not found");
+  if (!data?.length) throw new HttpError(404, "We couldn't find that. It may have been deleted.");
   return json({ ok: true });
 });

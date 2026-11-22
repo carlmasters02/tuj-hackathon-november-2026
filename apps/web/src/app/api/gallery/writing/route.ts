@@ -14,7 +14,7 @@ export const POST = api(async (req: NextRequest) => {
   const { certId } = await parseJson(req, Body, 1_000);
   const sb = supabaseAdmin();
   const { data: cert } = await sb.from("certificates").select("id, owner_id, verdict, title").eq("id", certId).maybeSingle();
-  if (!cert || cert.owner_id !== user.id) throw new HttpError(404, "Certificate not found");
+  if (!cert || cert.owner_id !== user.id) throw new HttpError(404, "We couldn't find that certificate. Check the link.");
   if (cert.verdict !== "human_verified") throw new HttpError(400, "Only writing with a verified creation record can be published.");
   const { data: existing } = await sb.from("gallery_works").select("id").eq("cert_id", certId).maybeSingle();
   if (existing) return json({ id: existing.id });

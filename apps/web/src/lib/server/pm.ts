@@ -14,7 +14,7 @@ export function contentNode(json: unknown): PMNode {
     node.check();
     return node;
   } catch {
-    throw new HttpError(400, "Document content doesn't match the editor schema");
+    throw new HttpError(400, "This document contains formatting that can't be saved. Undo your last change, or reload the page.");
   }
 }
 

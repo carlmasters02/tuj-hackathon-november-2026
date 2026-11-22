@@ -92,7 +92,7 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
       setTierAvailable(r.hintTierAvailable);
       if (r.complete) setSolved(true);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Check failed");
+      setError(e instanceof ApiError ? e.message : "Couldn't check your steps. Check your connection and try again.");
     } finally {
       setBusy(false);
     }
@@ -104,7 +104,7 @@ export function StepCheck({ problem, solved: initiallySolved }: { problem: Publi
       const r = await postJson<{ hints: Hint[] }>("/api/tutor/math/hint", { problemId: problem.id, lines: trimmed });
       setHints(r.hints);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Couldn't load hint");
+      setError(e instanceof ApiError ? e.message : "Couldn't load a hint. Check your connection and try again.");
     }
   };
 

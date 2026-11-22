@@ -14,7 +14,7 @@ export const POST = api(async (req: NextRequest) => {
   await rateLimit("api", user.id);
   const { username, follow } = await parseJson(req, Body, 1_000);
   const { data: target } = await supabaseAdmin().from("profiles").select("id, is_public").eq("username", username).maybeSingle();
-  if (!target || target.id === user.id) throw new HttpError(404, "User not found");
+  if (!target || target.id === user.id) throw new HttpError(404, "We couldn't find that person.");
   const sb = await supabaseServer();
   const { error } = follow
     ? await sb.from("follows").upsert({ follower_id: user.id, followee_id: target.id }, { ignoreDuplicates: true })

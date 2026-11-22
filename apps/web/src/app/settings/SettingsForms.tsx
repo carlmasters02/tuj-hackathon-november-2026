@@ -39,7 +39,7 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
       setMsg("Saved.");
       router.refresh();
     } catch (e) {
-      setMsg(e instanceof ApiError ? e.message : "Save failed");
+      setMsg(e instanceof ApiError ? e.message : "Couldn't save. Check your connection and try again.");
     }
     setTimeout(() => setMsg(null), 2000);
   };
@@ -85,7 +85,7 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
               setNewToken(r.token);
               loadTokens();
             } catch (e) {
-              setMsg(e instanceof ApiError ? e.message : "Failed");
+              setMsg(e instanceof ApiError ? e.message : "That didn't work. Check your connection and try again.");
             }
           }}
         >
@@ -119,7 +119,7 @@ export function SettingsForms({ profile, email }: { profile: Profile; email: str
               router.push("/");
               router.refresh();
             } catch (e) {
-              setMsg(e instanceof ApiError ? e.message : "Failed");
+              setMsg(e instanceof ApiError ? e.message : "That didn't work. Check your connection and try again.");
             }
           }}
         >

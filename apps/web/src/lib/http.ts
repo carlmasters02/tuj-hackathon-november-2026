@@ -21,7 +21,7 @@ export function api<A extends unknown[]>(fn: (...args: A) => Promise<Response>) 
       return await fn(...args);
     } catch (e) {
       if (e instanceof HttpError) return json({ error: e.message, ...e.extra }, { status: e.status, headers: e.status === 429 && e.extra?.retryAfter ? { "Retry-After": String(e.extra.retryAfter) } : undefined });
-      if (e instanceof ZodError) return json({ error: "Invalid input", issues: e.issues.map((i) => ({ path: i.path.join("."), message: i.message })) }, { status: 400 });
+      if (e instanceof ZodError) return json({ error: "Some of the information sent wasn't valid. Check it and try again.", issues: e.issues.map((i) => ({ path: i.path.join("."), message: i.message })) }, { status: 400 });
       if (e instanceof Error && e.message.startsWith("Humagination is missing configuration")) {
         console.error("[api] missing configuration");
         const show = process.env.NODE_ENV !== "production" || process.env.HM_DETAILED_AUTH_ERRORS === "true";
@@ -31,7 +31,7 @@ export function api<A extends unknown[]>(fn: (...args: A) => Promise<Response>) 
         );
       }
       console.error("[api] unhandled error:", e instanceof Error ? e.message : "unknown");
-      return json({ error: "Something went wrong" }, { status: 500 });
+      return json({ error: "Something went wrong on our side. Please try again in a moment." }, { status: 500 });
     }
   };
 }
@@ -78,29 +78,29 @@ export function assertSameOrigin(req: NextRequest | Request) {
   const origin = req.headers.get("origin");
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
   if (!origin || !host)
-    throw new HttpError(403, "Blocked: your browser didn't say which site this request came from (no Origin header). Requests like this are refused to prevent cross-site attacks — use the app's own pages in a normal, up-to-date browser.", { reason: "csrf.missing_origin" });
+    throw new HttpError(403, "For your security, this request was blocked because your browser didn't say where it came from. Open Humagination directly in an up-to-date browser and try again.", { reason: "csrf.missing_origin" });
   let o: URL;
   try {
     o = new URL(origin);
   } catch {
-    throw new HttpError(403, "Blocked: the request's Origin header isn't a valid address.", { reason: "csrf.bad_origin" });
+    throw new HttpError(403, "For your security, this request was blocked. Open Humagination directly and try again.", { reason: "csrf.bad_origin" });
   }
   const allowed = process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host : host;
   if (o.host !== allowed && o.host !== host)
-    throw new HttpError(403, `Blocked: this request came from ${o.host}, but this server is ${host}. Requests from other sites are refused (CSRF protection) — open the app directly at https://${host}.`, { reason: "csrf.cross_origin" });
+    throw new HttpError(403, `For your security, this request was blocked because it came from another website (${o.host}). Open Humagination directly at https://${host} and try again.`, { reason: "csrf.cross_origin" });
 }
 
 /** Reads and validates a JSON body with a hard size cap. */
 export async function parseJson<T extends z.ZodTypeAny>(req: Request, schema: T, maxBytes = 1_000_000): Promise<z.infer<T>> {
   const len = Number(req.headers.get("content-length") ?? 0);
-  if (len > maxBytes) throw new HttpError(413, "Request too large");
+  if (len > maxBytes) throw new HttpError(413, "That's too much to send at once. Try a smaller file or shorter text.");
   const text = await req.text();
-  if (text.length > maxBytes) throw new HttpError(413, "Request too large");
+  if (text.length > maxBytes) throw new HttpError(413, "That's too much to send at once. Try a smaller file or shorter text.");
   let data: unknown;
   try {
     data = JSON.parse(text);
   } catch {
-    throw new HttpError(400, "Body must be JSON");
+    throw new HttpError(400, "That request couldn't be read. Reload the page and try again.");
   }
   return schema.parse(data);
 }

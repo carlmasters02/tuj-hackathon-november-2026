@@ -39,7 +39,7 @@ const STATUS_TEXT: Record<RecorderStatus, string> = {
   saving: "Saving…",
   saved: "Saved · log verified by server",
   offline: "Offline — will retry",
-  conflict: "Stopped",
+  conflict: "Not saving: reload the page",
 };
 
 type Tab = "coach" | "page" | "sources" | "comments" | "outline" | "history";
@@ -231,7 +231,7 @@ export function Editor({ docId, title: initialTitle, content, lastSeq, headHash,
       const r = await postJson<{ certId: string }>(`/api/docs/${docId}/finalize`, {});
       router.push(`/verify/${r.certId}`);
     } catch (e) {
-      setError(e instanceof ApiError || e instanceof Error ? e.message : "Finalize failed");
+      setError(e instanceof ApiError || e instanceof Error ? e.message : "Couldn't finalize. Check your connection and try again.");
       setFinalizing(false);
       setConfirmFinalize(false);
     }

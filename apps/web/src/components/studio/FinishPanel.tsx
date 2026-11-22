@@ -43,7 +43,7 @@ export function FinishPanel({ id, kind, title, setTitle, effort, drain, onClose 
       const r = await postJson<{ workId: string }>(`/api/creations/${id}/finalize`, { title: title.trim() || "Untitled", publish });
       router.push(`/portfolio/work/${r.workId}`);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Something went wrong");
+      setErr(e instanceof Error ? e.message : "Couldn't finish this piece. Check your connection and try again.");
       setBusy(false);
     }
   };

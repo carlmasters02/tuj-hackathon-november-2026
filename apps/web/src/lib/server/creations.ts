@@ -16,7 +16,7 @@ export interface CreationRow {
 
 export async function ownedCreation(id: string, userId: string): Promise<CreationRow> {
   const { data } = await supabaseAdmin().from("creations").select("*").eq("id", id).eq("owner_id", userId).maybeSingle();
-  if (!data) throw new HttpError(404, "Not found");
+  if (!data) throw new HttpError(404, "We couldn't find that. It may have been deleted.");
   return data as CreationRow;
 }
 

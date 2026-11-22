@@ -48,7 +48,7 @@ export async function buildPayload() {
 export async function sync(): Promise<LocalData["lastSync"]> {
   const s = await getSettings();
   let result: LocalData["lastSync"];
-  if (!s.token) result = { at: new Date().toISOString(), ok: false, message: "No token set — open Options." };
+  if (!s.token) result = { at: new Date().toISOString(), ok: false, message: "Not connected yet. Open Options and paste your token from Settings → Extension tokens." };
   else {
     try {
       const res = await fetch(new URL("/api/tracker/ingest", s.serverUrl).toString(), {
@@ -58,10 +58,10 @@ export async function sync(): Promise<LocalData["lastSync"]> {
       });
       const data = await res.json().catch(() => ({}));
       result = res.ok
-        ? { at: new Date().toISOString(), ok: true, message: `Synced ${data.accepted} rows`, relianceScore: data.relianceScore, streak: data.streak }
-        : { at: new Date().toISOString(), ok: false, message: data.error ?? `HTTP ${res.status}` };
+        ? { at: new Date().toISOString(), ok: true, message: `Synced ${data.accepted} ${data.accepted === 1 ? "entry" : "entries"}`, relianceScore: data.relianceScore, streak: data.streak }
+        : { at: new Date().toISOString(), ok: false, message: data.error ?? `Couldn't sync (error ${res.status}). Try again later.` };
     } catch {
-      result = { at: new Date().toISOString(), ok: false, message: "Server unreachable" };
+      result = { at: new Date().toISOString(), ok: false, message: "Couldn't reach Humagination. Check your connection and the server address in Options." };
     }
   }
   await chrome.storage.local.set({ lastSync: result });

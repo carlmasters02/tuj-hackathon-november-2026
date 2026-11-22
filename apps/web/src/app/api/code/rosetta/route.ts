@@ -14,7 +14,7 @@ export const GET = api(async (req: NextRequest) => {
   const user = await requireUser();
   const id = req.nextUrl.searchParams.get("exerciseId") ?? "";
   const ex = getExercise(id);
-  if (!ex) throw new HttpError(404, "Unknown exercise");
+  if (!ex) throw new HttpError(404, "That exercise doesn't exist.");
   const sb = supabaseAdmin();
   const ids = LANGS.map((l) => counterpart(ex, l)?.id).filter(Boolean) as string[];
   const { data } = await sb.from("code_progress").select("exercise_id, lang, solved_at, solution_enc").eq("user_id", user.id).in("exercise_id", ids);

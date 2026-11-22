@@ -9,7 +9,7 @@ type Ctx = { params: Promise<{ id: string }> };
 
 async function ownWork(id: string, userId: string): Promise<WorkRow> {
   const { data } = await supabaseAdmin().from("gallery_works").select("*").eq("id", id).eq("owner_id", userId).maybeSingle();
-  if (!data) throw new HttpError(404, "Not found");
+  if (!data) throw new HttpError(404, "We couldn't find that. It may have been deleted.");
   return data as WorkRow;
 }
 

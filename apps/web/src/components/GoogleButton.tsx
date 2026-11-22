@@ -19,7 +19,7 @@ export function GoogleButton({ next, label = "Continue with Google" }: { next?: 
             const { url } = await postJson<{ url: string }>("/api/auth/oauth", { provider: "google", next });
             window.location.assign(url);
           } catch (e) {
-            setError(e instanceof ApiError ? e.message : "Google sign-in failed");
+            setError(e instanceof ApiError ? e.message : "Google sign-in didn't work. Try again, or log in with your email.");
             setBusy(false);
           }
         }}

@@ -26,14 +26,14 @@ export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
   const b = await parseJson(req, Body, 40_000);
-  if (Buffer.byteLength(b.source) > LIMITS.maxSourceBytes) throw new HttpError(413, "Source is limited to 20 KB");
+  if (Buffer.byteLength(b.source) > LIMITS.maxSourceBytes) throw new HttpError(413, "Your code is too long. Please keep it under 20 KB.");
   const ex = getExercise(b.exerciseId);
-  if (!ex) throw new HttpError(404, "Unknown exercise");
+  if (!ex) throw new HttpError(404, "That exercise doesn't exist.");
   const runner = codeRunner();
 
   return withRunSlot(user.id, 1, async () => {
     const result = await grade(ex, b.source, runner);
-    if (result.outcomes.some((o) => o.status === "internal_error")) throw new HttpError(503, "The code runner is unavailable right now. Your attempt wasn't counted.");
+    if (result.outcomes.some((o) => o.status === "internal_error")) throw new HttpError(503, "The code runner is offline right now, so your attempt wasn't counted. This isn't a problem with your code; please try again later.");
 
     const sb = supabaseAdmin();
     const { data: prog } = await sb.from("code_progress").select("*").eq("user_id", user.id).eq("exercise_id", ex.id).maybeSingle();

@@ -15,7 +15,7 @@ export const POST = api(async (req: NextRequest) => {
   await rateLimit("api", user.id);
   const body = await parseJson(req, Body, 20_000);
   const problem = getMathProblem(body.problemId);
-  if (!problem) throw new HttpError(404, "Unknown problem");
+  if (!problem) throw new HttpError(404, "That problem doesn't exist.");
   const prog = await getProgress(user.id, problem.id);
   const tier = Math.min(3, Math.max(1, prog.hint_tier)) as 1 | 2 | 3;
   const result = checkSteps(problem, body.lines, tier);

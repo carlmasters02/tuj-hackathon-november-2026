@@ -18,11 +18,11 @@ export const POST = api(async (req: NextRequest) => {
   await rateLimit("upload", user.id);
   const form = await req.formData();
   const file = form.get("file");
-  if (!(file instanceof File)) throw new HttpError(400, "Attach a file");
+  if (!(file instanceof File)) throw new HttpError(400, "Choose a file to upload.");
   const bytes = Buffer.from(await file.arrayBuffer());
-  if (bytes.length > MAX_IMAGE_BYTES) throw new HttpError(413, "Too large");
+  if (bytes.length > MAX_IMAGE_BYTES) throw new HttpError(413, "That image is too large. The limit is 15 MB.");
   const t = sniff(bytes);
-  if (!t || !IMAGE_TYPES.has(t)) throw new HttpError(415, "PNG, JPEG or WebP only");
+  if (!t || !IMAGE_TYPES.has(t)) throw new HttpError(415, "Please choose a PNG, JPEG or WebP image.");
   const wm = await readWatermark(bytes, keyBytes("HM_WATERMARK_KEY")).catch(() => null);
   if (!wm) return json({ found: false, message: "No intact Humagination watermark found. (Resizing or lossy re-compression removes it.)" });
   const { data: work } = await supabaseAdmin().from("gallery_works").select("id, owner_id, title").eq("id", wm.workId).maybeSingle();

@@ -20,7 +20,7 @@ export const DELETE = api(async (req: NextRequest) => {
   if (!profile || confirmUsername !== profile.username) throw new HttpError(400, "Type your username exactly to confirm.");
   await deleteUserFiles(user.id);
   const { error } = await supabaseAdmin().auth.admin.deleteUser(user.id);
-  if (error) throw new HttpError(500, "Could not delete the account — nothing was removed from auth. Try again.");
+  if (error) throw new HttpError(500, "Your account couldn't be deleted, and nothing was removed. Please try again.");
   await (await supabaseServer()).auth.signOut().catch(() => null);
   return json({ ok: true });
 });

@@ -16,7 +16,7 @@ export function PublishCertButton({ certId, publishedId }: { certId: string; pub
             const r = await postJson<{ id: string }>("/api/gallery/writing", { certId });
             setId(r.id);
           } catch (e) {
-            setErr(e instanceof ApiError ? e.message : "Failed");
+            setErr(e instanceof ApiError ? e.message : "That didn't work. Check your connection and try again.");
           }
         }}
       >

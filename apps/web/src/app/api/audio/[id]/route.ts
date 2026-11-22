@@ -15,9 +15,9 @@ export const GET = api(async (req: NextRequest, ctx: { params: Promise<{ id: str
   const id = UUID.parse((await ctx.params).id);
   const check = verifyMedia(keyBytes("HM_MEDIA_HMAC_KEY"), id, user.id, Number(req.nextUrl.searchParams.get("exp")), req.nextUrl.searchParams.get("sig") ?? "");
   if (check === "expired") throw new HttpError(410, "This link expired — reload the page.");
-  if (check !== "ok") throw new HttpError(403, "Invalid media link");
+  if (check !== "ok") throw new HttpError(403, "This image link isn't valid any more. Reload the page.");
   const work = await viewableWork(id, user.id);
-  if (work.kind !== "music" || !work.preview_key) throw new HttpError(404, "Not found");
+  if (work.kind !== "music" || !work.preview_key) throw new HttpError(404, "We couldn't find that. It may have been deleted.");
   await noteMediaFetch(user.id);
   const buf = await download("audio-previews", work.preview_key);
   return new Response(new Uint8Array(buf), {

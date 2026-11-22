@@ -73,7 +73,7 @@ export function OwnerControls({ id, published }: { id: string; published: boolea
                 await postJson(`/api/gallery/${id}`, {}, "DELETE");
                 router.push("/portfolio");
               } catch (e) {
-                setErr(e instanceof ApiError ? e.message : "Failed");
+                setErr(e instanceof ApiError ? e.message : "That didn't work. Check your connection and try again.");
               }
             }}
           >

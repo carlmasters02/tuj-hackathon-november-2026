@@ -17,7 +17,7 @@ export const POST = api(async (req: NextRequest) => {
   await rateLimit("signup", `username:${user.id}`);
   const { username } = await parseJson(req, Body, 500);
   const profile = await profileOf(user.id);
-  if (!profile) throw new HttpError(404, "Profile not found");
+  if (!profile) throw new HttpError(404, "We couldn't find that person.");
   if (profile.username_chosen) throw new HttpError(403, "Your username is already set.");
   const sb = supabaseAdmin();
   const { data: taken } = await sb.from("profiles").select("id").eq("username", username).maybeSingle();

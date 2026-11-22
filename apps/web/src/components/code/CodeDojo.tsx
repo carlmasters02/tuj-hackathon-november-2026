@@ -79,7 +79,7 @@ export function CodeDojo({ ex, userId, solved: initiallySolved, initialHints, fa
       }
     } catch (e) {
       setRunRows(null); // never leave an earlier run's pass/fail cards next to an error
-      setError(e instanceof ApiError ? e.message : "Run failed");
+      setError(e instanceof ApiError ? e.message : "Couldn't run your code. Check your connection and try again.");
     } finally {
       setBusy(null);
     }
@@ -95,7 +95,7 @@ export function CodeDojo({ ex, userId, solved: initiallySolved, initialHints, fa
       setHints(r.hints);
       if (r.passed) setSolved(true);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Submit failed");
+      setError(e instanceof ApiError ? e.message : "Couldn't submit. Check your connection and try again.");
     } finally {
       setBusy(null);
     }
@@ -105,7 +105,7 @@ export function CodeDojo({ ex, userId, solved: initiallySolved, initialHints, fa
     try {
       setRosetta(await getJson(`/api/code/rosetta?exerciseId=${encodeURIComponent(ex.id)}`));
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Couldn't open Rosetta view");
+      setError(e instanceof ApiError ? e.message : "Couldn't open the Rosetta view. Check your connection and try again.");
     }
   };
 

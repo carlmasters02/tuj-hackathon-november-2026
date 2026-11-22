@@ -29,7 +29,7 @@ export const dec = (docId: string, field: "title" | "content" | "text" | "meta",
 export async function ownedDoc(docId: string, userId: string): Promise<DocRow> {
   const { data, error } = await supabaseAdmin().from("documents").select("*").eq("id", docId).eq("owner_id", userId).maybeSingle();
   if (error) throw error;
-  if (!data) throw new HttpError(404, "Document not found");
+  if (!data) throw new HttpError(404, "We couldn't find that document. It may have been deleted.");
   return data as DocRow;
 }
 

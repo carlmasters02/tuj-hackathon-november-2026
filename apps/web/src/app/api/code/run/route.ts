@@ -25,10 +25,10 @@ export const POST = api(async (req: NextRequest) => {
   assertSameOrigin(req);
   const user = await requireUser();
   const b = await parseJson(req, Body, 40_000);
-  if (Buffer.byteLength(b.source) > LIMITS.maxSourceBytes) throw new HttpError(413, "Source is limited to 20 KB");
+  if (Buffer.byteLength(b.source) > LIMITS.maxSourceBytes) throw new HttpError(413, "Your code is too long. Please keep it under 20 KB.");
   const ex = getExercise(b.exerciseId);
-  if (!ex) throw new HttpError(404, "Unknown exercise");
-  if (b.sanitize && ex.lang !== "c") throw new HttpError(400, "Memory checking is only for C");
+  if (!ex) throw new HttpError(404, "That exercise doesn't exist.");
+  if (b.sanitize && ex.lang !== "c") throw new HttpError(400, "Memory checking is only available for C exercises.");
   const runner = codeRunner();
 
   return withRunSlot(user.id, 1, async () => {

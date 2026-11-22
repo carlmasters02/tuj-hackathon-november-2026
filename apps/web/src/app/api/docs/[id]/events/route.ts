@@ -35,31 +35,31 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
   const storedContent = JSON.parse(dec(id, "content", doc.content_enc));
   // Sequence alone cannot detect two formatting-only saves. Every request therefore carries
   // its last confirmed content revision; a competing save in either direction becomes a 409.
-  if (contentFingerprint(storedContent) !== body.baseContentHash) throw new HttpError(409, "Document content changed elsewhere. Reload before editing.");
+  if (contentFingerprint(storedContent) !== body.baseContentHash) throw new HttpError(409, "This document was changed in another tab or window. Reload the page to continue with the latest version.");
 
   const hasEvents = body.events.length > 0;
   const seqStart = hasEvents ? body.events[0].seq : doc.last_seq + 1;
-  if (hasEvents && seqStart !== doc.last_seq + 1) throw new HttpError(409, "Out of sync with the server (another tab?). Reload the document.", { lastSeq: doc.last_seq });
+  if (hasEvents && seqStart !== doc.last_seq + 1) throw new HttpError(409, "This is open in another tab or window. Reload the page to continue with the latest version.", { lastSeq: doc.last_seq });
   body.events.forEach((e, i) => {
-    if (e.seq !== seqStart + i) throw new HttpError(400, "Events must have consecutive seq numbers");
+    if (e.seq !== seqStart + i) throw new HttpError(400, "Your latest changes got out of step with the saved copy. Reload the page; everything saved so far is safe.");
   });
 
   // For a content-only save this proves the client is still on the same chain head. No new
   // sequence number or batch is needed because the projected text cannot have changed.
   const prev = doc.head_hash ?? genesisHash(id, body.sessionId);
   const head = chainHead(prev, body.events);
-  if (head !== body.headHash) throw new HttpError(409, "Hash chain mismatch. Reload the document.");
+  if (head !== body.headHash) throw new HttpError(409, "Your latest changes got out of step with the saved copy. Reload the page; everything saved so far is safe.");
 
   let text = dec(id, "text", doc.text_enc);
   try {
     for (const e of body.events) text = applyEvent(text, e);
   } catch (e) {
-    if (e instanceof ReplayError) throw new HttpError(409, "Event doesn't apply to the document. Reload the document.");
+    if (e instanceof ReplayError) throw new HttpError(409, "Your latest changes got out of step with the saved copy. Reload the page; everything saved so far is safe.");
     throw e;
   }
-  if (text.length > 500_000) throw new HttpError(413, "Document too long");
+  if (text.length > 500_000) throw new HttpError(413, "This document is too long to save (the limit is 500,000 characters).");
   const contentText = contentToText(body.content);
-  if (contentText !== text) throw new HttpError(409, "Editor content and event log disagree. Reload the document.");
+  if (contentText !== text) throw new HttpError(409, "Your latest changes got out of step with the saved copy. Reload the page; everything saved so far is safe.");
 
   const sb = supabaseAdmin();
   const seqEnd = hasEvents ? body.events[body.events.length - 1].seq : doc.last_seq;
@@ -73,7 +73,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
       head_hash: head,
     });
     if (insErr) {
-      if (insErr.code === "23505") throw new HttpError(409, "Batch already received. Reload the document.");
+      if (insErr.code === "23505") throw new HttpError(409, "This change was already saved. Reload the page to continue.");
       throw insErr;
     }
   }
@@ -102,7 +102,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
       if (rollbackErr) throw rollbackErr;
     }
     if (updErr) throw updErr;
-    throw new HttpError(409, "Concurrent edit detected. Reload the document.");
+    throw new HttpError(409, "This is open in another tab or window. Reload the page to continue with the latest version.");
   }
   return json({ ok: true, headHash: head, lastSeq: seqEnd });
 });

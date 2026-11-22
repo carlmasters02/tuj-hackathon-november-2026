@@ -28,6 +28,6 @@ export const POST = api(async (req: NextRequest) => {
   });
   if (error || !data.url) throw new HttpError(502, "Google sign-in isn't available right now.");
   // only ever send the browser to our own Supabase project
-  if (new URL(data.url).host !== new URL(env().NEXT_PUBLIC_SUPABASE_URL).host) throw new HttpError(502, "Unexpected sign-in URL");
+  if (new URL(data.url).host !== new URL(env().NEXT_PUBLIC_SUPABASE_URL).host) throw new HttpError(502, "Google sign-in isn't available right now. Please try again later.");
   return json({ url: data.url });
 });

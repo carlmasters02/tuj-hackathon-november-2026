@@ -24,7 +24,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
   const id = UUID.parse((await ctx.params).id);
   const doc = await ownedDoc(id, user.id);
   const profile = await profileOf(user.id);
-  if (!profile) throw new HttpError(400, "Profile missing");
+  if (!profile) throw new HttpError(400, "Your profile isn't set up yet. Finish setting up your account and try again.");
 
   const batches = await loadBatches(id);
   if (!batches.length) throw new HttpError(400, "Nothing to certify yet — write something first.");
@@ -34,7 +34,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
   try {
     replayed = computeStats(batches);
   } catch (e) {
-    if (e instanceof ReplayError) throw new HttpError(409, "The event log can't be replayed — this document can't be certified.");
+    if (e instanceof ReplayError) throw new HttpError(409, "This document's writing history couldn't be verified, so it can't be certified.");
     throw e;
   }
   const storedText = dec(id, "text", doc.text_enc);
@@ -42,7 +42,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
   const prepared = preparePublishedDoc(content, docMeta(doc));
   // Rich publication must describe exactly the same text as the signed replay. Refuse a
   // snapshot mismatch rather than issuing a certificate whose two representations disagree.
-  if (prepared.text !== replayed.text) throw new HttpError(409, "Formatted content and the event log disagree. Reload the document before finalizing.");
+  if (prepared.text !== replayed.text) throw new HttpError(409, "Your latest formatting hasn't finished saving. Reload the page, then try again.");
   const hash = contentHash(replayed.text);
   const integrityOk = chain.ok && chain.head === doc.head_hash && hash === contentHash(storedText) && hash === contentHash(prepared.text);
   if (!integrityOk) replayed.stats.flags.unshift("Integrity check failed: the log does not reproduce the saved document");

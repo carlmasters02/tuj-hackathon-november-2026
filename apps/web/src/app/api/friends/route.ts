@@ -15,7 +15,7 @@ export const POST = api(async (req: NextRequest) => {
   await rateLimit("api", user.id);
   const { username, action } = await parseJson(req, Body, 1_000);
   const { data: other } = await supabaseAdmin().from("profiles").select("id").eq("username", username).maybeSingle();
-  if (!other || other.id === user.id) throw new HttpError(404, "User not found");
+  if (!other || other.id === user.id) throw new HttpError(404, "We couldn't find that person.");
   const sb = await supabaseServer();
   if (action === "invite") {
     const { error } = await sb.from("friends").upsert({ user_id: user.id, friend_id: other.id, status: "pending" }, { ignoreDuplicates: true });
@@ -23,7 +23,7 @@ export const POST = api(async (req: NextRequest) => {
   } else if (action === "accept") {
     const { data, error } = await sb.from("friends").update({ status: "accepted" }).eq("user_id", other.id).eq("friend_id", user.id).select("user_id");
     if (error) throw error;
-    if (!data?.length) throw new HttpError(404, "No pending invite from that user");
+    if (!data?.length) throw new HttpError(404, "There's no pending friend invite from that person.");
   } else {
     await sb.from("friends").delete().eq("user_id", user.id).eq("friend_id", other.id);
     await sb.from("friends").delete().eq("user_id", other.id).eq("friend_id", user.id);

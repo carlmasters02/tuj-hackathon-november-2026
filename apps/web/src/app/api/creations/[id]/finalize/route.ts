@@ -27,7 +27,7 @@ export const POST = api(async (req: NextRequest, ctx: { params: Promise<{ id: st
   await rateLimit("upload", user.id);
   const id = UUID.parse((await ctx.params).id);
   const c = await ownedCreation(id, user.id);
-  if (c.status === "finalized") throw new HttpError(409, "Already finished.");
+  if (c.status === "finalized") throw new HttpError(409, "This piece is already finished.");
   const { title, publish, description } = await parseJson(req, Body, 3_000);
   const profile = await profileOf(user.id);
   const batches = await loadCreationBatches(id);

@@ -13,6 +13,6 @@ export const DELETE = api(async (req: NextRequest, ctx: { params: Promise<{ id: 
   const commentId = z.coerce.number().int().positive().parse(p.commentId);
   const { data, error } = await (await supabaseServer()).from("comments").delete().eq("id", commentId).eq("work_id", workId).select("id");
   if (error) throw error;
-  if (!data?.length) throw new HttpError(404, "Comment not found");
+  if (!data?.length) throw new HttpError(404, "That comment no longer exists.");
   return json({ ok: true });
 });
