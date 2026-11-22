@@ -246,7 +246,7 @@ async function publicPage(path: string) {
     // the URL appears in HTML (&amp;) and in the RSC payload (\u0026)
     const media = page.match(/\/api\/media\/[0-9a-f-]{36}\?exp=\d+(?:&amp;|\\u0026|&)sig=[0-9a-f]{64}/)?.[0]?.replace(/&amp;|\\u0026/, "&");
     check("work page renders with a signed media URL", r.status === 200 && !!media);
-    check("artist story is formatted, escaped and explicitly not verification evidence", page.includes("Behind the Creation") && page.includes("E2E artist story: a window after rain.") && page.includes("&lt;b&gt;stays text&lt;/b&gt;") && !page.includes("<b>stays text</b>") && page.includes("not evidence for a Human-made seal"));
+    check("artist story is formatted, escaped and explicitly not verification evidence", page.includes("Behind the Creation") && page.includes("E2E artist story: a window after rain.") && page.includes("&lt;b&gt;stays text&lt;/b&gt;") && !page.includes("<b>stays text</b>") && page.includes("not evidence used to verify the creation record"));
     if (media) {
       r = await req(media);
       const ct = r.headers.get("content-type");
@@ -277,6 +277,22 @@ async function publicPage(path: string) {
   // ── Drawing studio & composer: recorded, chained, server-rendered, certified ─
   const mediaOf = (html: string) => html.match(/\/api\/media\/[0-9a-f-]{36}\?exp=\d+(?:&amp;|\\u0026|&)sig=[0-9a-f]{64}/)?.[0]?.replace(/&amp;|\\u0026/, "&");
   for (const kind of ["art", "music"] as const) {
+    r = await req("/api/creations", { method: "POST", json: { kind, title: `Empty ${kind} test` } });
+    const emptyId = (await jsonOf(r)).id as string;
+    check(`${kind}: start an empty-replay guard case`, r.status === 200 && !!emptyId);
+    const emptySid = randomUUID();
+    const firstEvent = (kind === "art"
+      ? { seq: 0, t: 0, type: "stroke", tool: "pen", color: "#1b2b5e", size: 6, pts: [100, 100, 120, 120], dur: 450 }
+      : { seq: 0, t: 0, type: "toggle", step: 0, row: 0 }) as CreationEvent;
+    const removeEvent = (kind === "art" ? { seq: 1, t: 500, type: "undo" } : { seq: 1, t: 500, type: "clear" }) as CreationEvent;
+    const emptyEvents = [firstEvent, removeEvent];
+    const emptyHead = creationHead(creationGenesis(emptyId, emptySid), emptyEvents);
+    r = await req(`/api/creations/${emptyId}/events`, { method: "POST", json: { sessionId: emptySid, events: emptyEvents, headHash: emptyHead } });
+    check(`${kind}: empty-replay event log is valid`, r.status === 200);
+    r = await req(`/api/creations/${emptyId}/finalize`, { method: "POST", json: { title: `Empty ${kind}`, publish: false } });
+    const emptyResult = await jsonOf(r);
+    check(`${kind}: cleared or undone-empty work cannot be finalized`, r.status === 400 && !emptyResult.workId && !emptyResult.certId);
+
     r = await req("/api/creations", { method: "POST", json: { kind, title: `E2E ${kind}` } });
     const cid = (await jsonOf(r)).id as string;
     check(`${kind}: start a new studio piece`, r.status === 200 && !!cid);
@@ -312,8 +328,8 @@ async function publicPage(path: string) {
     seq -= 5;
     r = await req(`/api/creations/${cid}/finalize`, { method: "POST", json: { title: `E2E ${kind} piece`, publish: true } });
     const done = await jsonOf(r);
-    check(`${kind}: finish signs a certificate and publishes`, r.status === 200 && !!done.workId && !!done.certId, `verdict ${done.verdict} (too short for the seal by design)`);
-    check(`${kind}: short piece is not sealed`, done.verdict !== "human_verified");
+    check(`${kind}: finish signs a certificate and publishes`, r.status === 200 && !!done.workId && !!done.certId, `verdict ${done.verdict}`);
+    check(`${kind}: non-empty work needs no stroke-count or time minimum`, done.verdict === "human_verified");
     r = await send([{ type: "clear" }] as any);
     check(`${kind}: finished piece is locked`, r.status === 409);
     r = await req(`/api/creations/${cid}/finalize`, { method: "POST", json: { title: "again" } });
@@ -321,7 +337,7 @@ async function publicPage(path: string) {
     if (!done.workId) continue;
     r = await req(`/portfolio/work/${done.workId}`);
     const html = await r.text();
-    check(`${kind}: work page renders with likes and comments`, r.status === 200 && html.includes("Comments") && html.includes("See the record"));
+    check(`${kind}: work page renders the verified record with likes and comments`, r.status === 200 && html.includes("Comments") && html.includes("Creation record verified") && html.includes("Watch how it was made"));
     if (kind === "art") {
       const m = mediaOf(html);
       if (m) r = await req(m);
